@@ -15,6 +15,7 @@ const EASE = [0.19, 1, 0.22, 1] as const;
 export function Hero() {
   const reduce = useReducedMotion();
   const [scrolled, setScrolled] = useState(false);
+  const [start, setStart] = useState(false);
 
   // Masque l'invite de scroll dès que l'utilisateur descend
   useEffect(() => {
@@ -22,6 +23,20 @@ export function Hero() {
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
+
+  // L'entrée du hero se déclenche à la fin du loader (« estio:loaded »),
+  // pour un fondu smooth — pas d'apparition directe.
+  useEffect(() => {
+    const on = () => setStart(true);
+    window.addEventListener("estio:loaded", on);
+    const fb = setTimeout(() => setStart(true), 6000); // sécurité
+    return () => {
+      window.removeEventListener("estio:loaded", on);
+      clearTimeout(fb);
+    };
+  }, []);
+
+  const show = start ? "show" : "hidden";
 
   const rise = {
     hidden: { y: reduce ? 0 : "110%" },
@@ -80,7 +95,7 @@ export function Hero() {
           variants={cardIn}
           custom={0}
           initial="hidden"
-          animate="show"
+          animate={show}
           className="animate-float absolute right-0 top-[104px] w-[280px] rounded-[20px] bg-white p-6 text-[#0a0a0b] shadow-[0_30px_60px_rgba(0,0,0,0.55)]"
           style={{ animationDelay: "0s" }}
         >
@@ -109,7 +124,7 @@ export function Hero() {
           variants={cardIn}
           custom={1}
           initial="hidden"
-          animate="show"
+          animate={show}
           className="animate-float absolute bottom-0 left-0 w-[230px] rounded-[18px] bg-bg-elevated p-5 shadow-[0_24px_48px_rgba(0,0,0,0.5)] ring-1 ring-white/10"
           style={{ animationDelay: "1.4s" }}
         >
@@ -130,7 +145,7 @@ export function Hero() {
           variants={cardIn}
           custom={2}
           initial="hidden"
-          animate="show"
+          animate={show}
           className="animate-float absolute left-0 top-0 w-[190px] rounded-[16px] bg-bg-alt p-4 shadow-[0_20px_40px_rgba(0,0,0,0.5)] ring-1 ring-white/10"
           style={{ animationDelay: "0.7s" }}
         >
@@ -151,7 +166,7 @@ export function Hero() {
                 variants={rise}
                 custom={i}
                 initial="hidden"
-                animate="show"
+                animate={show}
                 className="block"
               >
                 {mot}
@@ -164,7 +179,7 @@ export function Hero() {
           variants={fade}
           custom={0}
           initial="hidden"
-          animate="show"
+          animate={show}
           className="mt-8 flex flex-col gap-3 sm:flex-row"
         >
           <MagneticButton href="/connexion" className="px-7 py-3.5">
@@ -179,8 +194,8 @@ export function Hero() {
       {/* Invite de scroll, bas-gauche (remontée, disparaît au scroll) */}
       <motion.div
         initial={{ opacity: 0 }}
-        animate={{ opacity: scrolled ? 0 : 1 }}
-        transition={{ duration: 0.5, ease: EASE, delay: scrolled ? 0 : 1 }}
+        animate={{ opacity: start && !scrolled ? 1 : 0 }}
+        transition={{ duration: 0.5, ease: EASE, delay: start && !scrolled ? 0.6 : 0 }}
         className="absolute bottom-12 left-[6vw] z-20 hidden items-center gap-3 text-faint sm:flex"
       >
         <svg width="18" height="27" viewBox="0 0 18 27" fill="none" aria-hidden>

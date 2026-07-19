@@ -6,39 +6,47 @@ import type Lenis from "lenis";
 import { EstioLoaderMark } from "./EstioLoaderMark";
 
 const EASE = [0.19, 1, 0.22, 1] as const;
+const getLenis = () => (window as unknown as { __lenis?: Lenis }).__lenis;
 
 /**
- * Loader d'intro (façon speedy.io) : fond noir, wordmark en grand au centre.
- * Les deux tours de l'icône clignotent en alternance (blanc ↔ estompé) sur
- * ~3 tours, puis le logo « vient se ranger » en haut à gauche, pile à la place
- * du logo du header (relais invisible), et l'overlay se dissout.
+ * Loader d'intro : fond noir, wordmark en grand. Les 2 immeubles alternent
+ * plein ↔ contour (lent, fluide). Quand l'alternation se TERMINE (animationend),
+ * le logo « tombe pile » à sa place dans le header, puis l'overlay se dissout et
+ * on émet « estio:loaded » pour lancer l'entrée du hero.
  */
 export function PageLoader() {
   const reduce = useReducedMotion();
   const [phase, setPhase] = useState<"intro" | "dock" | "done">("intro");
   const [dims, setDims] = useState<{ w: number; h: number } | null>(null);
 
+  // Setup : fige le scroll, mémorise les dimensions
   useEffect(() => {
-    const lenis = (window as unknown as { __lenis?: Lenis }).__lenis;
     setDims({ w: window.innerWidth, h: window.innerHeight });
-
     if (reduce) {
       setPhase("done");
       return;
     }
-
-    lenis?.stop();
-    const t1 = setTimeout(() => setPhase("dock"), 3300); // ~2 alternances lentes
-    const t2 = setTimeout(() => {
-      setPhase("done");
-      lenis?.start();
-    }, 4250);
-    return () => {
-      clearTimeout(t1);
-      clearTimeout(t2);
-      lenis?.start();
-    };
+    getLenis()?.stop();
+    // L'alternation CSS (2 tours × 1.8s) et ce timer démarrent au même rendu :
+    // le dock « tombe pile » à la fin de l'animation.
+    const t = setTimeout(() => setPhase((p) => (p === "intro" ? "dock" : p)), 3650);
+    return () => clearTimeout(t);
   }, [reduce]);
+
+  // dock → done (après le vol du logo)
+  useEffect(() => {
+    if (phase !== "dock") return;
+    const t = setTimeout(() => setPhase("done"), 950);
+    return () => clearTimeout(t);
+  }, [phase]);
+
+  // done → relance le scroll + signale au hero d'entrer
+  useEffect(() => {
+    if (phase === "done") {
+      getLenis()?.start();
+      window.dispatchEvent(new Event("estio:loaded"));
+    }
+  }, [phase]);
 
   return (
     <AnimatePresence>
@@ -52,14 +60,7 @@ export function PageLoader() {
           {dims && (
             <motion.div
               className="absolute inline-block"
-              initial={{
-                opacity: 0,
-                top: dims.h / 2,
-                left: dims.w / 2,
-                x: "-50%",
-                y: "-50%",
-                height: 150,
-              }}
+              initial={{ opacity: 0, top: dims.h / 2, left: dims.w / 2, x: "-50%", y: "-50%", height: 150 }}
               animate={
                 phase === "intro"
                   ? { opacity: 1, top: dims.h / 2, left: dims.w / 2, x: "-50%", y: "-50%", height: 150 }
@@ -67,10 +68,7 @@ export function PageLoader() {
               }
               transition={{ duration: phase === "intro" ? 0.5 : 0.9, ease: EASE }}
             >
-              <EstioLoaderMark
-                className="loader-mark"
-                style={{ height: "100%", width: "auto", display: "block" }}
-              />
+              <EstioLoaderMark className="loader-mark" style={{ height: "100%", width: "auto", display: "block" }} />
             </motion.div>
           )}
         </motion.div>

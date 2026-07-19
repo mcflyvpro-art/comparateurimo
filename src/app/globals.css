@@ -220,10 +220,10 @@ html.lenis body {
   }
 }
 .loader-mark .grpA {
-  animation: estio-alt-on 1.8s ease-in-out infinite;
+  animation: estio-alt-on 1.8s ease-in-out 2 forwards;
 }
 .loader-mark .grpB {
-  animation: estio-alt-off 1.8s ease-in-out infinite;
+  animation: estio-alt-off 1.8s ease-in-out 2 forwards;
 }
 
 @media (prefers-reduced-motion: reduce) {
