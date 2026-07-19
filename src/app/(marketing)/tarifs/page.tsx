@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { PageHeader } from "@/components/marketing/PageHeader";
 import { PricingTable } from "@/components/marketing/PricingTable";
+import { CreditRecharge } from "@/components/marketing/CreditRecharge";
 
 export const metadata: Metadata = {
   title: "Tarifs — Estio",
@@ -24,6 +25,10 @@ export default function Tarifs() {
           précisée avant l’ouverture des paiements.
         </p>
       </section>
+
+      <CreditRecharge />
+
+      <div className="h-16" />
     </>
   );
 }
