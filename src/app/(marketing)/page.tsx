@@ -1,8 +1,15 @@
+import type { Metadata } from "next";
 import { Reveal } from "@/components/landing/Reveal";
 import { HeroVisual } from "@/components/landing/HeroVisual";
 import { ScoreProfiles } from "@/components/landing/ScoreProfiles";
 import { SourcesMarquee } from "@/components/landing/SourcesMarquee";
 import { MagneticButton } from "@/components/landing/MagneticButton";
+
+export const metadata: Metadata = {
+  title: "Estio — comparateur immobilier d’investissement",
+  description:
+    "Compare tes biens immobiliers côte à côte, du point de vue de l’investissement. Une adresse déverrouille les données de marché, et le score reflète tes priorités.",
+};
 
 const niveaux = [
   {

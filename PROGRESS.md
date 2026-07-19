@@ -22,6 +22,24 @@
 
 ## Sessions
 
+### Session 5 — 2026-07-19 — Site public (header, pages, footer, modèle éco)
+**Étape : 🔨 impl (site public)**
+
+- Header refait (`SiteHeader` + `MobileMenu`) : liens vers vraies pages, état actif, burger mobile. Footer enrichi (`SiteFooter`, 4 colonnes). Layout partagé `src/app/(marketing)/layout.tsx`.
+- 10 routes : accueil + `comment-ca-marche`, `tarifs`, `faq`, `a-propos`, `contact`, `connexion`, `mentions-legales`, `confidentialite`, `cgu`. Coquilles stylées, liens vivants.
+- Composants : `PageHeader`, `PricingTable` (3 offres + toggle mensuel/annuel), `FaqAccordion`, `ContactForm`, `LoginForm`, `LegalPage`.
+- **Modèle économique** figé dans la spec (§11) : crédit = analyser un bien neuf → wallet réutilisable ; Free 3 crédits à vie (wallet 1) / Pro / Expert ; recharge réservée payant ; mensuel/annuel remisé. Valeurs chiffrées indicatives (MVP Q3).
+- Mentions « open data » retirées de tout l’UI (dévalorise l’offre). Landing nettoyée + déplacée.
+- Spec : `docs/superpowers/specs/2026-07-19-site-public-design.md`. Plan : `docs/superpowers/plans/2026-07-19-site-public.md`. Build + lint verts.
+
+**À compléter avant mise en ligne**
+- Pages légales (raison sociale, hébergeur, DPO), quantités de crédits Pro/Expert, prix définitifs.
+
+**Prochaine session**
+- App connectée (E1/E2) : formulaire d’ajout N1 + géocodage BAN, sous un futur layout `(app)`.
+
+---
+
 ### Session 4 — 2026-07-19 — Landing Estio (/apple-design)
 **Étape : 🔨 impl (frontend)**
 
