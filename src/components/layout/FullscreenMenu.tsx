@@ -70,28 +70,41 @@ export function FullscreenMenu({
               <span className="mb-6 block text-sm font-medium uppercase tracking-[0.14em] text-faint">
                 Découvrir
               </span>
-              <ul className="flex flex-col gap-2">
-                {discover.map((l, i) => (
-                  <li key={l.href} className="overflow-hidden">
-                    <motion.div
-                      initial={{ y: reduce ? 0 : "110%" }}
-                      animate={{ y: 0 }}
-                      transition={{ duration: 0.9, ease: EASE, delay: 0.15 + i * 0.08 }}
-                    >
-                      <Link
-                        href={l.href}
-                        onClick={onClose}
-                        className="group inline-flex items-baseline gap-3 text-text lg:gap-5"
+              <ul className="flex flex-col gap-1">
+                {discover.map((l, i) => {
+                  const active = pathname === l.href;
+                  return (
+                    <li key={l.href} className="overflow-hidden">
+                      <motion.div
+                        initial={{ y: reduce ? 0 : "110%" }}
+                        animate={{ y: 0 }}
+                        transition={{ duration: 0.9, ease: EASE, delay: 0.15 + i * 0.08 }}
                       >
-                        <span className="h-giant text-brand opacity-0 transition-opacity duration-300 group-hover:opacity-100">
-                          →
-                        </span>
-                        <span className="h-giant">{l.label}</span>
-                        <span className="text-base text-muted lg:text-xl">{l.sub}</span>
-                      </Link>
-                    </motion.div>
-                  </li>
-                ))}
+                        <Link
+                          href={l.href}
+                          onClick={onClose}
+                          aria-current={active ? "page" : undefined}
+                          className={`group inline-flex items-start ${
+                            active ? "pointer-events-none text-faint" : "text-text"
+                          }`}
+                        >
+                          {/* Bloc flèche + mot + soulignement (glisse à droite au survol) */}
+                          <span className="relative inline-flex items-start pl-0 transition-[padding-left] duration-500 ease-[cubic-bezier(0.19,1,0.22,1)] group-hover:pl-[1.7em]">
+                            <span className="h-giant absolute left-0 top-0 -translate-x-2 text-brand opacity-0 transition-all duration-500 ease-[cubic-bezier(0.19,1,0.22,1)] group-hover:translate-x-0 group-hover:opacity-100">
+                              →
+                            </span>
+                            <span className="h-giant">{l.label}</span>
+                            <span className="absolute bottom-[0.12em] left-0 right-0 h-[5px] origin-left scale-x-0 bg-current transition-transform duration-500 ease-[cubic-bezier(0.19,1,0.22,1)] group-hover:scale-x-100" />
+                          </span>
+                          {/* Sous-titre en exposant (haut-droite) */}
+                          <span className="ml-2 mt-[0.35em] self-start text-base text-muted lg:ml-3 lg:text-2xl">
+                            {l.sub}
+                          </span>
+                        </Link>
+                      </motion.div>
+                    </li>
+                  );
+                })}
               </ul>
             </div>
 

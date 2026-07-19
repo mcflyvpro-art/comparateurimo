@@ -24,13 +24,11 @@ export function SiteHeader() {
             href="/"
             onClick={() => setOpen(false)}
             aria-label="Estio — accueil"
-            className="flex items-center gap-3 justify-self-start text-text"
+            className="justify-self-start"
           >
-            <svg width="40" height="40" viewBox="0 0 40 40" fill="none" aria-hidden>
-              <circle cx="20" cy="20" r="18" stroke="currentColor" strokeWidth="2" />
-              <path d="M20 2 A18 18 0 0 0 20 38 Z" fill="currentColor" />
-            </svg>
-            <span className="text-lg font-medium tracking-tight">estio</span>
+            {/* Wordmark blanc (mark immeubles + « estio »), sur header sombre */}
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/estio-wordmark.svg" alt="Estio" className="h-6 w-auto" />
           </Link>
 
           {/* Burger (centre) */}
