@@ -3,70 +3,78 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
-import { navLinks } from "./nav-links";
-import { MagneticButton } from "@/components/landing/MagneticButton";
-import { MobileMenu } from "./MobileMenu";
+import { motion } from "motion/react";
+import { FullscreenMenu } from "./FullscreenMenu";
 
-/** Header translucide. Liens vers les vraies pages, état actif, menu mobile. */
+/**
+ * Header calqué sur speedy.io : transparent, superposé au contenu.
+ * 3 zones — logo (gauche) · burger centré qui ouvre le menu plein écran ·
+ * bouton pill (droite). Le burger morphe en croix à l'ouverture.
+ */
 export function SiteHeader() {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
 
   return (
-    <header className="sticky top-0 z-50 border-b border-border/60 bg-bg/72 backdrop-blur-xl">
-      <nav className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
-        <Link
-          href="/"
-          className="font-sans text-xl font-semibold tracking-tight text-text"
-        >
-          estio<span className="text-brand">.</span>
-        </Link>
-
-        <div className="hidden items-center gap-8 text-sm sm:flex">
-          {navLinks.map((l) => {
-            const active = pathname === l.href;
-            return (
-              <Link
-                key={l.href}
-                href={l.href}
-                aria-current={active ? "page" : undefined}
-                className={`transition-colors ${
-                  active
-                    ? "font-medium text-text underline decoration-brand underline-offset-8"
-                    : "text-muted hover:text-text"
-                }`}
-              >
-                {l.label}
-              </Link>
-            );
-          })}
-        </div>
-
-        <div className="hidden items-center gap-4 sm:flex">
+    <>
+      <header className="fixed inset-x-0 top-0 z-50">
+        <nav className="mx-auto grid max-w-[106rem] grid-cols-3 items-center px-[6vw] py-5">
+          {/* Logo (gauche) */}
           <Link
-            href="/connexion"
-            className="text-sm text-muted transition-colors hover:text-text"
+            href="/"
+            onClick={() => setOpen(false)}
+            aria-label="Estio — accueil"
+            className="flex items-center gap-3 justify-self-start text-text"
           >
-            Se connecter
+            <svg width="40" height="40" viewBox="0 0 40 40" fill="none" aria-hidden>
+              <circle cx="20" cy="20" r="18" stroke="currentColor" strokeWidth="2" />
+              <path d="M20 2 A18 18 0 0 0 20 38 Z" fill="currentColor" />
+            </svg>
+            <span className="text-lg font-medium tracking-tight">estio</span>
           </Link>
-          <MagneticButton href="/connexion" className="px-4 py-2 text-sm">
-            Ajouter un bien
-          </MagneticButton>
-        </div>
 
-        <button
-          onClick={() => setOpen(true)}
-          aria-label="Ouvrir le menu"
-          className="cursor-pointer p-2 sm:hidden"
-        >
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round">
-            <line x1="4" y1="8" x2="20" y2="8" />
-            <line x1="4" y1="16" x2="20" y2="16" />
-          </svg>
-        </button>
-      </nav>
+          {/* Burger (centre) */}
+          <button
+            onClick={() => setOpen((v) => !v)}
+            aria-label={open ? "Fermer le menu" : "Ouvrir le menu"}
+            aria-expanded={open}
+            className="group flex h-10 w-16 items-center justify-center justify-self-center"
+          >
+            <span className="relative block h-3 w-[52px]">
+              <motion.span
+                className="absolute left-0 block h-0.5 w-full bg-text"
+                initial={false}
+                animate={open ? { top: "50%", y: "-50%", rotate: 45 } : { top: 0, y: 0, rotate: 0 }}
+                transition={{ duration: 0.4, ease: [0.19, 1, 0.22, 1] }}
+              />
+              <motion.span
+                className="absolute left-0 block h-0.5 w-full bg-text"
+                initial={false}
+                animate={open ? { bottom: "50%", y: "50%", rotate: -45 } : { bottom: 0, y: 0, rotate: 0 }}
+                transition={{ duration: 0.4, ease: [0.19, 1, 0.22, 1] }}
+              />
+            </span>
+          </button>
 
-      <MobileMenu open={open} onClose={() => setOpen(false)} pathname={pathname} />
-    </header>
+          {/* Actions (droite) */}
+          <div className="flex items-center gap-5 justify-self-end">
+            <Link
+              href="/connexion"
+              className="hidden text-sm text-muted transition-colors hover:text-text sm:inline"
+            >
+              Se connecter
+            </Link>
+            <Link
+              href="/connexion"
+              className="rounded-full bg-text px-5 py-2 text-sm font-medium text-bg transition-colors hover:bg-white"
+            >
+              Ajouter un bien
+            </Link>
+          </div>
+        </nav>
+      </header>
+
+      <FullscreenMenu open={open} onClose={() => setOpen(false)} pathname={pathname} />
+    </>
   );
 }

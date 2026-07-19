@@ -49,19 +49,26 @@ body {
   line-height: 0.98;
   letter-spacing: -0.03em;
 }
-.h-1 {
+/* Liens géants du menu plein écran (≈ 110px) */
+.h-giant {
+  font-weight: 500;
+  font-size: clamp(2.5rem, 7vw, 7rem);
+  line-height: 1.05;
+  letter-spacing: -0.03em;
+}
+.h-lg {
   font-weight: 500;
   font-size: clamp(2rem, 4.8vw, 4.75rem); /* → 76px */
   line-height: 1;
   letter-spacing: -0.025em;
 }
-.h-2 {
+.h-md {
   font-weight: 500;
   font-size: clamp(1.7rem, 3.9vw, 4rem); /* → 64px */
   line-height: 1.02;
   letter-spacing: -0.02em;
 }
-.h-3 {
+.h-sm {
   font-weight: 500;
   font-size: clamp(1.4rem, 2.2vw, 2.25rem); /* → 36px */
   line-height: 1.05;
@@ -145,10 +152,40 @@ body {
   animation: estio-blob 18s var(--ease-expo) infinite;
 }
 
+/* Flottement doux des cartes du hero */
+@keyframes estio-float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-14px);
+  }
+}
+.animate-float {
+  animation: estio-float 6s var(--ease-expo) infinite;
+}
+
+/* Réservation de scroll pour Lenis (évite le double scrollbar) */
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .animate-marquee,
   .animate-scroll-dot,
-  .animate-blob {
+  .animate-blob,
+  .animate-float {
     animation: none;
   }
 }

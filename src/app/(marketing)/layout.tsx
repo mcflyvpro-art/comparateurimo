@@ -1,5 +1,6 @@
 import { SiteHeader } from "@/components/layout/SiteHeader";
 import { SiteFooter } from "@/components/layout/SiteFooter";
+import { SmoothScroll } from "@/components/providers/SmoothScroll";
 
 export default function MarketingLayout({
   children,
@@ -7,10 +8,10 @@ export default function MarketingLayout({
   children: React.ReactNode;
 }) {
   return (
-    <>
+    <SmoothScroll>
       <SiteHeader />
       {children}
       <SiteFooter />
-    </>
+    </SmoothScroll>
   );
 }
