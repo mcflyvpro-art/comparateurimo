@@ -28,6 +28,7 @@
 - Landing complète appliquant `/apple-design` sur les tokens Estio : nav translucide (`backdrop-blur`), hero, section « 3 niveaux », section score, sources open data, CTA, footer.
 - Composants : `src/components/landing/` — `SiteNav`, `Reveal` (spring bounce 0 + reduced-motion), `PropertyCardDemo` (matériau + barre animée au scroll).
 - Feedback press sur boutons (`active:scale`), typo optique (tracking négatif titres). Build + lint verts.
+- Passe `/design-taste-frontend` (variance 8 / motion 6, identité Estio préservée) : hero asymétrique, boutons magnétiques (`MagneticButton`), carte hero tilt 3D + flottement + liquid-glass (`HeroVisual`), section principe en zig-zag (fini les 3 cartes égales), score interactif par profils (`ScoreProfiles`), sources en marquee (`SourcesMarquee`), CTA décentré. Springs stiffness 100 / damping 20.
 
 **Prochaine session**
 - Formulaire d'ajout de bien (N1) + géocodage BAN.

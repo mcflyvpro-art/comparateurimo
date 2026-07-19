@@ -1,42 +1,29 @@
 import { SiteNav } from "@/components/landing/SiteNav";
 import { Reveal } from "@/components/landing/Reveal";
-import { PropertyCardDemo } from "@/components/landing/PropertyCardDemo";
+import { HeroVisual } from "@/components/landing/HeroVisual";
+import { ScoreProfiles } from "@/components/landing/ScoreProfiles";
+import { SourcesMarquee } from "@/components/landing/SourcesMarquee";
+import { MagneticButton } from "@/components/landing/MagneticButton";
 
 const niveaux = [
   {
     n: "N1",
     titre: "Le bien",
     texte:
-      "Tu saisis l'essentiel : adresse, prix, surface, DPE. Huit champs, pas une page entière à recopier.",
+      "Tu saisis l’essentiel : adresse, prix, surface, DPE. Huit champs, pas une page entière à recopier.",
   },
   {
     n: "N2",
     titre: "Le marché",
     texte:
-      "Déduit automatiquement de l'adresse : prix/m² réel (DVF), loyer estimé, tension locative, risques naturels.",
+      "Déduit de l’adresse : prix/m² notarié (DVF), loyer estimé, tension locative, risques naturels et techno.",
   },
   {
     n: "N3",
     titre: "Les scénarios",
     texte:
-      "Tu règles l'apport, l'emprunt, la stratégie et l'horizon. Le moteur calcule rendement, cash-flow et TRI.",
+      "Tu règles l’apport, l’emprunt, la stratégie et l’horizon. Le moteur calcule rendement, cash-flow et TRI.",
   },
-];
-
-const profils = [
-  "Rentabilité immédiate",
-  "Patrimoine long terme",
-  "Sécurité",
-  "Équilibré",
-];
-
-const sources = [
-  "BAN — adresses",
-  "DVF — prix réels",
-  "Carte des loyers",
-  "INSEE — tension & vacance",
-  "Géorisques",
-  "ADEME — DPE",
 ];
 
 export default function Home() {
@@ -45,8 +32,8 @@ export default function Home() {
       <SiteNav />
 
       <main className="mx-auto max-w-6xl px-6">
-        {/* Hero */}
-        <section className="grid items-center gap-14 py-20 lg:grid-cols-[1.1fr_1fr] lg:py-28">
+        {/* Hero — asymétrique, texte à gauche / carte flottante à droite */}
+        <section className="grid items-center gap-14 py-20 lg:grid-cols-[1.15fr_0.85fr] lg:py-28">
           <div>
             <Reveal>
               <span className="text-sm font-medium uppercase tracking-wide text-brand">
@@ -54,14 +41,14 @@ export default function Home() {
               </span>
             </Reveal>
             <Reveal delay={0.06}>
-              <h1 className="mt-5 font-sans text-5xl font-semibold leading-[1.04] tracking-[-0.03em] text-text sm:text-6xl">
+              <h1 className="mt-5 font-sans text-4xl font-semibold leading-[1.03] tracking-[-0.03em] text-text md:text-6xl">
                 Compare tes biens.
                 <br />
                 Laisse les chiffres trancher.
               </h1>
             </Reveal>
             <Reveal delay={0.12}>
-              <p className="mt-6 max-w-xl text-lg leading-relaxed text-muted">
+              <p className="mt-6 max-w-[52ch] text-lg leading-relaxed text-muted">
                 Estio met tes annonces côte à côte, du point de vue de
                 l’investissement. Une adresse suffit : elle déverrouille les
                 données de marché, et le score reflète <em>tes</em> priorités.
@@ -69,18 +56,10 @@ export default function Home() {
             </Reveal>
             <Reveal delay={0.18}>
               <div className="mt-9 flex flex-col gap-3 sm:flex-row">
-                <a
-                  href="#"
-                  className="rounded-full bg-brand px-6 py-3 text-center font-medium text-white transition-[transform,background-color] duration-100 hover:bg-brand-hover active:scale-[0.97]"
-                >
-                  Ajouter un bien
-                </a>
-                <a
-                  href="#principe"
-                  className="rounded-full border border-border bg-bg-elevated px-6 py-3 text-center font-medium text-text transition-[transform,border-color] duration-100 hover:border-faint active:scale-[0.97]"
-                >
+                <MagneticButton href="#">Ajouter un bien</MagneticButton>
+                <MagneticButton href="#principe" variant="ghost">
                   Comment ça marche
-                </a>
+                </MagneticButton>
               </div>
             </Reveal>
             <Reveal delay={0.24}>
@@ -91,17 +70,20 @@ export default function Home() {
           </div>
 
           <Reveal delay={0.1} className="flex justify-center lg:justify-end">
-            <PropertyCardDemo />
+            <HeroVisual />
           </Reveal>
         </section>
 
-        {/* Principe — 3 niveaux */}
-        <section id="principe" className="scroll-mt-24 border-t border-border py-20 lg:py-28">
+        {/* Principe — zig-zag asymétrique (pas de rangée de 3 cartes) */}
+        <section
+          id="principe"
+          className="scroll-mt-24 border-t border-border py-20 lg:py-28"
+        >
           <Reveal>
             <span className="text-sm font-medium uppercase tracking-wide text-brand">
               Le principe
             </span>
-            <h2 className="mt-4 max-w-2xl font-sans text-4xl font-semibold tracking-[-0.02em] text-text">
+            <h2 className="mt-4 max-w-2xl font-sans text-3xl font-semibold tracking-[-0.02em] text-text md:text-4xl">
               L’adresse déverrouille 80 % de la donnée.
             </h2>
             <p className="mt-4 max-w-2xl text-lg leading-relaxed text-muted">
@@ -110,90 +92,68 @@ export default function Home() {
             </p>
           </Reveal>
 
-          <div className="mt-12 grid gap-5 md:grid-cols-3">
+          <div className="mt-14 flex flex-col gap-12 md:gap-16">
             {niveaux.map((niv, i) => (
-              <Reveal key={niv.n} delay={i * 0.08}>
-                <div className="h-full rounded-xl border border-border bg-bg-elevated p-6 shadow-sm">
-                  <div className="flex size-11 items-center justify-center rounded-md bg-bg-alt font-sans text-sm font-bold text-brand">
+              <Reveal key={niv.n} delay={i * 0.05}>
+                <div className="grid items-center gap-4 md:grid-cols-2 md:gap-12">
+                  <div
+                    className={`font-sans text-[4.5rem] font-semibold leading-none tracking-tighter text-brand/20 md:text-[7rem] ${
+                      i % 2 === 1 ? "md:order-2 md:text-right" : ""
+                    }`}
+                  >
                     {niv.n}
                   </div>
-                  <h3 className="mt-5 font-sans text-xl font-semibold tracking-tight text-text">
-                    {niv.titre}
-                  </h3>
-                  <p className="mt-2 leading-relaxed text-muted">{niv.texte}</p>
+                  <div>
+                    <h3 className="font-sans text-2xl font-semibold tracking-tight text-text">
+                      {niv.titre}
+                    </h3>
+                    <p className="mt-3 max-w-md text-lg leading-relaxed text-muted">
+                      {niv.texte}
+                    </p>
+                  </div>
                 </div>
               </Reveal>
             ))}
           </div>
         </section>
 
-        {/* Score */}
-        <section id="score" className="scroll-mt-24 border-t border-border py-20 lg:py-28">
-          <div className="grid gap-12 lg:grid-cols-2 lg:items-center">
+        {/* Score — split asymétrique + démo interactive */}
+        <section
+          id="score"
+          className="scroll-mt-24 border-t border-border py-20 lg:py-28"
+        >
+          <div className="grid gap-12 lg:grid-cols-[0.9fr_1.1fr] lg:items-center">
             <Reveal>
               <span className="text-sm font-medium uppercase tracking-wide text-brand">
                 Le score
               </span>
-              <h2 className="mt-4 font-sans text-4xl font-semibold tracking-[-0.02em] text-text">
+              <h2 className="mt-4 font-sans text-3xl font-semibold tracking-[-0.02em] text-text md:text-4xl">
                 C’est <em>ton</em> score, pas le nôtre.
               </h2>
               <p className="mt-4 text-lg leading-relaxed text-muted">
-                Tu choisis un profil, ou tu règles finement les pondérations —
-                elles se normalisent à 100 %. Et on affiche toujours le détail :
+                Choisis un profil, ou règle finement les pondérations. Le score
+                se recalcule en direct, et on affiche toujours le détail :
                 pourquoi ce bien l’emporte, critère par critère. Jamais de boîte
                 noire.
               </p>
             </Reveal>
 
             <Reveal delay={0.1}>
-              <div className="rounded-xl border border-border bg-bg-elevated p-6 shadow-sm">
-                <div className="text-sm text-faint">Profils préréglés</div>
-                <div className="mt-4 flex flex-wrap gap-2">
-                  {profils.map((p, i) => (
-                    <span
-                      key={p}
-                      className={`rounded-full px-4 py-2 text-sm font-medium ${
-                        i === 3
-                          ? "bg-brand text-white"
-                          : "bg-bg-alt text-text"
-                      }`}
-                    >
-                      {p}
-                    </span>
-                  ))}
-                </div>
-                <div className="mt-6 space-y-3">
-                  {[
-                    { label: "Rendement", val: "35 %", w: "35%" },
-                    { label: "Sécurité", val: "40 %", w: "40%" },
-                    { label: "Potentiel", val: "25 %", w: "25%" },
-                  ].map((c) => (
-                    <div key={c.label}>
-                      <div className="flex justify-between text-sm text-muted">
-                        <span>{c.label}</span>
-                        <span className="font-medium text-text">{c.val}</span>
-                      </div>
-                      <div className="mt-1.5 h-1.5 overflow-hidden rounded-full bg-bg-alt">
-                        <div
-                          className="h-full rounded-full bg-gradient-to-r from-accent to-brand"
-                          style={{ width: c.w }}
-                        />
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
+              <ScoreProfiles />
             </Reveal>
           </div>
         </section>
 
-        {/* Données */}
-        <section id="donnees" className="scroll-mt-24 border-t border-border py-20 lg:py-28">
+        {/* Données — marquee plein cadre */}
+        <section
+          id="donnees"
+          className="scroll-mt-24 border-t border-border py-20 lg:py-28"
+        >
           <Reveal>
             <span className="text-sm font-medium uppercase tracking-wide text-brand">
               Les données
             </span>
-            <h2 className="mt-4 max-w-2xl font-sans text-4xl font-semibold tracking-[-0.02em] text-text">
+            <h2 className="mt-4 max-w-2xl font-sans text-3xl font-semibold tracking-[-0.02em] text-text md:text-4xl">
               De la donnée publique, un calcul transparent.
             </h2>
             <p className="mt-4 max-w-2xl text-lg leading-relaxed text-muted">
@@ -202,34 +162,24 @@ export default function Home() {
               produit par une IA.
             </p>
           </Reveal>
-
-          <div className="mt-10 flex flex-wrap gap-3">
-            {sources.map((s, i) => (
-              <Reveal key={s} delay={i * 0.05}>
-                <span className="rounded-full border border-border bg-bg-elevated px-4 py-2 text-sm text-text">
-                  {s}
-                </span>
-              </Reveal>
-            ))}
+          <div className="mt-12">
+            <SourcesMarquee />
           </div>
         </section>
 
-        {/* CTA final */}
+        {/* CTA final — décentré (titre à gauche, action à droite) */}
         <section className="border-t border-border py-24">
-          <Reveal className="mx-auto max-w-2xl text-center">
-            <h2 className="font-sans text-4xl font-semibold tracking-[-0.02em] text-text sm:text-5xl">
-              Ajoute ton premier bien.
-            </h2>
-            <p className="mt-4 text-lg leading-relaxed text-muted">
-              Colle une adresse, on s’occupe du reste.
-            </p>
-            <div className="mt-8 flex justify-center">
-              <a
-                href="#"
-                className="rounded-full bg-brand px-8 py-3.5 font-medium text-white transition-[transform,background-color] duration-100 hover:bg-brand-hover active:scale-[0.97]"
-              >
-                Commencer
-              </a>
+          <Reveal>
+            <div className="grid gap-8 md:grid-cols-[1.4fr_0.6fr] md:items-end">
+              <h2 className="font-sans text-4xl font-semibold tracking-[-0.02em] text-text md:text-5xl">
+                Ajoute ton premier bien.
+              </h2>
+              <div className="md:justify-self-end md:text-right">
+                <p className="mb-4 text-muted">Colle une adresse, on s’occupe du reste.</p>
+                <MagneticButton href="#" className="px-8 py-3.5">
+                  Commencer
+                </MagneticButton>
+              </div>
             </div>
           </Reveal>
         </section>

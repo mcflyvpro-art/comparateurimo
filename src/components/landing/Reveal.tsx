@@ -4,8 +4,8 @@ import { motion, useReducedMotion } from "motion/react";
 import type { ReactNode } from "react";
 
 /**
- * Révèle son contenu au scroll : fondu + montée, ressort critiquement amorti
- * (apple-design : damping 1.0 / bounce 0). En reduced-motion, simple fondu.
+ * Révèle son contenu au scroll : fondu + montée sur ressort premium
+ * (stiffness 100 / damping 20). En reduced-motion, simple fondu.
  */
 export function Reveal({
   children,
@@ -21,13 +21,13 @@ export function Reveal({
   return (
     <motion.div
       className={className}
-      initial={reduce ? { opacity: 0 } : { opacity: 0, y: 22 }}
+      initial={reduce ? { opacity: 0 } : { opacity: 0, y: 24 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-80px" }}
       transition={
         reduce
           ? { duration: 0.3 }
-          : { type: "spring", bounce: 0, duration: 0.6, delay }
+          : { type: "spring", stiffness: 100, damping: 20, delay }
       }
     >
       {children}
