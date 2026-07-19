@@ -22,6 +22,18 @@
 
 ## Sessions
 
+### Session 4 — 2026-07-19 — Landing Estio (/apple-design)
+**Étape : 🔨 impl (frontend)**
+
+- Landing complète appliquant `/apple-design` sur les tokens Estio : nav translucide (`backdrop-blur`), hero, section « 3 niveaux », section score, sources open data, CTA, footer.
+- Composants : `src/components/landing/` — `SiteNav`, `Reveal` (spring bounce 0 + reduced-motion), `PropertyCardDemo` (matériau + barre animée au scroll).
+- Feedback press sur boutons (`active:scale`), typo optique (tracking négatif titres). Build + lint verts.
+
+**Prochaine session**
+- Formulaire d'ajout de bien (N1) + géocodage BAN.
+
+---
+
 ### Session 3 — 2026-07-19 — Identité de marque & design system Estio
 **Étape : 🔨 impl (design system)**
 
