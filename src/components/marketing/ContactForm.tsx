@@ -21,7 +21,7 @@ export function ContactForm() {
           Message bien reçu.
         </p>
         <p className="mt-2 text-muted">
-          Démo : l'envoi n'est pas encore connecté. On te répondra dès que le
+          Démo : l’envoi n’est pas encore connecté. On te répondra dès que le
           service sera en ligne.
         </p>
       </div>

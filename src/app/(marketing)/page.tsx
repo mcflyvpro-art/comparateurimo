@@ -9,19 +9,19 @@ const niveaux = [
     n: "N1",
     titre: "Le bien",
     texte:
-      "Tu saisis l'essentiel : adresse, prix, surface, DPE. Huit champs, pas une page entière à recopier.",
+      "Tu saisis l’essentiel : adresse, prix, surface, DPE. Huit champs, pas une page entière à recopier.",
   },
   {
     n: "N2",
     titre: "Le marché",
     texte:
-      "Déduit de l'adresse : prix/m² notarié (DVF), loyer estimé, tension locative, risques naturels et techno.",
+      "Déduit de l’adresse : prix/m² notarié (DVF), loyer estimé, tension locative, risques naturels et techno.",
   },
   {
     n: "N3",
     titre: "Les scénarios",
     texte:
-      "Tu règles l'apport, l'emprunt, la stratégie et l'horizon. Le moteur calcule rendement, cash-flow et TRI.",
+      "Tu règles l’apport, l’emprunt, la stratégie et l’horizon. Le moteur calcule rendement, cash-flow et TRI.",
   },
 ];
 
@@ -33,7 +33,7 @@ export default function Home() {
         <div>
           <Reveal>
             <span className="text-sm font-medium uppercase tracking-wide text-brand">
-              Comparateur immobilier d'investissement
+              Comparateur immobilier d’investissement
             </span>
           </Reveal>
           <Reveal delay={0.06}>
@@ -46,7 +46,7 @@ export default function Home() {
           <Reveal delay={0.12}>
             <p className="mt-6 max-w-[52ch] text-lg leading-relaxed text-muted">
               Estio met tes annonces côte à côte, du point de vue de
-              l'investissement. Une adresse suffit : elle déverrouille les
+              l’investissement. Une adresse suffit : elle déverrouille les
               données de marché, et le score reflète <em>tes</em> priorités.
             </p>
           </Reveal>
@@ -77,10 +77,10 @@ export default function Home() {
             Le principe
           </span>
           <h2 className="mt-4 max-w-2xl font-sans text-3xl font-semibold tracking-[-0.02em] text-text md:text-4xl">
-            L'adresse déverrouille 80 % de la donnée.
+            L’adresse déverrouille 80 % de la donnée.
           </h2>
           <p className="mt-4 max-w-2xl text-lg leading-relaxed text-muted">
-            Le formulaire est court parce que l'essentiel apparaît en résultat,
+            Le formulaire est court parce que l’essentiel apparaît en résultat,
             pas en saisie. Trois niveaux se superposent.
           </p>
         </Reveal>
@@ -118,12 +118,12 @@ export default function Home() {
               Le score
             </span>
             <h2 className="mt-4 font-sans text-3xl font-semibold tracking-[-0.02em] text-text md:text-4xl">
-              C'est <em>ton</em> score, pas le nôtre.
+              C’est <em>ton</em> score, pas le nôtre.
             </h2>
             <p className="mt-4 text-lg leading-relaxed text-muted">
               Choisis un profil, ou règle finement les pondérations. Le score se
               recalcule en direct, et on affiche toujours le détail : pourquoi ce
-              bien l'emporte, critère par critère. Jamais de boîte noire.
+              bien l’emporte, critère par critère. Jamais de boîte noire.
             </p>
           </Reveal>
           <Reveal delay={0.1}>
@@ -160,7 +160,7 @@ export default function Home() {
               Ajoute ton premier bien.
             </h2>
             <div className="md:justify-self-end md:text-right">
-              <p className="mb-4 text-muted">Colle une adresse, on s'occupe du reste.</p>
+              <p className="mb-4 text-muted">Colle une adresse, on s’occupe du reste.</p>
               <MagneticButton href="/connexion" className="px-8 py-3.5">
                 Commencer
               </MagneticButton>

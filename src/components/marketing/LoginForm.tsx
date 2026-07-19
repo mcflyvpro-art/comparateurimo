@@ -45,7 +45,7 @@ export function LoginForm() {
           role="status"
           className="rounded-lg border border-border bg-bg-alt px-4 py-3 text-sm text-muted"
         >
-          La connexion n'est pas encore disponible — elle arrive bientôt.
+          La connexion n’est pas encore disponible — elle arrive bientôt.
         </p>
       ) : null}
 
