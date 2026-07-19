@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Reveal } from "@/components/landing/Reveal";
 import { Hero } from "@/components/landing/Hero";
+import { PinnedNiveaux } from "@/components/landing/PinnedNiveaux";
 import { ScoreProfiles } from "@/components/landing/ScoreProfiles";
 import { SourcesMarquee } from "@/components/landing/SourcesMarquee";
 import { MagneticButton } from "@/components/landing/MagneticButton";
@@ -11,75 +12,17 @@ export const metadata: Metadata = {
     "Compare tes biens immobiliers côte à côte, du point de vue de l’investissement. Une adresse déverrouille les données de marché, et le score reflète tes priorités.",
 };
 
-const niveaux = [
-  {
-    n: "N1",
-    titre: "Le bien",
-    texte:
-      "Tu saisis l’essentiel : adresse, prix, surface, DPE. Huit champs, pas une page entière à recopier.",
-  },
-  {
-    n: "N2",
-    titre: "Le marché",
-    texte:
-      "Déduit de l’adresse : prix/m² notarié (DVF), loyer estimé, tension locative, risques naturels et techno.",
-  },
-  {
-    n: "N3",
-    titre: "Les scénarios",
-    texte:
-      "Tu règles l’apport, l’emprunt, la stratégie et l’horizon. Le moteur calcule rendement, cash-flow et TRI.",
-  },
-];
-
 export default function Home() {
   return (
     <>
       <Hero />
 
-      {/* Sous le hero : fond clair (le header s'adapte : logo/texte sombres) */}
+      {/* Principe — section « pin 600vh » dark (effet signature) */}
+      <PinnedNiveaux />
+
+      {/* Sous le pin : fond clair (le header s'adapte : logo/texte sombres) */}
       <div className="section-light" data-header-theme="light">
       <main className="mx-auto max-w-6xl px-6">
-      {/* Principe — zig-zag */}
-      <section id="principe" className="scroll-mt-24 py-20 lg:py-28">
-        <Reveal>
-          <span className="text-sm font-medium uppercase tracking-wide text-brand">
-            Le principe
-          </span>
-          <h2 className="mt-4 max-w-2xl font-sans text-3xl font-semibold tracking-[-0.02em] text-text md:text-4xl">
-            L’adresse déverrouille 80 % de la donnée.
-          </h2>
-          <p className="mt-4 max-w-2xl text-lg leading-relaxed text-muted">
-            Le formulaire est court parce que l’essentiel apparaît en résultat,
-            pas en saisie. Trois niveaux se superposent.
-          </p>
-        </Reveal>
-
-        <div className="mt-14 flex flex-col gap-12 md:gap-16">
-          {niveaux.map((niv, i) => (
-            <Reveal key={niv.n} delay={i * 0.05}>
-              <div className="grid items-center gap-4 md:grid-cols-2 md:gap-12">
-                <div
-                  className={`font-sans text-[4.5rem] font-semibold leading-none tracking-tighter text-brand/20 md:text-[7rem] ${
-                    i % 2 === 1 ? "md:order-2 md:text-right" : ""
-                  }`}
-                >
-                  {niv.n}
-                </div>
-                <div>
-                  <h3 className="font-sans text-2xl font-semibold tracking-tight text-text">
-                    {niv.titre}
-                  </h3>
-                  <p className="mt-3 max-w-md text-lg leading-relaxed text-muted">
-                    {niv.texte}
-                  </p>
-                </div>
-              </div>
-            </Reveal>
-          ))}
-        </div>
-      </section>
-
       {/* Score */}
       <section id="score" className="scroll-mt-24 border-t border-border py-20 lg:py-28">
         <div className="grid gap-12 lg:grid-cols-[0.9fr_1.1fr] lg:items-center">
