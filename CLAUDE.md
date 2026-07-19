@@ -58,7 +58,7 @@ Toute la logique de l'app découle de cette séparation. Ne jamais la mélanger.
 - Fond crème chaud (jamais blanc pur clinique), couleur de marque **terre cuite / argile**, pastels doux (sauge/sable/rose poudré/bleu poudré). Scoring en pastels, jamais rouge/vert saturés feu de circulation.
 - Typo : une seule grotesque humaniste ronde (pistes : General Sans, Cabinet Grotesk / Fontshare). Poids affirmé pour titres et gros chiffres.
 - Coins arrondis généreux, bordures fines > ombres lourdes, icônes à trait rond.
-- Nom « Arpent » sous réserve (conflit potentiel Arpent Capital — recherche INPI classes 36/42 non faite). Ne pas engager juridiquement/financièrement le nom sans cette vérification.
+- Nom **« Estio »** (`estio.immo`) — retenu en session 3, remplace « Arpent » (conflit potentiel Arpent Capital). Vérif INPI classes 36/42 non faite : ne pas engager juridiquement/financièrement le nom sans cette vérification. Charte complète : `docs/brand/estio-brandkit.md`.
 
 ## Hors-scope MVP
 

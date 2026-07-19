@@ -22,6 +22,39 @@
 
 ## Sessions
 
+### Session 3 — 2026-07-19 — Identité de marque & design system Estio
+**Étape : 🔨 impl (design system)**
+
+- Nom retenu : **Estio** (`estio.immo`), remplace Arpent.
+- Direction visuelle : `/apple-design` + couche chaude.
+- Livré : charte (`docs/brand/estio-brandkit.md`), tokens (`src/design/tokens.css` + `tokens.ts`), branchement Tailwind (`globals.css`), logo placeholder, 4 maquettes, police General Sans + `motion`.
+- Spec : `docs/superpowers/specs/2026-07-19-estio-brandkit-design.md`. Plan : `docs/superpowers/plans/2026-07-19-estio-brandkit.md`.
+
+**Prochaine session**
+- Landing page Estio avec `/apple-design`.
+
+---
+
+### Session 2 — 2026-07-19 — Scaffold app + Supabase
+**Étape : 🔨 impl (mise en place infra)**
+
+- Scaffold **Next.js 16** (App Router, TypeScript, Tailwind 4, `src/`, ESLint).
+- Câblage **Supabase SSR** (`@supabase/ssr` + `supabase-js`) :
+  - `src/lib/supabase/client.ts` (navigateur), `server.ts` (serveur/cookies), `middleware.ts` (refresh session).
+  - `src/proxy.ts` — convention Next 16 (remplace `middleware.ts`).
+- `.env.local` (clés Supabase, gitignored) + `.env.example`.
+- Route `/api/health` de test connexion + landing Arpent (crème/terre cuite).
+- Build OK, commit + push sur `origin/main` (`02661af`).
+
+**À faire côté utilisateur**
+- Import Vercel : preset **Next.js**, ajouter les 3 variables d'env, déployer.
+- **Régénérer les clés Supabase** (exposées dans le chat).
+
+**Prochaine session**
+- Schéma BDD Supabase (`properties`, `market_cache`, `comparisons`, `credits`) + RLS.
+
+---
+
 ### Session 1 — 2026-07-19 — Cadrage & documentation initiale
 **Étape : 📋 specs**
 
