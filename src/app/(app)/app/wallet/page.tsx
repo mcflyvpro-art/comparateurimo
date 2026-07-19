@@ -36,7 +36,7 @@ export default function Wallet() {
       </div>
 
       <p className="mt-8 text-sm text-muted">
-        Aperçu — le wallet se remplira dès que l&rsquo;analyse de biens sera active.
+        Aperçu — le wallet se remplira dès que l’analyse de biens sera active.
       </p>
     </main>
   );
