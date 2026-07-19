@@ -51,8 +51,11 @@ export function MobileMenu({
                 key={l.href}
                 href={l.href}
                 onClick={onClose}
+                aria-current={pathname === l.href ? "page" : undefined}
                 className={`font-sans text-2xl tracking-tight ${
-                  pathname === l.href ? "text-brand" : "text-text"
+                  pathname === l.href
+                    ? "font-medium text-brand underline decoration-brand underline-offset-8"
+                    : "text-text"
                 }`}
               >
                 {l.label}
