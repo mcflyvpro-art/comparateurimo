@@ -11,18 +11,14 @@ export function PageHeader({
   intro?: string;
 }) {
   return (
-    <div className="mx-auto max-w-6xl px-6 pt-16 pb-10 lg:pt-24">
+    <div className="mx-auto max-w-[106rem] px-[6vw] pb-14 pt-36 lg:pt-44">
       <Reveal>
-        <span className="text-sm font-medium uppercase tracking-wide text-brand">
+        <span className="text-sm font-medium uppercase tracking-[0.2em] text-brand">
           {eyebrow}
         </span>
-        <h1 className="mt-4 max-w-3xl font-sans text-4xl font-semibold tracking-[-0.03em] text-text md:text-5xl">
-          {title}
-        </h1>
+        <h1 className="h-lg mt-6 max-w-4xl text-text">{title}</h1>
         {intro ? (
-          <p className="mt-5 max-w-2xl text-lg leading-relaxed text-muted">
-            {intro}
-          </p>
+          <p className="p-lead mt-8 max-w-2xl text-muted">{intro}</p>
         ) : null}
       </Reveal>
     </div>

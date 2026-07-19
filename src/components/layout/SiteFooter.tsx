@@ -5,7 +5,7 @@ import { footerGroups } from "./nav-links";
 export function SiteFooter() {
   return (
     <footer data-header-theme="dark" className="border-t border-border">
-      <div className="mx-auto grid max-w-6xl gap-10 px-6 py-14 sm:grid-cols-2 lg:grid-cols-4">
+      <div className="mx-auto grid max-w-6xl gap-10 px-[6vw] py-16 sm:grid-cols-2 lg:grid-cols-4">
         <div>
           <Link href="/" aria-label="Estio — accueil" className="inline-block">
             {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -38,7 +38,7 @@ export function SiteFooter() {
       </div>
 
       <div className="border-t border-border">
-        <div className="mx-auto max-w-6xl px-6 py-6 text-sm text-faint">
+        <div className="mx-auto max-w-[106rem] px-[6vw] py-6 text-sm text-faint">
           © 2026 Estio
         </div>
       </div>
