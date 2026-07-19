@@ -249,24 +249,19 @@ Vue **côte à côte** (2 biens ou plus, ajout dynamique), avec code couleur rel
 
 ## 15. Identité de marque (Brand Kit v0.1)
 
-### 15.1 Nom : "Arpent"
+### 15.1 Nom : "Estio"
 
-**Positionnement** : mesure agraire ancienne — le mot évoque la mesure précise d'un terrain, en écho direct au rôle de l'outil (mesurer objectivement la valeur d'un bien).
+**Positionnement** : nom inventé, court, dérivé d'« estimation » — le cœur du produit (estimer objectivement la valeur d'un bien). Sonorité fluide type Twilio/Vantio, crédible et mémorable, unique (SEO de marque).
 
-**⚠️ Point de vigilance identifié** : il existe une société parisienne active depuis 2015, **Arpent Capital / Arpent Management France**, fonds d'investissement et de gestion immobilière (bureaux, ~400 M€ d'actifs sous gestion, domaine `arpentcapital.com`). Même secteur large (investissement immobilier), segment différent (bureaux institutionnels vs résidentiel pour investisseurs particuliers).
+**Domaine** : `estio.immo` (libre, ~15 €/an). Le TLD `.immo` fait partie de la lecture (`estio.immo` se lit d'un bloc) et signale le secteur.
 
-- **Décision retenue** : conserver *Arpent*, mais :
-  1. Ne pas utiliser `arpent.fr` / `arpent.com` bruts (récupération de trafic/confusion).
-  2. Faire réaliser une **recherche d'antériorité INPI** (classes 36 — affaires immobilières, et 42 — logiciels/SaaS) avant tout dépôt de marque. Non fait à ce stade — action à mener avant tout engagement financier ou juridique sur le nom.
-- **Alternative vérifiée** : *Arpenteur* — aucun conflit sectoriel trouvé (le nom est déjà pris par une marque de vêtements workwear lyonnaise, secteur non concurrent), mais domaine `.fr` indisponible.
+- **À faire avant tout dépôt de marque** : **recherche d'antériorité INPI** (classes 36 — affaires immobilières, et 42 — logiciels/SaaS). Non fait à ce stade — action à mener avant tout engagement financier ou juridique sur le nom.
 
 ### 15.2 Nom de domaine & SEO
 
-- **Recommandé** : `arpent.io` ou `monarpent.fr` — s'éloigne du domaine d'Arpent Capital, garde le nom intact.
-- **Alternatives** : `arpent-immo.fr`, `arpent.app`.
-- **Stratégie TLD** : `.fr` en priorité (confiance locale), `.com` en redirection dès que possible (crédibilité pour une levée de fonds ultérieure).
-- **SEO** : "arpent" étant un mot du dictionnaire, les recherches génériques resteront dominées par les sites de définition — la visibilité se construira sur les requêtes de marque et sur du contenu (glossaire des tooltips, guides).
-- **Action non réalisée** : vérification WHOIS temps réel de disponibilité exacte des domaines — à faire via l'outil Afnic Whois (.fr) ou un registrar avant réservation.
+- **Retenu** : `estio.immo`.
+- **À sécuriser en complément** (redirections/marque) : `estio.app`, éventuellement un `.com` si un jour disponible.
+- **SEO** : « estio » étant un nom inventé, la marque rank #1 sur son propre nom sans concurrence ; la visibilité générique (« comparateur immo ») se construira sur le contenu (glossaire des tooltips, guides), pas sur le nom.
 
 ### 15.3 Direction visuelle : "premium accessible", pas "terminal Bloomberg"
 
@@ -274,7 +269,7 @@ Correction par rapport à la première hypothèse (banque privée / sobriété s
 
 **Palette de couleurs**
 - Fond : blanc cassé / crème chaud (pas de blanc pur clinique, pas de fond sombre façon terminal).
-- Couleur de marque : **terre cuite / argile chaude** — écho direct au nom (la terre, le terrain arpenté), distinctive par rapport aux codes bleu/vert habituels de la fintech et de la proptech.
+- Couleur de marque : **terre cuite / argile chaude** — chaleureuse et ancrée (la terre, le terrain), distinctive par rapport aux codes bleu/vert habituels de la fintech et de la proptech.
 - Palette pastel secondaire (badges, scoring, catégories) : sauge doux (positif), sable/beige (neutre), rose poudré (attention), bleu poudré (informatif) — tons doux et désaturés, jamais criards, cohérents avec l'esprit "friendly" demandé.
 - Échelle du scoring : mêmes tons pastel, jamais les rouge/vert saturés façon feu de circulation.
 
@@ -295,8 +290,8 @@ Correction par rapport à la première hypothèse (banque privée / sobriété s
 - Question ouverte : tutoiement ou vouvoiement ? Le "vouvoiement chaleureux" est probablement le bon compromis pour une cible premium tout en restant accessible — à valider.
 
 ### 15.4 Prochaines étapes de la marque
-- [ ] Lancer la recherche d'antériorité INPI sur "Arpent" (classes 36 et 42).
-- [ ] Vérifier la disponibilité réelle des domaines candidats (Afnic Whois).
+- [ ] Lancer la recherche d'antériorité INPI sur "Estio" (classes 36 et 42).
+- [x] Nom retenu et domaine vérifié : Estio / `estio.immo`.
 - [ ] Choisir tutoiement vs vouvoiement.
 - [ ] Produire un premier mockup visuel (maquette HTML/React) pour valider la direction avant de la figer dans le `CLAUDE.md`.
 

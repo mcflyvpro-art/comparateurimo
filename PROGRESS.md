@@ -25,7 +25,7 @@
 ### Session 3 — 2026-07-19 — Identité de marque & design system Estio
 **Étape : 🔨 impl (design system)**
 
-- Nom retenu : **Estio** (`estio.immo`), remplace Arpent.
+- Nom retenu : **Estio** (`estio.immo`).
 - Direction visuelle : `/apple-design` + couche chaude.
 - Livré : charte (`docs/brand/estio-brandkit.md`), tokens (`src/design/tokens.css` + `tokens.ts`), branchement Tailwind (`globals.css`), logo placeholder, 4 maquettes, police General Sans + `motion`.
 - Spec : `docs/superpowers/specs/2026-07-19-estio-brandkit-design.md`. Plan : `docs/superpowers/plans/2026-07-19-estio-brandkit.md`.
@@ -43,7 +43,7 @@
   - `src/lib/supabase/client.ts` (navigateur), `server.ts` (serveur/cookies), `middleware.ts` (refresh session).
   - `src/proxy.ts` — convention Next 16 (remplace `middleware.ts`).
 - `.env.local` (clés Supabase, gitignored) + `.env.example`.
-- Route `/api/health` de test connexion + landing Arpent (crème/terre cuite).
+- Route `/api/health` de test connexion + landing (crème/terre cuite).
 - Build OK, commit + push sur `origin/main` (`02661af`).
 
 **À faire côté utilisateur**

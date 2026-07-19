@@ -1,6 +1,6 @@
 # MVP.md — Features
 
-> Périmètre de la première version livrable d'**Arpent**. Dérivé de `comparateur-immo-specs.md`.
+> Périmètre de la première version livrable d'**Estio**. Dérivé de `comparateur-immo-specs.md`.
 > Statut de chaque feature : ⬜ à faire · 🟨 en cours · ✅ fait.
 
 ## Objectif MVP

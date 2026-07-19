@@ -6,7 +6,7 @@ export default function Home() {
       </span>
 
       <h1 className="max-w-2xl text-5xl font-semibold tracking-tight text-[#2B2320] sm:text-6xl">
-        Arpent
+        Estio
       </h1>
 
       <p className="max-w-xl text-lg leading-8 text-[#6B615A]">
