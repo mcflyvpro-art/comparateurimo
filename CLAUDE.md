@@ -64,6 +64,35 @@ Toute la logique de l'app découle de cette séparation. Ne jamais la mélanger.
 
 Fetch automatique des liens à grande échelle · extension navigateur · couverture exhaustive des plateformes · prédictions de marché « garanties ».
 
-## Workflow de développement (superpowers)
+## Méthodologie de travail — NON NÉGOCIABLE
 
-Le projet suit le flow **specs → plan → implementation**. Chaque session et chaque étape sont journalisées dans `PROGRESS.md`. Avant toute nouvelle feature : brainstorming, puis plan écrit, puis implémentation TDD.
+Ces 5 règles priment sur tout. Elles sont détaillées dans `PROGRESS.md`.
+
+1. **Chaque grosse feature (= chaque phase) débute TOUJOURS par un gros brainstorm** avec le skill `superpowers:brainstorming`. Pas de code avant brainstorm.
+2. **Le brainstorm produit une immense spec, puis on la DÉCOUPE** en plein de petits plans : petite feature par petite feature, petite spec, petit plan. Petit à petit.
+3. **L'UTILISATEUR EST LA SOURCE DE VÉRITÉ.** Il est le **SEUL** à cocher les cases `- [ ]` du `PROGRESS.md` et du `MVP.md`. Claude ne coche **JAMAIS** lui-même.
+4. **La mémoire retient chaque session.** À chaque nouvelle session, Claude reprend au **dernier point non coché**.
+5. **On avance 1 par 1.** Séparer strictement les features. L'utilisateur valide petit à petit **avant** d'avancer à la suivante.
+
+### STOP — demander avant de :
+- passer à la feature/phase suivante sans validation explicite de l'utilisateur ;
+- cocher une case (jamais — c'est l'utilisateur).
+
+### Flow d'une phase
+`brainstorm (superpowers) → immense spec → découpage en petits plans → implémentation TDD 1 par 1 → validation utilisateur → coche (par l'utilisateur)`
+
+Chaque phase et chaque session sont journalisées dans `PROGRESS.md`. Le brainstorm de la **phase actuelle** alimente en détail la section « Phase actuelle » du `PROGRESS.md`.
+
+## Roadmap — 7 phases
+
+Détail et cases à cocher dans `PROGRESS.md`. Grandes lignes :
+
+1. **Design/UI** — landing propre (quelques placeholders OK) + **toute l'arborescence** du site (toutes les pages créées).
+2. **Le produit — le comparateur** : import annonce (capture / copier-coller / formulaire, avec fallback + pré-remplissage) → extraction via **API Grok** (multimodal, gratuit) → affichage analytique du bien → stockage dans le wallet visible → ajout d'un 2e bien → comparaison. Crédits (1/analyse, 1/comparaison), anti-contournement, floutage freemium.
+3. **Le wallet** comme feature à part entière + tarifs.
+4. **Pages header/footer** : légales, À propos, pages de texte obligatoires.
+5. **Comptes & sessions** utilisateur, connecté au wallet — connexion Google + email/mot de passe.
+6. **Stripe** : tarifs et abonnements.
+7. **Cybersécurité** : code review détaillée, polish, attaques via le repo **Strix**.
+
+> Le LLM d'extraction (règle d'archi n°1) = **API Grok** multimodal (gratuit). Il n'extrait que du N1, jamais un chiffre financier.

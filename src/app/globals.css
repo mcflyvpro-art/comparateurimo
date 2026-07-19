@@ -1,7 +1,7 @@
 @import "tailwindcss";
 @import "../design/tokens.css";
 
-/* Expose les tokens sémantiques comme utilitaires Tailwind 4 (bg-brand, text-muted, rounded-lg, etc.) */
+/* Expose les tokens sémantiques comme utilitaires Tailwind 4 (bg-bg, text-muted, rounded-lg…) */
 @theme inline {
   --color-bg: var(--bg);
   --color-bg-elevated: var(--bg-elevated);
@@ -16,33 +16,86 @@
   --color-score-mid: var(--score-mid);
   --color-score-low: var(--score-low);
   --color-border: var(--border);
+  --color-border-strong: var(--border-strong);
 
-  /* valeurs littérales : éviter l'auto-référence --radius-sm: var(--radius-sm) */
   --radius-sm: 12px;
   --radius-md: 16px;
   --radius-lg: 20px;
   --radius-xl: 24px;
 
-  --font-sans: "General Sans", system-ui, -apple-system, sans-serif;
+  --font-sans: var(--font-grotesk), "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+html {
+  background: var(--bg);
 }
 
 body {
   background: var(--bg);
   color: var(--text);
-  /* Corps en system-ui pour la densité ; titres/chiffres en General Sans via utilitaires font-sans */
-  font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+  font-family: var(--font-grotesk), "Helvetica Neue", Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
 }
 
-/* Accessibilité clavier : anneau de focus visible et cohérent (argile) */
+/* =========================================================================
+   Échelle typographique « géante » (réf. speedy.io) — fluide en clamp().
+   line-height 1, tracking serré. Utilisée sur les titres et gros chiffres.
+   ========================================================================= */
+.h-display {
+  font-weight: 500;
+  font-size: clamp(2.75rem, 8vw, 8.375rem); /* → 134px */
+  line-height: 0.98;
+  letter-spacing: -0.03em;
+}
+.h-1 {
+  font-weight: 500;
+  font-size: clamp(2rem, 4.8vw, 4.75rem); /* → 76px */
+  line-height: 1;
+  letter-spacing: -0.025em;
+}
+.h-2 {
+  font-weight: 500;
+  font-size: clamp(1.7rem, 3.9vw, 4rem); /* → 64px */
+  line-height: 1.02;
+  letter-spacing: -0.02em;
+}
+.h-3 {
+  font-weight: 500;
+  font-size: clamp(1.4rem, 2.2vw, 2.25rem); /* → 36px */
+  line-height: 1.05;
+  letter-spacing: -0.015em;
+}
+.p-lead {
+  font-size: clamp(1.1rem, 1.35vw, 1.5rem); /* → 24px */
+  line-height: 1.25;
+}
+
+/* Titre « détouré » (outline) — signature Büro : -webkit-text-stroke. */
+.text-stroke {
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+  -webkit-text-stroke: 1px var(--text);
+}
+
+/* =========================================================================
+   Accessibilité clavier
+   ========================================================================= */
 :focus-visible {
   outline: 2px solid var(--brand);
-  outline-offset: 2px;
+  outline-offset: 3px;
   border-radius: 4px;
 }
 
-/* Marquee infini (bande de sources) — transform only, guardé reduced-motion */
+::selection {
+  background: var(--lilas);
+  color: var(--noir);
+}
+
+/* =========================================================================
+   Marquee infini (bande de sources) — transform only, guardé reduced-motion
+   ========================================================================= */
 @keyframes estio-marquee {
   from {
     transform: translateX(0);
@@ -54,8 +107,48 @@ body {
 .animate-marquee {
   animation: estio-marquee 30s linear infinite;
 }
+
+/* Descente d'invite de scroll (indicateur du hero) */
+@keyframes estio-scroll-dot {
+  0% {
+    transform: translateY(0);
+    opacity: 0;
+  }
+  40% {
+    opacity: 1;
+  }
+  80% {
+    transform: translateY(8px);
+    opacity: 0;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+.animate-scroll-dot {
+  animation: estio-scroll-dot 1.8s var(--ease-expo) infinite;
+}
+
+/* Blob glossy du hero — masse sombre qui respire/tourne lentement en fond */
+@keyframes estio-blob {
+  0% {
+    transform: translate3d(0, 0, 0) rotate(0deg) scale(1);
+  }
+  50% {
+    transform: translate3d(2%, -3%, 0) rotate(8deg) scale(1.08);
+  }
+  100% {
+    transform: translate3d(0, 0, 0) rotate(0deg) scale(1);
+  }
+}
+.animate-blob {
+  animation: estio-blob 18s var(--ease-expo) infinite;
+}
+
 @media (prefers-reduced-motion: reduce) {
-  .animate-marquee {
+  .animate-marquee,
+  .animate-scroll-dot,
+  .animate-blob {
     animation: none;
   }
 }

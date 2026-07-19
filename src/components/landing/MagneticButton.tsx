@@ -45,8 +45,8 @@ export function MagneticButton({
 
   const skin =
     variant === "primary"
-      ? "bg-brand text-white hover:bg-brand-hover"
-      : "border border-border bg-bg-elevated text-text hover:border-faint";
+      ? "bg-text text-bg hover:bg-white"
+      : "border border-border-strong text-text hover:border-text";
 
   return (
     <motion.a

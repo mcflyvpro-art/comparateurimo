@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { Reveal } from "@/components/landing/Reveal";
-import { HeroVisual } from "@/components/landing/HeroVisual";
+import { Hero } from "@/components/landing/Hero";
 import { ScoreProfiles } from "@/components/landing/ScoreProfiles";
 import { SourcesMarquee } from "@/components/landing/SourcesMarquee";
 import { MagneticButton } from "@/components/landing/MagneticButton";
@@ -34,51 +34,12 @@ const niveaux = [
 
 export default function Home() {
   return (
-    <main className="mx-auto max-w-6xl px-6">
-      {/* Hero */}
-      <section className="grid items-center gap-14 py-20 lg:grid-cols-[1.15fr_0.85fr] lg:py-28">
-        <div>
-          <Reveal>
-            <span className="text-sm font-medium uppercase tracking-wide text-brand">
-              Comparateur immobilier d’investissement
-            </span>
-          </Reveal>
-          <Reveal delay={0.06}>
-            <h1 className="mt-5 font-sans text-4xl font-semibold leading-[1.03] tracking-[-0.03em] text-text md:text-6xl">
-              Compare tes biens.
-              <br />
-              Laisse les chiffres trancher.
-            </h1>
-          </Reveal>
-          <Reveal delay={0.12}>
-            <p className="mt-6 max-w-[52ch] text-lg leading-relaxed text-muted">
-              Estio met tes annonces côte à côte, du point de vue de
-              l’investissement. Une adresse suffit : elle déverrouille les
-              données de marché, et le score reflète <em>tes</em> priorités.
-            </p>
-          </Reveal>
-          <Reveal delay={0.18}>
-            <div className="mt-9 flex flex-col gap-3 sm:flex-row">
-              <MagneticButton href="/connexion">Ajouter un bien</MagneticButton>
-              <MagneticButton href="/comment-ca-marche" variant="ghost">
-                Comment ça marche
-              </MagneticButton>
-            </div>
-          </Reveal>
-          <Reveal delay={0.24}>
-            <p className="mt-8 text-sm text-faint">
-              Données de marché officielles · BAN · DVF · INSEE · Géorisques
-            </p>
-          </Reveal>
-        </div>
+    <>
+      <Hero />
 
-        <Reveal delay={0.1} className="flex justify-center lg:justify-end">
-          <HeroVisual />
-        </Reveal>
-      </section>
-
+      <main className="mx-auto max-w-6xl px-6">
       {/* Principe — zig-zag */}
-      <section id="principe" className="scroll-mt-24 border-t border-border py-20 lg:py-28">
+      <section id="principe" className="scroll-mt-24 py-20 lg:py-28">
         <Reveal>
           <span className="text-sm font-medium uppercase tracking-wide text-brand">
             Le principe
@@ -175,6 +136,7 @@ export default function Home() {
           </div>
         </Reveal>
       </section>
-    </main>
+      </main>
+    </>
   );
 }

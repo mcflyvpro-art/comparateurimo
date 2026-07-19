@@ -1,50 +1,51 @@
-/* Estio — design tokens (CSS).
-   Source de vérité : docs/brand/estio-brandkit.md
+/* Estio — design tokens (CSS). REFONTE v0.2 « dark grotesk » (réf. speedy.io / Büro).
    Deux couches : primitives (couleurs nommées) → sémantiques (rôles).
-   Le dark mode se fera plus tard en ne redéfinissant QUE les sémantiques. */
+   Le fond n'est jamais blanc : noir profond + violet nuit. Titres géants, typo grotesque. */
 
 :root {
   /* ---- Primitives ---- */
-  --craie: #fbf7f0;
-  --sable: #f3ede3;
-  --sable-bord: #ede4d6;
-  --encre: #2b2320;
-  --encre-douce: #6b615a;
-  --encre-estompee: #75695d;
-  --argile: #c86b4a;
-  --argile-foncee: #b45c3d;
-  --ambre: #e0a06a;
-  --sauge: #7fa98c;
-  --sauge-bg: #e7f0e9;
-  --sauge-texte: #3b7a57;
-  --bleu-poudre: #9db4c4;
-  --bleu-poudre-bg: #e6edf1;
-  --rose-poudre: #d8a7a0;
-  --rose-poudre-bg: #f0d9d4;
+  --noir: #0a0a0b;           /* fond principal */
+  --noir-eleve: #141317;     /* surface légèrement remontée */
+  --violet-nuit: #221f30;    /* cartes / sections alternées */
+  --violet-nuit-2: #262432;  /* surface la plus haute */
+  --ardoise: #353536;        /* bordures fortes, séparateurs */
+  --violet-gris: #545164;    /* accent sourd, éléments secondaires */
+
+  --gris-clair: #f4f4f4;     /* texte principal */
+  --gris: #c1c1c1;           /* texte secondaire */
+  --gris-moyen: #9f9ea0;     /* texte atténué */
+  --gris-sombre: #79797a;    /* texte faible / légendes */
+  --gris-fonce: #525252;     /* texte très faible / désactivé */
   --blanc: #ffffff;
 
+  --lilas: #a79fe0;          /* accent de marque (liens, labels, soulignés) */
+  --lilas-clair: #c4bdf2;    /* accent survol */
+
+  /* Pastels de score (conservés, adaptés au fond sombre) */
+  --sauge: #7fa98c;
+  --ambre: #e0a06a;
+  --rose-poudre: #d8a7a0;
+
   /* ---- Sémantiques (rôles) ---- */
-  --bg: var(--craie);
-  --bg-elevated: var(--blanc);
-  --bg-alt: var(--sable);
-  --text: var(--encre);
-  --text-muted: var(--encre-douce);
-  --text-faint: var(--encre-estompee);
-  --brand: var(--argile);
-  --brand-hover: var(--argile-foncee);
+  --bg: var(--noir);
+  --bg-elevated: var(--violet-nuit);
+  --bg-alt: var(--violet-nuit-2);
+  --text: var(--gris-clair);
+  --text-muted: var(--gris);
+  --text-faint: var(--gris-sombre);
+  --brand: var(--lilas);
+  --brand-hover: var(--lilas-clair);
   --accent: var(--ambre);
   --score-high: var(--sauge);
-  --score-high-bg: var(--sauge-bg);
-  --score-high-texte: var(--sauge-texte);
   --score-mid: var(--ambre);
   --score-low: var(--rose-poudre);
-  --score-low-bg: var(--rose-poudre-bg);
-  --border: var(--sable-bord);
+  --border: rgba(244, 244, 244, 0.1);
+  --border-strong: rgba(244, 244, 244, 0.18);
 
-  /* ---- Ombres (profondeur douce) ---- */
-  --shadow-rgb: 70 50 30;
-  --shadow-sm: 0 1px 3px rgb(var(--shadow-rgb) / 0.08);
-  --shadow-md: 0 8px 26px rgb(var(--shadow-rgb) / 0.1);
+  /* ---- Ombres (profondeur sur fond sombre) ---- */
+  --shadow-sm: 0 2px 8px rgb(0 0 0 / 0.4);
+  --shadow-md: 0 20px 40px rgb(0 0 0 / 0.5);
+  --shadow-screen: 0 30px 60px rgb(0 0 0 / 0.55);
 
   /* ---- Rayons ---- */
   --radius-sm: 12px;
@@ -53,8 +54,9 @@
   --radius-xl: 24px;
   --radius-pill: 9999px;
 
-  /* ---- Mouvement (réf CSS ; springs JS dans tokens.ts) ---- */
-  --dur-fast: 0.2s;
-  --dur-default: 0.35s;
+  /* ---- Mouvement ---- */
+  --dur-fast: 0.25s;
+  --dur-default: 0.6s;
   --ease-standard: cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-expo: cubic-bezier(0.19, 1, 0.22, 1); /* signature Büro/Speedy */
 }
