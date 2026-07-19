@@ -14,8 +14,8 @@ const SOURCES = [
 
 function Item({ label }: { label: string }) {
   return (
-    <span className="flex items-center gap-3 whitespace-nowrap px-6 text-lg text-muted">
-      <span className="size-1.5 rounded-full bg-brand" aria-hidden />
+    <span className="flex items-center gap-4 whitespace-nowrap px-8 text-2xl text-muted md:text-3xl">
+      <span className="size-2 rounded-full bg-brand" aria-hidden />
       {label}
     </span>
   );

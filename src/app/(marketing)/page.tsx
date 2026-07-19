@@ -22,18 +22,19 @@ export default function Home() {
 
       {/* Sous le pin : fond clair (le header s'adapte : logo/texte sombres) */}
       <div className="section-light" data-header-theme="light">
-      <main className="mx-auto max-w-6xl px-6">
+      <main className="mx-auto max-w-[106rem] px-[6vw]">
       {/* Score */}
-      <section id="score" className="scroll-mt-24 border-t border-border py-20 lg:py-28">
-        <div className="grid gap-12 lg:grid-cols-[0.9fr_1.1fr] lg:items-center">
+      <section id="score" className="scroll-mt-24 py-28 lg:py-40">
+        <div className="grid gap-14 lg:grid-cols-[1fr_0.85fr] lg:items-center lg:gap-20">
           <Reveal>
-            <span className="text-sm font-medium uppercase tracking-wide text-brand">
+            <span className="text-sm font-medium uppercase tracking-[0.2em] text-brand">
               Le score
             </span>
-            <h2 className="mt-4 font-sans text-3xl font-semibold tracking-[-0.02em] text-text md:text-4xl">
-              C’est <em>ton</em> score, pas le nôtre.
+            <h2 className="h-lg mt-6 text-text">
+              C’est <em className="not-italic text-brand">ton</em> score,
+              <br className="hidden md:block" /> pas le nôtre.
             </h2>
-            <p className="mt-4 text-lg leading-relaxed text-muted">
+            <p className="p-lead mt-8 max-w-xl text-muted">
               Choisis un profil, ou règle finement les pondérations. Le score se
               recalcule en direct, et on affiche toujours le détail : pourquoi ce
               bien l’emporte, critère par critère. Jamais de boîte noire.
@@ -46,43 +47,51 @@ export default function Home() {
       </section>
 
       {/* Données */}
-      <section id="donnees" className="scroll-mt-24 border-t border-border py-20 lg:py-28">
+      <section id="donnees" className="scroll-mt-24 border-t border-border py-28 lg:py-40">
         <Reveal>
-          <span className="text-sm font-medium uppercase tracking-wide text-brand">
+          <span className="text-sm font-medium uppercase tracking-[0.2em] text-brand">
             Les données
           </span>
-          <h2 className="mt-4 max-w-2xl font-sans text-3xl font-semibold tracking-[-0.02em] text-text md:text-4xl">
+          <h2 className="h-lg mt-6 max-w-4xl text-text">
             De la donnée publique, un calcul transparent.
           </h2>
-          <p className="mt-4 max-w-2xl text-lg leading-relaxed text-muted">
+          <p className="p-lead mt-8 max-w-2xl text-muted">
             Toutes les sources sont publiques et officielles. Le moteur de calcul
             est déterministe : chaque chiffre financier est vérifiable, jamais
             produit par une IA.
           </p>
         </Reveal>
-        <div className="mt-12">
+        <div className="mt-16">
           <SourcesMarquee />
         </div>
       </section>
-
-      {/* CTA final */}
-      <section className="border-t border-border py-24">
-        <Reveal>
-          <div className="grid gap-8 md:grid-cols-[1.4fr_0.6fr] md:items-end">
-            <h2 className="font-sans text-4xl font-semibold tracking-[-0.02em] text-text md:text-5xl">
-              Ajoute ton premier bien.
-            </h2>
-            <div className="md:justify-self-end md:text-right">
-              <p className="mb-4 text-muted">Colle une adresse, on s’occupe du reste.</p>
-              <MagneticButton href="/connexion" className="px-8 py-3.5">
-                Commencer
-              </MagneticButton>
-            </div>
-          </div>
-        </Reveal>
-      </section>
       </main>
       </div>
+
+      {/* CTA final — dark plein format, « bookend » avec le hero */}
+      <section
+        data-header-theme="dark"
+        className="bg-bg py-32 lg:py-44"
+      >
+        <div className="mx-auto max-w-[106rem] px-[6vw]">
+          <Reveal>
+            <div className="flex flex-col gap-12 lg:flex-row lg:items-end lg:justify-between">
+              <h2 className="h-display max-w-3xl text-text">
+                Ajoute ton
+                <br /> premier bien.
+              </h2>
+              <div className="lg:pb-4 lg:text-right">
+                <p className="p-lead mb-6 max-w-sm text-muted lg:ml-auto">
+                  Colle une adresse, on s’occupe du reste.
+                </p>
+                <MagneticButton href="/connexion" className="px-9 py-4">
+                  Commencer
+                </MagneticButton>
+              </div>
+            </div>
+          </Reveal>
+        </div>
+      </section>
     </>
   );
 }
