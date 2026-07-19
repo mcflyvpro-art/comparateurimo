@@ -73,6 +73,7 @@ const etapes: Etape[] = [
 export function PinnedNiveaux() {
   const sectionRef = useRef<HTMLElement>(null);
   const stageRef = useRef<HTMLDivElement>(null);
+  const fillRef = useRef<HTMLSpanElement>(null);
   const [active, setActive] = useState(0);
   const reduce = usePrefersReducedMotion();
 
@@ -102,6 +103,10 @@ export function PinnedNiveaux() {
           end: "bottom bottom",
           scrub: 0.6,
           onUpdate: (self) => {
+            // Le rail noir se remplit en continu, pixel par pixel, au scroll.
+            if (fillRef.current) {
+              fillRef.current.style.transform = `scaleY(${self.progress})`;
+            }
             const idx = Math.min(n - 1, Math.floor(self.progress * n));
             if (idx !== lastIdx) {
               lastIdx = idx;
@@ -165,25 +170,23 @@ export function PinnedNiveaux() {
         className="pin-stage sticky top-0 flex h-[100svh] w-full items-center overflow-hidden"
       >
         <div className="mx-auto grid w-full max-w-[106rem] grid-cols-1 items-center gap-10 px-[6vw] lg:grid-cols-[auto_1.1fr_0.9fr] lg:gap-14">
-          {/* Colonne 1 — stepper vertical (états passé ✓ / actif ● / futur ○) */}
-          <nav aria-hidden className="relative hidden self-start lg:block">
-            <ul className="flex flex-col gap-9">
+          {/* Colonne 1 — stepper vertical, centré ; rail continu qui se remplit au scroll */}
+          <nav aria-hidden className="relative hidden lg:block">
+            <ul className="relative flex flex-col gap-9">
+              {/* rail : fond gris + remplissage noir (scaleY piloté par le scroll),
+                  calés du centre de la 1re puce au centre de la dernière. */}
+              <span className="absolute left-[8.5px] top-[9px] bottom-[9px] w-px bg-border" />
+              <span
+                ref={fillRef}
+                className="absolute left-[8.5px] top-[9px] bottom-[9px] w-px origin-top bg-text"
+                style={{ transform: "scaleY(0)" }}
+              />
               {etapes.map((e, i) => {
                 const done = i < active;
                 const cur = i === active;
                 return (
-                  <li key={e.label} className="relative flex items-center gap-4">
-                    {/* connecteur vers l'étape suivante : plein si franchi, pointillé sinon */}
-                    {i < etapes.length - 1 && (
-                      <span
-                        className={`absolute left-[8.5px] top-[18px] h-9 transition-colors duration-300 ${
-                          done
-                            ? "w-px bg-text"
-                            : "w-0 border-l border-dashed border-border-strong"
-                        }`}
-                      />
-                    )}
-                    {/* puce */}
+                  <li key={e.label} className="relative z-10 flex items-center gap-4">
+                    {/* puce (fond opaque = masque le rail derrière) */}
                     <span className="relative flex h-[18px] w-[18px] shrink-0 items-center justify-center">
                       {cur && (
                         <span className="absolute inset-0 animate-pulse rounded-full ring-4 ring-text/10" />
@@ -193,8 +196,8 @@ export function PinnedNiveaux() {
                           done
                             ? "border-text bg-text"
                             : cur
-                              ? "border-text bg-bg-elevated"
-                              : "border-border-strong bg-transparent"
+                              ? "border-text bg-bg"
+                              : "border-border-strong bg-bg"
                         }`}
                       >
                         {done && (
