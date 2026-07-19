@@ -7,7 +7,7 @@ export const color = {
   sableBord: "#ede4d6",
   encre: "#2b2320",
   encreDouce: "#6b615a",
-  encreEstompee: "#8a7d6e",
+  encreEstompee: "#75695d",
   argile: "#c86b4a",
   argileFoncee: "#b45c3d",
   ambre: "#e0a06a",

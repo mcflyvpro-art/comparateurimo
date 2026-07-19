@@ -33,7 +33,8 @@ export function ScoreProfiles() {
           <button
             key={p}
             onClick={() => setActif(p)}
-            className={`rounded-full px-4 py-2 text-sm font-medium transition-colors active:scale-[0.97] ${
+            aria-pressed={p === actif}
+            className={`cursor-pointer rounded-full px-4 py-2 text-sm font-medium transition-colors active:scale-[0.97] ${
               p === actif ? "bg-brand text-white" : "bg-bg-alt text-text hover:text-brand"
             }`}
           >

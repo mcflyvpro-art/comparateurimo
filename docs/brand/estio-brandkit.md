@@ -18,7 +18,7 @@ Premium accessible : chaleureux, lucide, rassurant. Jamais Bloomberg Terminal, j
 | Sable bord | #ede4d6 | Bordures fines |
 | Encre | #2b2320 | Texte principal |
 | Encre douce | #6b615a | Texte secondaire |
-| Encre estompée | #8a7d6e | Légendes |
+| Encre estompée | #75695d | Légendes (contraste AA sur Craie) |
 | Argile | #c86b4a | Marque |
 | Argile foncée | #b45c3d | Hover marque |
 | Ambre | #e0a06a | Accent / score moyen |

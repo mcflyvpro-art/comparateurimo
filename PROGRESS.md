@@ -29,6 +29,7 @@
 - Composants : `src/components/landing/` — `SiteNav`, `Reveal` (spring bounce 0 + reduced-motion), `PropertyCardDemo` (matériau + barre animée au scroll).
 - Feedback press sur boutons (`active:scale`), typo optique (tracking négatif titres). Build + lint verts.
 - Passe `/design-taste-frontend` (variance 8 / motion 6, identité Estio préservée) : hero asymétrique, boutons magnétiques (`MagneticButton`), carte hero tilt 3D + flottement + liquid-glass (`HeroVisual`), section principe en zig-zag (fini les 3 cartes égales), score interactif par profils (`ScoreProfiles`), sources en marquee (`SourcesMarquee`), CTA décentré. Springs stiffness 100 / damping 20.
+- Passe qualité `/ui-ux-pro-max` (accessibilité) : anneau `:focus-visible` global, token « encre estompée » assombri #8a7d6e → #75695d (contraste AA sur Craie), `cursor-pointer` + `aria-pressed` sur les boutons de profil. Reco couleurs/serif du générateur écartée (identité Estio non négociable).
 
 **Prochaine session**
 - Formulaire d'ajout de bien (N1) + géocodage BAN.
