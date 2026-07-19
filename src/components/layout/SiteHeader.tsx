@@ -38,7 +38,7 @@ export function SiteHeader() {
             aria-expanded={open}
             className="group flex h-10 w-16 items-center justify-center justify-self-center"
           >
-            <span className="relative block h-3 w-[52px] transition-transform duration-300 ease-[cubic-bezier(0.19,1,0.22,1)] group-hover:scale-x-75">
+            <span className="relative block h-3 w-[52px] transition-transform duration-300 ease-[cubic-bezier(0.19,1,0.22,1)] group-hover:scale-y-75">
               <motion.span
                 className="absolute left-0 block h-0.5 w-full bg-text"
                 initial={false}

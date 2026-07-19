@@ -8,10 +8,11 @@ import type Lenis from "lenis";
 const EASE = [0.19, 1, 0.22, 1] as const;
 
 // Liens « géants » — du haut vers le bas, taille croissante (FAQ → Comparateur)
+// Mots à bord gauche « plein » (F, F, L) pour un alignement net, tailles croissantes
 const discover = [
   { href: "/faq", label: "FAQ", sub: "Questions", size: "text-[clamp(2.6rem,6vw,6rem)]" },
-  { href: "/tarifs", label: "Tarifs", sub: "Crédits", size: "text-[clamp(3.3rem,8vw,8rem)]" },
-  { href: "/comment-ca-marche", label: "Comparateur", sub: "Le produit", size: "text-[clamp(3.6rem,10vw,10rem)]" },
+  { href: "/tarifs", label: "Formules", sub: "Crédits", size: "text-[clamp(3.3rem,8vw,8rem)]" },
+  { href: "/comment-ca-marche", label: "Le produit", sub: "Découvrir", size: "text-[clamp(3.6rem,10vw,10rem)]" },
 ];
 const legal = [
   { href: "/mentions-legales", label: "Mentions légales" },
@@ -88,15 +89,15 @@ export function FullscreenMenu({
                             active ? "pointer-events-none text-faint" : "text-text"
                           }`}
                         >
-                          {/* Mot + soulignement (déployé au survol) */}
-                          <span className="relative inline-block">
+                          {/* Mot + soulignement épais (déployé au survol) */}
+                          <span className="relative inline-block pb-[0.14em]">
                             <span className={`block font-medium leading-[1.02] tracking-[-0.03em] ${l.size}`}>
                               {l.label}
                             </span>
-                            <span className="absolute -bottom-[0.02em] left-0 right-0 h-[0.06em] origin-left scale-x-0 bg-current transition-transform duration-500 ease-[cubic-bezier(0.19,1,0.22,1)] group-hover:scale-x-100" />
+                            <span className="absolute bottom-0 left-0 right-0 h-[0.09em] origin-left scale-x-0 bg-current transition-transform duration-500 ease-[cubic-bezier(0.19,1,0.22,1)] group-hover:scale-x-100" />
                           </span>
-                          {/* Sous-titre en exposant (haut-droite) */}
-                          <span className="ml-2 mt-[0.3em] self-start text-sm text-muted lg:ml-3 lg:text-xl">
+                          {/* Sous-titre en exposant (haut-droite), une seule ligne */}
+                          <span className="ml-2 mt-[0.25em] self-start whitespace-nowrap text-sm text-muted lg:ml-3 lg:text-base">
                             {l.sub}
                           </span>
                         </Link>
