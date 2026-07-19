@@ -38,18 +38,24 @@
 > Objectif : une landing quasi finie (placeholders tolérés) ET **toute l'arborescence** du site en place — chaque page existe, stylée, liens vivants.
 
 ### Brainstorm de phase
-- [ ] Brainstorm `superpowers` Phase 1 (cadrer l'arborescence complète, l'inventaire des pages, l'état « quasi fini » attendu, la liste des placeholders acceptés).
+- [x] Brainstorm Phase 1 → spec `docs/superpowers/specs/2026-07-19-phase1-design-arborescence-design.md` (arborescence 13 routes, découpage **1a structure / 1b design-craft**, placeholders assumés).
 
-> ⚠️ Une partie du travail ci-dessous a été **amorcée** en sessions 3-5 (design system, landing, 10 pages) **avant** cette méthodo. Rien n'est coché : l'utilisateur re-valide chaque point.
+### Sous-phase 1a — structure (arborescence + coquilles)
+- [x] Design system & tokens Estio (couleurs, typo géante, motion) — S3
+- [x] Inventaire figé de **toute** l'arborescence (13 routes) — spec §3
+- [x] Toutes les pages créées en coquilles stylées (10 marketing + 404 + groupe app) — S5
+- [x] Layout marketing partagé header + footer (liens vivants, responsive) — S5
+- [x] Placeholders identifiés et assumés (spec §7)
 
-### Petits plans / features (à découper après brainstorm)
-- [ ] Design system & tokens Estio validés (amorcé S3)
-- [ ] Landing complète, animée, accessible (amorcée S4)
-- [ ] Layout marketing partagé header + footer (amorcé S5)
-- [ ] Inventaire figé de **toute** l'arborescence (liste exhaustive des pages)
-- [ ] Toutes les pages créées en coquilles stylées (amorcé S5 : 10 pages)
-- [ ] Placeholders identifiés et assumés (contenus provisoires, images, chiffres)
-- [ ] Revue finale design/UI de la phase par l'utilisateur
+### Sous-phase 1b — design-craft (refonte UI façon speedy.io) — EN COURS
+> Réf. teardown `docs/brand/speedy-teardown.md`. On **itère encore**, pas de clôture.
+- [x] Hero dark plein écran (blob, cartes flottantes, reveal) — S4/S6
+- [x] **Section pin 600vh** + stepper style Stripe (5 étapes : formulaire → analyse → comparaison → score → décision), rail continu au scroll — **validé S7**
+- [x] **Smooth scroll Lenis** global, synchro ScrollTrigger (le pin reste calé) — **validé S7**
+- [x] Sections score / données / CTA au niveau premium (`.h-lg`/`.h-display`, CTA dark bookend, marquee agrandi) — **validé S7**
+- [ ] Header / footer / PageHeader harmonisés premium (fait S7 — **à valider sur Vercel**)
+- [ ] Touches signature restantes : texte détouré, cards décalées, marquee avancé
+- [ ] Revue finale design/UI 1b par l'utilisateur (clôture Phase 1)
 
 ---
 
@@ -100,6 +106,19 @@
 ## Historique des sessions (le plus récent en haut)
 
 > Journal factuel. Aucune coche ici : les coches vivent dans la roadmap ci-dessus, décidées par l'utilisateur.
+
+### Session 7 — 2026-07-20 — Refonte landing 1b (scroll signature speedy.io)
+**Étape : 🔨 impl — sous-phase 1b (design-craft)**
+- Reprise du fil 1b : refonte UI landing façon **speedy.io** (fond dark, typo géante, scroll storytelling). Étude du vrai scroll via captures locales (`inspi/auto/`, `speedy-io-html`).
+- **Section pin 600vh** (`PinnedNiveaux.tsx`) réécrite fidèle speedy : scène sticky 100vh, **5 étapes** qui crossfadent (formulaire → analyse → comparaison → score → décision), placeholders d'aperçu à droite (futurs screens de l'outil).
+- **Stepper** refait 3× jusqu'à validation : style **Stripe** (puce passé ✓ / actif ● halo / futur ○), **rail noir continu** qui se remplit au scroll (`scaleY` = progression), centré vertical.
+- **Lenis** : constat d'un **doublon** (j'avais créé `layout/SmoothScroll` alors que `providers/SmoothScroll` existait déjà) → doublon supprimé, un seul Lenis synchro ScrollTrigger.
+- **Sections sous le pin** (score/données/CTA) passées au niveau premium (`.h-lg`/`.h-display`, largeur `106rem`/`6vw`, CTA **dark bookend**, marquee agrandi).
+- **Harmonisation** : `PageHeader` premium (impacte les 10 pages), `SiteFooter` aligné en largeur. Aucune couleur en dur dans les composants marketing → pages dark-cohérentes via tokens.
+- Fix lint pré-existant `PageLoader` (setState hors corps d'effet) → **lint global vert**. Build vert.
+- Commits : `27e62c0`, `57ab411`, `fba18c9`, `120acf7`, `76dc173`, `0b4ece7`, `9d87411`.
+- **Décision méthodo** : l'utilisateur m'a **exceptionnellement autorisé à cocher** les cases de cette session (règle n°3 normalement : lui seul). Coché uniquement le **fait + validé** ; header/pages + revue finale laissés ouverts (on n'a pas clôturé).
+- **Prochaine action** : valider header/pages sur Vercel, puis itérer les touches signature restantes (texte détouré, cards) avant revue finale 1b.
 
 ### Session 6 — 2026-07-19 — Adoption de la méthodo 7 phases
 **Étape : 📋 cadrage méthodo**

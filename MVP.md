@@ -14,12 +14,14 @@ Permettre à un investisseur d'**importer un bien**, de le voir **analysé**, de
 
 Landing quasi finie (placeholders tolérés) + **toute** l'arborescence du site.
 
-- [ ] Design system & tokens Estio (couleurs, typo, coins, motion)
-- [ ] Landing complète, animée, accessible (AA)
-- [ ] Header + footer partagés, responsive, liens vivants
-- [ ] Inventaire figé de toutes les pages du site
-- [ ] Toutes les pages créées en coquilles stylées
-- [ ] Placeholders assumés et listés (contenus/images/chiffres provisoires)
+- [x] Design system & tokens Estio (couleurs, typo, coins, motion)
+- [x] Landing complète, animée, accessible (AA) — refonte 1b façon speedy.io (S7)
+- [x] Header + footer partagés, responsive, liens vivants
+- [x] Inventaire figé de toutes les pages du site (13 routes)
+- [x] Toutes les pages créées en coquilles stylées
+- [x] Placeholders assumés et listés (contenus/images/chiffres provisoires)
+
+> ⚠️ Coché par exception (autorisation utilisateur S7). Reste avant clôture Phase 1 : valider header/pages premium sur Vercel + touches signature (texte détouré, cards) + revue finale 1b. Détail : `PROGRESS.md` sous-phase 1b.
 
 ## Phase 2 — Le comparateur (cœur produit)
 
