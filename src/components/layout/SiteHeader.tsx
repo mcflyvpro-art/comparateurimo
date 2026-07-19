@@ -61,14 +61,17 @@ export function SiteHeader() {
   // Thème effectif : le menu ouvert force le sombre
   const t = open ? "dark" : theme;
   const isHidden = !open && hidden;
+  // Seuls le burger + les actions se cachent (le logo, lui, reste toujours)
+  const hideCls = `transition-[transform,opacity] duration-[600ms] ease-[cubic-bezier(0.19,1,0.22,1)] ${
+    isHidden ? "-translate-y-[240%] opacity-0 pointer-events-none" : "translate-y-0 opacity-100"
+  }`;
 
   return (
     <>
       <header
-        className={`fixed inset-x-0 top-0 z-50 transition-transform duration-[600ms] ease-[cubic-bezier(0.19,1,0.22,1)] ${
-          isHidden ? "-translate-y-full" : "translate-y-0"
-        } ${t === "light" ? "text-neutral-950" : "text-white"}`}
-        style={{ transitionProperty: "transform, color" }}
+        className={`fixed inset-x-0 top-0 z-50 transition-colors duration-500 ease-[cubic-bezier(0.19,1,0.22,1)] ${
+          t === "light" ? "text-neutral-950" : "text-white"
+        }`}
       >
         <nav className="mx-auto grid max-w-[106rem] grid-cols-3 items-center px-[6vw] py-5">
           {/* Logo — deux versions en fondu croisé selon le thème */}
@@ -102,7 +105,7 @@ export function SiteHeader() {
             onClick={() => setOpen((v) => !v)}
             aria-label={open ? "Fermer le menu" : "Ouvrir le menu"}
             aria-expanded={open}
-            className="group flex h-10 w-16 items-center justify-center justify-self-center"
+            className={`group flex h-10 w-16 items-center justify-center justify-self-center ${hideCls}`}
           >
             <span className="relative block h-3 w-[52px] transition-transform duration-300 ease-[cubic-bezier(0.19,1,0.22,1)] group-hover:scale-y-75">
               <motion.span
@@ -120,8 +123,8 @@ export function SiteHeader() {
             </span>
           </button>
 
-          {/* Actions (droite) */}
-          <div className="flex items-center gap-5 justify-self-end">
+          {/* Actions (droite) — se cachent au scroll comme le burger */}
+          <div className={`flex items-center gap-5 justify-self-end ${hideCls}`}>
             <Link
               href="/connexion"
               className="hidden text-sm opacity-70 transition-opacity hover:opacity-100 sm:inline"
