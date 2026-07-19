@@ -73,7 +73,6 @@ const etapes: Etape[] = [
 export function PinnedNiveaux() {
   const sectionRef = useRef<HTMLElement>(null);
   const stageRef = useRef<HTMLDivElement>(null);
-  const fillRef = useRef<HTMLSpanElement>(null);
   const [active, setActive] = useState(0);
   const reduce = usePrefersReducedMotion();
 
@@ -103,9 +102,6 @@ export function PinnedNiveaux() {
           end: "bottom bottom",
           scrub: 0.6,
           onUpdate: (self) => {
-            if (fillRef.current) {
-              fillRef.current.style.transform = `scaleY(${self.progress})`;
-            }
             const idx = Math.min(n - 1, Math.floor(self.progress * n));
             if (idx !== lastIdx) {
               lastIdx = idx;
@@ -169,33 +165,67 @@ export function PinnedNiveaux() {
         className="pin-stage sticky top-0 flex h-[100svh] w-full items-center overflow-hidden"
       >
         <div className="mx-auto grid w-full max-w-[106rem] grid-cols-1 items-center gap-10 px-[6vw] lg:grid-cols-[auto_1.1fr_0.9fr] lg:gap-14">
-          {/* Colonne 1 — stepper vertical */}
-          <nav aria-hidden className="relative hidden lg:block">
-            {/* rail + remplissage progressif */}
-            <span className="absolute left-[5px] top-2 bottom-2 w-px bg-border" />
-            <span
-              ref={fillRef}
-              className="absolute left-[5px] top-2 bottom-2 w-px origin-top bg-text"
-              style={{ transform: "scaleY(0)" }}
-            />
-            <ul className="flex flex-col gap-7 pl-6">
-              {etapes.map((e, i) => (
-                <li
-                  key={e.label}
-                  className={`relative text-sm leading-tight transition-colors duration-300 ${
-                    i === active ? "font-medium text-text" : "text-faint"
-                  }`}
-                >
-                  <span
-                    className={`absolute -left-6 top-1 h-[11px] w-[11px] rounded-full border transition-colors duration-300 ${
-                      i === active
-                        ? "border-text bg-text"
-                        : "border-border-strong bg-transparent"
-                    }`}
-                  />
-                  {e.label}
-                </li>
-              ))}
+          {/* Colonne 1 — stepper vertical (états passé ✓ / actif ● / futur ○) */}
+          <nav aria-hidden className="relative hidden self-start lg:block">
+            <ul className="flex flex-col gap-9">
+              {etapes.map((e, i) => {
+                const done = i < active;
+                const cur = i === active;
+                return (
+                  <li key={e.label} className="relative flex items-center gap-4">
+                    {/* connecteur vers l'étape suivante : plein si franchi, pointillé sinon */}
+                    {i < etapes.length - 1 && (
+                      <span
+                        className={`absolute left-[8.5px] top-[18px] h-9 transition-colors duration-300 ${
+                          done
+                            ? "w-px bg-text"
+                            : "w-0 border-l border-dashed border-border-strong"
+                        }`}
+                      />
+                    )}
+                    {/* puce */}
+                    <span className="relative flex h-[18px] w-[18px] shrink-0 items-center justify-center">
+                      {cur && (
+                        <span className="absolute inset-0 animate-pulse rounded-full ring-4 ring-text/10" />
+                      )}
+                      <span
+                        className={`flex h-[18px] w-[18px] items-center justify-center rounded-full border transition-all duration-300 ${
+                          done
+                            ? "border-text bg-text"
+                            : cur
+                              ? "border-text bg-bg-elevated"
+                              : "border-border-strong bg-transparent"
+                        }`}
+                      >
+                        {done && (
+                          <svg viewBox="0 0 12 12" className="h-2.5 w-2.5" fill="none" aria-hidden>
+                            <path
+                              d="M2.5 6.2l2.2 2.2 4.8-4.8"
+                              stroke="var(--bg-elevated)"
+                              strokeWidth="1.7"
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                            />
+                          </svg>
+                        )}
+                        {cur && <span className="h-1.5 w-1.5 rounded-full bg-text" />}
+                      </span>
+                    </span>
+                    {/* label */}
+                    <span
+                      className={`text-sm leading-tight transition-colors duration-300 ${
+                        cur
+                          ? "font-medium text-text"
+                          : done
+                            ? "text-muted"
+                            : "text-faint"
+                      }`}
+                    >
+                      {e.label}
+                    </span>
+                  </li>
+                );
+              })}
             </ul>
           </nav>
 
