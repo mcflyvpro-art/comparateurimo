@@ -62,7 +62,7 @@ Toutes reprennent le style Estio (Craie, Argile, General Sans, `Reveal`, coins r
 
 - **Accueil** : landing actuelle, mentions « open data » retirées (§3).
 - **Comment ça marche** : hero de section + les 3 niveaux (N1/N2/N3) développés + le principe du score + bloc « sources » nommées (sans « open data »).
-- **Tarifs** : 2–3 offres en cartes (ex. *Découverte* — quelques analyses offertes / *Crédits* — à l'analyse / *Illimité* — abonnement), bandeau « tarifs indicatifs, non contractuels ». La frontière gratuit/payant exacte reste une question ouverte (`MVP.md` Q3).
+- **Tarifs** : 3 offres (Free / Pro / Expert) en cartes, **toggle mensuel / annuel** (annuel remisé), bandeau « tarifs indicatifs, non contractuels ». Modèle détaillé en **§11**.
 - **FAQ** : `FaqAccordion` (client) — 6–8 questions/réponses (fiabilité des chiffres, sources, RGPD, gratuit/payant, périmètre géographique, sécurité). Une seule ouverte à la fois, animation d'ouverture, `aria-expanded`.
 - **À propos** : mission (« aider à décider, chiffres à l'appui »), le principe « c'est ton score », posture honnête (projections = scénarios, pas prédictions).
 - **Contact** : bloc email (`mailto:`) + `ContactForm` coquille (nom, email, message ; labels au-dessus, validation visuelle, bouton « Envoyer » sans backend, message de succès factice).
@@ -100,3 +100,37 @@ Toutes reprennent le style Estio (Craie, Argile, General Sans, `Reveal`, coins r
 - **Pages légales** — gabarits seulement ; ne pas mettre en ligne sans compléter les mentions obligatoires (LCEN, RGPD).
 - **`/connexion` coquille** — ne doit pas laisser croire à une auth fonctionnelle ; mention « bientôt » explicite.
 - **Cohérence future** — quand l'app connectée arrivera, prévoir un second layout `(app)` avec un header applicatif distinct ; hors périmètre ici mais anticipé par le choix du groupe `(marketing)`.
+
+## 11. Modèle économique (source de la page Tarifs)
+
+> Décision produit validée en brainstorm 2026-07-19. Les valeurs chiffrées (X, XX, prix, capacités) sont **indicatives**, à trancher (`MVP.md` Q3). Impacte plus tard l'app (E5 comparateur, E7 crédits/paiement).
+
+### 11.1 Unité de valeur — le crédit
+- **1 crédit = analyser un bien neuf** (jamais analysé) : enrichissement marché (N2) + calculs + score, puis ajout au **wallet**.
+- Un bien présent dans le wallet se **recompare gratuitement**, autant de fois qu'on veut, avec d'autres biens du wallet.
+- On ne dépense un crédit **que** pour introduire un bien inédit. Recomparer des biens déjà payés ne coûte rien.
+
+### 11.2 Le wallet
+- Espace personnel qui **stocke les biens déjà analysés**, réutilisables pour de nouvelles comparaisons sans recoût.
+- Sa **capacité** (nombre de biens conservés) dépend de l'offre.
+
+### 11.3 Les trois offres
+
+| Dimension | Free | Pro | Expert |
+|-----------|------|-----|--------|
+| Prix | gratuit | payant — mensuel / annuel remisé | payant supérieur — mensuel / annuel remisé |
+| Crédits | **3 à vie**, non rechargeables | **X / mois** (indicatif) | **XX / mois** (indicatif, > Pro) |
+| Wallet | **capacité 1** — garde le 1er bien analysé (avant-goût) ; les 2 autres crédits analysent d'autres biens sans s'accumuler | capacité moyenne (indicatif) | grande capacité (indicatif) |
+| Recharge manuelle de crédits | non | **oui** (achat ponctuel) | **oui** (achat ponctuel) |
+| Features | score + comparaison de base | + stats, précision, infos marché | + fiscalité poussée (LMNP, réel, déficit foncier), TRI, plus-value, scénarios avancés (prudent/central/dynamique, configs multiples) |
+
+### 11.4 Facturation
+- Abonnement **mensuel ou annuel** ; **l'annuel est remisé** (ex. 2 mois offerts — indicatif).
+- **Recharge de crédits** = achat ponctuel hors abonnement, réservé Pro & Expert.
+
+### 11.5 Rendu de la page Tarifs
+- 3 cartes côte à côte (Free / Pro / Expert), Pro mis en avant (« populaire »).
+- **Toggle mensuel ↔ annuel** en tête, affichant l'économie annuelle.
+- Chaque carte : prix, crédits, capacité wallet, recharge, liste de features, CTA (`/connexion`).
+- Bandeau « tarifs indicatifs, non contractuels ».
+- Le concept **crédit + wallet** expliqué en une ligne pédagogique au-dessus des cartes.
