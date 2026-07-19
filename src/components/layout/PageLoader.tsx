@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import type Lenis from "lenis";
-import { EstioWordmarkInline } from "./EstioWordmarkInline";
+import { EstioLoaderMark } from "./EstioLoaderMark";
 
 const EASE = [0.19, 1, 0.22, 1] as const;
 
@@ -28,11 +28,11 @@ export function PageLoader() {
     }
 
     lenis?.stop();
-    const t1 = setTimeout(() => setPhase("dock"), 1550); // laisse finir le clignotement
+    const t1 = setTimeout(() => setPhase("dock"), 3300); // ~2 alternances lentes
     const t2 = setTimeout(() => {
       setPhase("done");
       lenis?.start();
-    }, 2500);
+    }, 4250);
     return () => {
       clearTimeout(t1);
       clearTimeout(t2);
@@ -67,8 +67,8 @@ export function PageLoader() {
               }
               transition={{ duration: phase === "intro" ? 0.5 : 0.9, ease: EASE }}
             >
-              <EstioWordmarkInline
-                className="loader-logo"
+              <EstioLoaderMark
+                className="loader-mark"
                 style={{ height: "100%", width: "auto", display: "block" }}
               />
             </motion.div>

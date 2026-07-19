@@ -199,31 +199,31 @@ html.lenis body {
   overflow: hidden;
 }
 
-/* Loader : les deux tours clignotent en alternance (l'une blanche, l'autre
-   estompée, puis inverse) sur 3 tours, rapide mais fluide. */
-@keyframes estio-tower-a {
+/* Loader : les deux tours alternent plein ↔ contour (clair/foncé), lentement
+   et fluidement (ease-in-out). État A ↔ État B en fondu croisé. */
+@keyframes estio-alt-on {
   0%,
   100% {
     opacity: 1;
   }
   50% {
-    opacity: 0.12;
+    opacity: 0;
   }
 }
-@keyframes estio-tower-b {
+@keyframes estio-alt-off {
   0%,
   100% {
-    opacity: 0.12;
+    opacity: 0;
   }
   50% {
     opacity: 1;
   }
 }
-.loader-logo .loader-tower-a {
-  animation: estio-tower-a 0.45s var(--ease-expo) 3;
+.loader-mark .grpA {
+  animation: estio-alt-on 1.8s ease-in-out infinite;
 }
-.loader-logo .loader-tower-b {
-  animation: estio-tower-b 0.45s var(--ease-expo) 3;
+.loader-mark .grpB {
+  animation: estio-alt-off 1.8s ease-in-out infinite;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -231,8 +231,11 @@ html.lenis body {
   .animate-scroll-dot,
   .animate-blob,
   .animate-float,
-  .loader-logo .loader-tower-a,
-  .loader-logo .loader-tower-b {
+  .loader-mark .grpA,
+  .loader-mark .grpB {
     animation: none;
+  }
+  .loader-mark .grpB {
+    opacity: 0;
   }
 }
