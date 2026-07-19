@@ -1,0 +1,26 @@
+:root{
+  --craie:#fbf7f0;--sable:#f3ede3;--sable-bord:#ede4d6;--encre:#2b2320;
+  --encre-douce:#6b615a;--encre-estompee:#8a7d6e;--argile:#c86b4a;--ambre:#e0a06a;
+  --sauge:#5c9e72;--sauge-bg:#e7f0e9;--sauge-texte:#3b7a57;--rose-bg:#f0d9d4;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--craie);color:var(--encre);
+  font-family:system-ui,-apple-system,sans-serif;-webkit-font-smoothing:antialiased;padding:40px}
+h1,.num{font-family:"General Sans",system-ui,sans-serif;letter-spacing:-.03em}
+.wordmark{font-family:"General Sans",system-ui;font-weight:650;font-size:28px;letter-spacing:-.03em}
+.wordmark .dot{color:var(--argile)}
+.card{background:rgba(255,255,255,.7);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,.85);
+  border-radius:20px;padding:20px;box-shadow:0 8px 26px rgb(70 50 30 / .10)}
+.surface{background:linear-gradient(160deg,#f7f3ec,#efe7da);border-radius:24px;padding:22px}
+.price{font-family:"General Sans",system-ui;font-weight:650;font-size:24px;letter-spacing:-.03em}
+.score{width:48px;height:48px;border-radius:15px;display:flex;align-items:center;justify-content:center;
+  font-weight:700;color:#fff;background:linear-gradient(150deg,#8fbf9e,#5c9e72);box-shadow:0 4px 12px rgb(60 120 80 / .3)}
+.bar{height:6px;background:rgb(180 160 140 / .2);border-radius:6px;overflow:hidden;margin:15px 0}
+.bar>i{display:block;height:100%;background:linear-gradient(90deg,var(--ambre),var(--argile))}
+.chip{font-size:11px;background:rgba(255,255,255,.75);padding:4px 10px;border-radius:20px}
+.chip.sauge{color:var(--sauge-texte)}.chip.argile{color:#9b6a4a}
+.label{font-size:11px;letter-spacing:.08em;color:var(--encre-estompee);text-transform:uppercase;margin:0 0 10px}
+.btn{background:var(--argile);color:#fff;border:none;border-radius:9999px;padding:12px 22px;font-weight:600;font-size:15px}
+.field{display:block;width:100%;padding:12px 14px;border:1px solid var(--sable-bord);border-radius:12px;
+  background:#fff;font-size:15px;color:var(--encre);margin-top:6px}
+.font-load{position:absolute;left:-9999px}
