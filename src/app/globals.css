@@ -199,11 +199,40 @@ html.lenis body {
   overflow: hidden;
 }
 
+/* Loader : les deux tours clignotent en alternance (l'une blanche, l'autre
+   estompée, puis inverse) sur 3 tours, rapide mais fluide. */
+@keyframes estio-tower-a {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.12;
+  }
+}
+@keyframes estio-tower-b {
+  0%,
+  100% {
+    opacity: 0.12;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+.loader-logo .loader-tower-a {
+  animation: estio-tower-a 0.45s var(--ease-expo) 3;
+}
+.loader-logo .loader-tower-b {
+  animation: estio-tower-b 0.45s var(--ease-expo) 3;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .animate-marquee,
   .animate-scroll-dot,
   .animate-blob,
-  .animate-float {
+  .animate-float,
+  .loader-logo .loader-tower-a,
+  .loader-logo .loader-tower-b {
     animation: none;
   }
 }

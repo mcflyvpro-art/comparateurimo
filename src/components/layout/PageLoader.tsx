@@ -3,15 +3,15 @@
 import { useEffect, useState } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import type Lenis from "lenis";
+import { EstioWordmarkInline } from "./EstioWordmarkInline";
 
 const EASE = [0.19, 1, 0.22, 1] as const;
 
 /**
- * Loader d'intro façon speedy.io : fond noir plein écran, wordmark en grand
- * au centre (apparition fluide floue → nette), puis il « vient se ranger »
- * en haut à gauche, exactement à la place du logo du header. L'overlay se
- * dissout ensuite pour révéler le site — le relais avec le logo du header
- * est invisible (même position, même taille).
+ * Loader d'intro (façon speedy.io) : fond noir, wordmark en grand au centre.
+ * Les deux tours de l'icône clignotent en alternance (blanc ↔ estompé) sur
+ * ~3 tours, puis le logo « vient se ranger » en haut à gauche, pile à la place
+ * du logo du header (relais invisible), et l'overlay se dissout.
  */
 export function PageLoader() {
   const reduce = useReducedMotion();
@@ -28,11 +28,11 @@ export function PageLoader() {
     }
 
     lenis?.stop();
-    const t1 = setTimeout(() => setPhase("dock"), 1250);
+    const t1 = setTimeout(() => setPhase("dock"), 1550); // laisse finir le clignotement
     const t2 = setTimeout(() => {
       setPhase("done");
       lenis?.start();
-    }, 2250);
+    }, 2500);
     return () => {
       clearTimeout(t1);
       clearTimeout(t2);
@@ -50,43 +50,28 @@ export function PageLoader() {
           transition={{ duration: 0.55, ease: EASE }}
         >
           {dims && (
-            /* eslint-disable-next-line @next/next/no-img-element */
-            <motion.img
-              src="/estio-wordmark.svg"
-              alt="Estio"
-              className="absolute"
+            <motion.div
+              className="absolute inline-block"
               initial={{
                 opacity: 0,
-                filter: "blur(10px)",
-                height: 150,
                 top: dims.h / 2,
                 left: dims.w / 2,
                 x: "-50%",
                 y: "-50%",
+                height: 150,
               }}
               animate={
                 phase === "intro"
-                  ? {
-                      opacity: 1,
-                      filter: "blur(0px)",
-                      height: 150,
-                      top: dims.h / 2,
-                      left: dims.w / 2,
-                      x: "-50%",
-                      y: "-50%",
-                    }
-                  : {
-                      opacity: 1,
-                      filter: "blur(0px)",
-                      height: 32,
-                      top: 24,
-                      left: Math.round(dims.w * 0.06),
-                      x: "0%",
-                      y: "0%",
-                    }
+                  ? { opacity: 1, top: dims.h / 2, left: dims.w / 2, x: "-50%", y: "-50%", height: 150 }
+                  : { opacity: 1, top: 20, left: Math.round(dims.w * 0.06), x: "0%", y: "0%", height: 36 }
               }
-              transition={{ duration: phase === "intro" ? 1 : 0.9, ease: EASE }}
-            />
+              transition={{ duration: phase === "intro" ? 0.5 : 0.9, ease: EASE }}
+            >
+              <EstioWordmarkInline
+                className="loader-logo"
+                style={{ height: "100%", width: "auto", display: "block" }}
+              />
+            </motion.div>
           )}
         </motion.div>
       )}

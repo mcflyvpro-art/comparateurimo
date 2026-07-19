@@ -81,12 +81,12 @@ export function SiteHeader() {
             aria-label="Estio — accueil"
             className="justify-self-start"
           >
-            <span className="relative inline-block h-8">
+            <span className="relative inline-block h-9">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src="/estio-wordmark.svg"
                 alt="Estio"
-                className="h-8 w-auto transition-opacity duration-500"
+                className="h-9 w-auto transition-opacity duration-500"
                 style={{ opacity: t === "light" ? 0 : 1 }}
               />
               {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -94,7 +94,7 @@ export function SiteHeader() {
                 src="/estio-wordmark-dark.svg"
                 alt=""
                 aria-hidden
-                className="absolute inset-0 h-8 w-auto transition-opacity duration-500"
+                className="absolute inset-0 h-9 w-auto transition-opacity duration-500"
                 style={{ opacity: t === "light" ? 1 : 0 }}
               />
             </span>
