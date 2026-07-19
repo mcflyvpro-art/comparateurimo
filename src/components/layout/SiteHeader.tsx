@@ -28,7 +28,7 @@ export function SiteHeader() {
           >
             {/* Wordmark blanc (mark immeubles + « estio »), sur header sombre */}
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src="/estio-wordmark.svg" alt="Estio" className="h-6 w-auto" />
+            <img src="/estio-wordmark.svg" alt="Estio" className="h-8 w-auto" />
           </Link>
 
           {/* Burger (centre) */}
@@ -38,7 +38,7 @@ export function SiteHeader() {
             aria-expanded={open}
             className="group flex h-10 w-16 items-center justify-center justify-self-center"
           >
-            <span className="relative block h-3 w-[52px]">
+            <span className="relative block h-3 w-[52px] transition-transform duration-300 ease-[cubic-bezier(0.19,1,0.22,1)] group-hover:scale-x-75">
               <motion.span
                 className="absolute left-0 block h-0.5 w-full bg-text"
                 initial={false}

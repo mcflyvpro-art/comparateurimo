@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import { motion, useReducedMotion } from "motion/react";
 import { MagneticButton } from "./MagneticButton";
 
@@ -13,6 +14,14 @@ const EASE = [0.19, 1, 0.22, 1] as const;
  */
 export function Hero() {
   const reduce = useReducedMotion();
+  const [scrolled, setScrolled] = useState(false);
+
+  // Masque l'invite de scroll dès que l'utilisateur descend
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 20);
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
 
   const rise = {
     hidden: { y: reduce ? 0 : "110%" },
@@ -130,18 +139,8 @@ export function Hero() {
         </motion.div>
       </div>
 
-      {/* Contenu, aligné en bas-gauche */}
-      <div className="relative z-20 mx-auto flex w-full max-w-[106rem] flex-1 flex-col justify-end px-[6vw] pb-[8vh] pt-32">
-        <motion.span
-          variants={fade}
-          custom={0}
-          initial="hidden"
-          animate="show"
-          className="mb-6 block text-sm font-medium uppercase tracking-[0.14em] text-brand"
-        >
-          Comparateur immobilier d’investissement
-        </motion.span>
-
+      {/* Contenu, aligné en bas-gauche (remonté) */}
+      <div className="relative z-20 mx-auto flex w-full max-w-[106rem] flex-1 flex-col justify-end px-[6vw] pb-[16vh] pt-32">
         <h1 className="h-display text-text">
           {titre.map((mot, i) => (
             <span key={mot} className="block overflow-hidden">
@@ -158,24 +157,12 @@ export function Hero() {
           ))}
         </h1>
 
-        <motion.p
-          variants={fade}
-          custom={1}
-          initial="hidden"
-          animate="show"
-          className="p-lead mt-8 max-w-[42ch] text-muted"
-        >
-          Estio met tes annonces côte à côte, du point de vue de l’investissement.
-          Une adresse suffit&nbsp;: elle déverrouille les données de marché, et le
-          score reflète <em className="not-italic text-text">tes</em> priorités.
-        </motion.p>
-
         <motion.div
           variants={fade}
-          custom={2}
+          custom={0}
           initial="hidden"
           animate="show"
-          className="mt-10 flex flex-col gap-3 sm:flex-row"
+          className="mt-8 flex flex-col gap-3 sm:flex-row"
         >
           <MagneticButton href="/connexion" className="px-7 py-3.5">
             Ajouter un bien
@@ -186,13 +173,12 @@ export function Hero() {
         </motion.div>
       </div>
 
-      {/* Invite de scroll, bas-gauche */}
+      {/* Invite de scroll, bas-gauche (remontée, disparaît au scroll) */}
       <motion.div
-        variants={fade}
-        custom={4}
-        initial="hidden"
-        animate="show"
-        className="absolute bottom-7 left-[6vw] z-20 hidden items-center gap-3 text-faint sm:flex"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: scrolled ? 0 : 1 }}
+        transition={{ duration: 0.5, ease: EASE, delay: scrolled ? 0 : 1 }}
+        className="absolute bottom-12 left-[6vw] z-20 hidden items-center gap-3 text-faint sm:flex"
       >
         <svg width="18" height="27" viewBox="0 0 18 27" fill="none" aria-hidden>
           <rect x="1" y="1" width="16" height="25" rx="8" stroke="currentColor" strokeWidth="1.6" />

@@ -12,9 +12,13 @@ const dOf = (p) => (p.match(/\bd="([^"]+)"/) || [])[1] || "";
 // Le fond = le path qui démarre en "M0 0"
 const glyphs = paths.filter((p) => !dOf(p).startsWith("M0 0"));
 
-// L'icône « e » = les 3 paths dont le d commence par ces coordonnées
-const eStarts = ["M460 380", "M410 446", "M457 359"];
-const eGlyph = glyphs.filter((p) => eStarts.some((s) => dOf(p).startsWith(s)));
+// L'icône = les deux tours (corps pleins). On retire la diagonale d'ombrage
+// (M460) pour garder un gap transparent entre les tours, et on recolore en
+// currentColor pour une favicon adaptative (claire/sombre selon l'onglet).
+const bodyStarts = ["M410 446", "M457 359"];
+const eGlyph = glyphs
+  .filter((p) => bodyStarts.some((s) => dOf(p).startsWith(s)))
+  .map((p) => p.replace(/fill="[^"]*"/, 'fill="currentColor"'));
 
 mkdirSync("public", { recursive: true });
 
@@ -25,9 +29,9 @@ ${glyphs.join("\n")}
 `;
 writeFileSync("public/estio-wordmark.svg", wordmark);
 
-// Favicon : carré sombre + icône « e »
-const favicon = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="288 338 300 300" fill="none">
-<rect x="288" y="338" width="300" height="300" rx="64" fill="#0a0a0b"/>
+// Favicon : fond transparent, les deux tours seules, couleur adaptative
+const favicon = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="308 350 250 278" fill="none">
+<style>svg{color:#0a0a0b}@media (prefers-color-scheme:dark){svg{color:#f4f4f4}}</style>
 ${eGlyph.join("\n")}
 </svg>
 `;

@@ -7,11 +7,11 @@ import type Lenis from "lenis";
 
 const EASE = [0.19, 1, 0.22, 1] as const;
 
-// Liens « géants » (équivalent Speedy / Enterprise / Eden Project)
+// Liens « géants » — du haut vers le bas, taille croissante (FAQ → Comparateur)
 const discover = [
-  { href: "/comment-ca-marche", label: "Comparateur", sub: "Le produit" },
-  { href: "/tarifs", label: "Tarifs", sub: "Crédits" },
-  { href: "/faq", label: "FAQ", sub: "Questions" },
+  { href: "/faq", label: "FAQ", sub: "Questions", size: "text-[clamp(2.6rem,6vw,6rem)]" },
+  { href: "/tarifs", label: "Tarifs", sub: "Crédits", size: "text-[clamp(3.3rem,8vw,8rem)]" },
+  { href: "/comment-ca-marche", label: "Comparateur", sub: "Le produit", size: "text-[clamp(3.6rem,10vw,10rem)]" },
 ];
 const legal = [
   { href: "/mentions-legales", label: "Mentions légales" },
@@ -62,15 +62,15 @@ export function FullscreenMenu({
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           transition={{ duration: 0.5, ease: EASE }}
-          className="fixed inset-0 z-40 flex flex-col justify-end bg-black/95 backdrop-blur-2xl"
+          className="fixed inset-0 z-40 flex flex-col justify-center bg-black/95 backdrop-blur-2xl"
         >
-          <div className="mx-auto flex w-full max-w-[106rem] flex-col gap-14 px-[6vw] pb-[8vh] pt-28 lg:flex-row lg:items-end lg:justify-between">
+          <div className="mx-auto flex w-full max-w-[106rem] flex-col gap-16 px-[6vw] py-24 lg:flex-row lg:items-center lg:justify-between">
             {/* Découvrir — liens géants */}
             <div>
               <span className="mb-6 block text-sm font-medium uppercase tracking-[0.14em] text-faint">
                 Découvrir
               </span>
-              <ul className="flex flex-col gap-1">
+              <ul className="flex flex-col gap-2 lg:gap-3">
                 {discover.map((l, i) => {
                   const active = pathname === l.href;
                   return (
@@ -88,16 +88,15 @@ export function FullscreenMenu({
                             active ? "pointer-events-none text-faint" : "text-text"
                           }`}
                         >
-                          {/* Bloc flèche + mot + soulignement (glisse à droite au survol) */}
-                          <span className="relative inline-flex items-start pl-0 transition-[padding-left] duration-500 ease-[cubic-bezier(0.19,1,0.22,1)] group-hover:pl-[1.7em]">
-                            <span className="h-giant absolute left-0 top-0 -translate-x-2 text-brand opacity-0 transition-all duration-500 ease-[cubic-bezier(0.19,1,0.22,1)] group-hover:translate-x-0 group-hover:opacity-100">
-                              →
+                          {/* Mot + soulignement (déployé au survol) */}
+                          <span className="relative inline-block">
+                            <span className={`block font-medium leading-[1.02] tracking-[-0.03em] ${l.size}`}>
+                              {l.label}
                             </span>
-                            <span className="h-giant">{l.label}</span>
-                            <span className="absolute bottom-[0.12em] left-0 right-0 h-[5px] origin-left scale-x-0 bg-current transition-transform duration-500 ease-[cubic-bezier(0.19,1,0.22,1)] group-hover:scale-x-100" />
+                            <span className="absolute -bottom-[0.02em] left-0 right-0 h-[0.06em] origin-left scale-x-0 bg-current transition-transform duration-500 ease-[cubic-bezier(0.19,1,0.22,1)] group-hover:scale-x-100" />
                           </span>
                           {/* Sous-titre en exposant (haut-droite) */}
-                          <span className="ml-2 mt-[0.35em] self-start text-base text-muted lg:ml-3 lg:text-2xl">
+                          <span className="ml-2 mt-[0.3em] self-start text-sm text-muted lg:ml-3 lg:text-xl">
                             {l.sub}
                           </span>
                         </Link>
@@ -113,7 +112,7 @@ export function FullscreenMenu({
               initial={{ opacity: 0, y: reduce ? 0 : 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.7, ease: EASE, delay: 0.35 }}
-              className="grid grid-cols-2 gap-12 lg:gap-20"
+              className="grid shrink-0 grid-cols-2 gap-12 lg:gap-20"
             >
               <div>
                 <span className="mb-4 block text-sm font-medium uppercase tracking-[0.14em] text-faint">
@@ -138,7 +137,6 @@ export function FullscreenMenu({
                     </li>
                   ))}
                 </ul>
-                <p className="mt-10 text-sm text-faint">Fait avec soin — Estio</p>
               </div>
             </motion.div>
           </div>
@@ -165,7 +163,7 @@ function MenuLink({
       href={href}
       onClick={onClose}
       aria-current={active ? "page" : undefined}
-      className={`relative inline-block text-lg transition-colors after:absolute after:bottom-0 after:left-0 after:h-px after:w-full after:origin-right after:scale-x-0 after:bg-current after:transition-transform after:duration-500 hover:after:origin-left hover:after:scale-x-100 ${
+      className={`relative inline-block whitespace-nowrap text-lg transition-colors after:absolute after:bottom-0 after:left-0 after:h-px after:w-full after:origin-right after:scale-x-0 after:bg-current after:transition-transform after:duration-500 hover:after:origin-left hover:after:scale-x-100 ${
         active ? "text-faint" : "text-text"
       }`}
     >

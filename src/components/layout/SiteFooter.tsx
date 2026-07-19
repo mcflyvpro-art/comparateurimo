@@ -7,11 +7,9 @@ export function SiteFooter() {
     <footer className="mt-24 border-t border-border">
       <div className="mx-auto grid max-w-6xl gap-10 px-6 py-14 sm:grid-cols-2 lg:grid-cols-4">
         <div>
-          <Link
-            href="/"
-            className="font-sans text-lg font-semibold tracking-tight text-text"
-          >
-            estio<span className="text-brand">.</span>
+          <Link href="/" aria-label="Estio — accueil" className="inline-block">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/estio-wordmark.svg" alt="Estio" className="h-7 w-auto" />
           </Link>
           <p className="mt-3 max-w-xs text-sm leading-relaxed text-muted">
             Le bon bien, chiffres à l’appui. Données de marché officielles,
