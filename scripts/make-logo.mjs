@@ -1,13 +1,14 @@
-// Génère les logos Estio depuis les SVG source, en gardant les COULEURS D'ORIGINE
-// (les immeubles restent bi-ton, comme le design de base).
-//  - public/estio-wordmark.svg      : wordmark clair (foncer) — fond retiré
-//  - public/estio-wordmark-dark.svg : wordmark sombre (clair) — fond retiré
-//  - src/app/icon.svg               : favicon = icône (svg de base, couleurs)
-//  - src/components/layout/EstioLoaderMark.tsx : logo du loader, tours animables
-//    (plein ↔ contour), lettres en evenodd (trous nets, invisible sur fond noir).
+// Génère les logos Estio depuis les SVG source.
+//  - Wordmark = TOURS en couleurs d'origine (bi-ton) + LETTRES fusionnées en un
+//    seul path fill-rule=evenodd → contre-formes (e, o…) = VRAIS trous transparents.
+//  - Favicon = petit immeuble blanc + grand immeuble noir.
+//  - EstioLoaderMark = logo du loader, tours animables (plein ↔ contour).
 import { readFileSync, writeFileSync, mkdirSync } from "node:fs";
 
+const INK_LIGHT = "#f4f4f4";
+const INK_DARK = "#0a0a0b";
 const VIEWBOX = "305 344 968 292";
+
 const dOf = (p) => (p.match(/\bd="([^"]+)"/) || [])[1] || "";
 const firstX = (p) => {
   const m = dOf(p).match(/M\s*(-?\d+)/);
@@ -16,49 +17,56 @@ const firstX = (p) => {
 const extract = (file) =>
   [...readFileSync(file, "utf8").matchAll(/<path\b[^>]*\/>/g)]
     .map((m) => m[0])
-    .filter((p) => !dOf(p).startsWith("M0 0")); // retire le fond
+    .filter((p) => !dOf(p).startsWith("M0 0"));
 
-const foncer = extract("estiologofoncer.svg"); // glyphes clairs
-const clair = extract("estiologoclair.svg"); //  glyphes sombres
+const foncer = extract("estiologofoncer.svg");
+const clair = extract("estiologoclair.svg");
+
+const towersOf = (g) => g.filter((p) => firstX(p) < 600); // couleurs d'origine
+const lettersD = foncer.filter((p) => firstX(p) >= 600).map(dOf).join(" "); // géométrie
 
 mkdirSync("public", { recursive: true });
-const svg = (paths, vb = VIEWBOX) =>
-  `<svg xmlns="http://www.w3.org/2000/svg" viewBox="${vb}" fill="none">\n${paths.join("\n")}\n</svg>\n`;
+const svg = (inner, vb = VIEWBOX) =>
+  `<svg xmlns="http://www.w3.org/2000/svg" viewBox="${vb}" fill="none">\n${inner}\n</svg>\n`;
 
-// Wordmarks : couleurs d'origine conservées (bi-ton)
-writeFileSync("public/estio-wordmark.svg", svg(foncer));
-writeFileSync("public/estio-wordmark-dark.svg", svg(clair));
+// Wordmark : tours (base) + lettres en un seul path evenodd (vrais trous)
+const wordmark = (towers, ink) =>
+  svg(`${towers.join("\n")}\n<path fill-rule="evenodd" fill="${ink}" d="${lettersD}"/>`);
+writeFileSync("public/estio-wordmark.svg", wordmark(towersOf(foncer), INK_LIGHT));
+writeFileSync("public/estio-wordmark-dark.svg", wordmark(towersOf(clair), INK_DARK));
 
-// Favicon : icône seule (svg de base « clair » = immeubles sombres, couleurs d'origine)
-const iconClair = clair.filter((p) => firstX(p) < 600);
-writeFileSync("src/app/icon.svg", svg(iconClair, "300 344 290 300"));
+// Favicon : petit immeuble (M410) blanc, grand immeuble (M457 + M460) noir
+const dSmall = dOf(foncer.find((p) => dOf(p).startsWith("M410 446")));
+const dBigFrame = dOf(foncer.find((p) => dOf(p).startsWith("M457 359")));
+const dBigFill = dOf(foncer.find((p) => dOf(p).startsWith("M460 380")));
+writeFileSync(
+  "src/app/icon.svg",
+  svg(
+    `<path fill="#ffffff" d="${dSmall}"/>\n<path fill="#0a0a0b" d="${dBigFrame}"/>\n<path fill="#0a0a0b" d="${dBigFill}"/>`,
+    "300 344 290 300",
+  ),
+);
 
-// Loader : lettres (evenodd, blanches) + tours animables (foncer)
-const INK = "#f4f4f4";
-const lettersD = foncer.filter((p) => firstX(p) >= 600).map(dOf).join(" ");
-const dT1 = dOf(foncer.find((p) => dOf(p).startsWith("M410 446"))); // tour gauche pleine
-const dT2frame = dOf(foncer.find((p) => dOf(p).startsWith("M457 359"))); // tour droite cadre
-const dT2fill = dOf(foncer.find((p) => dOf(p).startsWith("M460 380"))); // remplissage tour droite
-
+// Loader : lettres evenodd + tours animables
 writeFileSync(
   "src/components/layout/EstioLoaderMark.tsx",
   `// Généré par scripts/make-logo.mjs — ne pas éditer à la main.
 import type { SVGProps } from "react";
 
-const INK = "${INK}";
+const INK = "${INK_LIGHT}";
 
 // État A (grpA) : tour1 pleine · tour2 contour ; État B (grpB) : l'inverse.
 export function EstioLoaderMark(props: SVGProps<SVGSVGElement>) {
   return (
     <svg viewBox="${VIEWBOX}" fill="none" {...props}>
       <path fillRule="evenodd" fill={INK} d="${lettersD}" />
-      <path fill={INK} d="${dT2frame}" />
+      <path fill={INK} d="${dBigFrame}" />
       <g className="grpA">
-        <path fill={INK} d="${dT1}" />
+        <path fill={INK} d="${dSmall}" />
       </g>
       <g className="grpB">
-        <path fill="none" stroke={INK} strokeWidth={12} d="${dT1}" />
-        <path fill={INK} d="${dT2fill}" />
+        <path fill="none" stroke={INK} strokeWidth={12} d="${dSmall}" />
+        <path fill={INK} d="${dBigFill}" />
       </g>
     </svg>
   );
@@ -66,4 +74,4 @@ export function EstioLoaderMark(props: SVGProps<SVGSVGElement>) {
 `,
 );
 
-console.log(`wordmark base (couleurs d'origine) · favicon icône clair · loader animé OK`);
+console.log("wordmark: tours base + lettres evenodd · favicon bi-ton · loader OK");

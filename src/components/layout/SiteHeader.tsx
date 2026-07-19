@@ -38,9 +38,11 @@ export function SiteHeader() {
       });
       setTheme(t);
 
-      // Cache/révèle selon le sens du scroll
+      // Cache/révèle selon le sens du scroll, avec un seuil pour éviter les
+      // à-coups → la transition CSS (600ms) reste fluide dans les deux sens.
       const y = window.scrollY;
-      setHidden(y > lastY.current && y > 140);
+      if (y > lastY.current + 6 && y > 160) setHidden(true);
+      else if (y < lastY.current - 6) setHidden(false);
       lastY.current = y;
     };
 
