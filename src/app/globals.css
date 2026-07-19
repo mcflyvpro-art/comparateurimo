@@ -30,6 +30,24 @@ html {
   background: var(--bg);
 }
 
+/* Section « claire » : on inverse localement les tokens sémantiques → tout enfant
+   basé sur les tokens (text-text, text-muted, border-border, bg-bg…) bascule seul.
+   Transition douce pour l'effet « le fond passe au blanc » façon speedy.io. */
+.section-light {
+  --bg: #f5f4f1;
+  --bg-elevated: #ffffff;
+  --bg-alt: #ecebe6;
+  --text: #0a0a0b;
+  --text-muted: #57534e;
+  --text-faint: #8b857d;
+  --brand: #6b62b0;
+  --border: rgba(10, 10, 11, 0.12);
+  --border-strong: rgba(10, 10, 11, 0.2);
+  background: var(--bg);
+  color: var(--text);
+  transition: background-color 0.6s var(--ease-expo);
+}
+
 body {
   background: var(--bg);
   color: var(--text);

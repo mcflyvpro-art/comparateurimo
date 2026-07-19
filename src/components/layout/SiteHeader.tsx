@@ -2,33 +2,99 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { motion } from "motion/react";
 import { FullscreenMenu } from "./FullscreenMenu";
 
+const EASE = [0.19, 1, 0.22, 1] as const;
+
 /**
- * Header calqué sur speedy.io : transparent, superposé au contenu.
- * 3 zones — logo (gauche) · burger centré qui ouvre le menu plein écran ·
- * bouton pill (droite). Le burger morphe en croix à l'ouverture.
+ * Header calqué sur speedy.io : transparent, superposé, 3 zones
+ * (logo · burger centré · pill). Deux comportements « Speedy » :
+ *  - se cache au scroll vers le bas, réapparaît vers le haut ;
+ *  - s'adapte au fond de la section derrière lui (data-header-theme) :
+ *    fond sombre → logo/texte clairs ; fond clair → logo/texte sombres,
+ *    avec un fondu fluide (le wordmark passe d'une version à l'autre).
  */
 export function SiteHeader() {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
+  const [theme, setTheme] = useState<"dark" | "light">("dark");
+  const [hidden, setHidden] = useState(false);
+  const lastY = useRef(0);
+
+  useEffect(() => {
+    let raf = 0;
+    const SAMPLE = 44; // ligne d'échantillonnage sous le haut de l'écran
+
+    const update = () => {
+      // Thème = section dont la bande traverse le haut de l'écran
+      let t: "dark" | "light" = "dark";
+      document.querySelectorAll<HTMLElement>("[data-header-theme]").forEach((s) => {
+        const r = s.getBoundingClientRect();
+        if (r.top <= SAMPLE && r.bottom > SAMPLE) {
+          t = (s.dataset.headerTheme as "dark" | "light") ?? "dark";
+        }
+      });
+      setTheme(t);
+
+      // Cache/révèle selon le sens du scroll
+      const y = window.scrollY;
+      setHidden(y > lastY.current && y > 140);
+      lastY.current = y;
+    };
+
+    const onScroll = () => {
+      cancelAnimationFrame(raf);
+      raf = requestAnimationFrame(update);
+    };
+    update();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll);
+    return () => {
+      cancelAnimationFrame(raf);
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
+    };
+  }, []);
+
+  // Thème effectif : le menu ouvert force le sombre
+  const t = open ? "dark" : theme;
+  const isHidden = !open && hidden;
 
   return (
     <>
-      <header className="fixed inset-x-0 top-0 z-50">
+      <header
+        className={`fixed inset-x-0 top-0 z-50 transition-transform duration-[600ms] ease-[cubic-bezier(0.19,1,0.22,1)] ${
+          isHidden ? "-translate-y-full" : "translate-y-0"
+        } ${t === "light" ? "text-neutral-950" : "text-white"}`}
+        style={{ transitionProperty: "transform, color" }}
+      >
         <nav className="mx-auto grid max-w-[106rem] grid-cols-3 items-center px-[6vw] py-5">
-          {/* Logo (gauche) */}
+          {/* Logo — deux versions en fondu croisé selon le thème */}
           <Link
             href="/"
             onClick={() => setOpen(false)}
             aria-label="Estio — accueil"
             className="justify-self-start"
           >
-            {/* Wordmark blanc (mark immeubles + « estio »), sur header sombre */}
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src="/estio-wordmark.svg" alt="Estio" className="h-8 w-auto" />
+            <span className="relative inline-block h-8">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src="/estio-wordmark.svg"
+                alt="Estio"
+                className="h-8 w-auto transition-opacity duration-500"
+                style={{ opacity: t === "light" ? 0 : 1 }}
+              />
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src="/estio-wordmark-dark.svg"
+                alt=""
+                aria-hidden
+                className="absolute inset-0 h-8 w-auto transition-opacity duration-500"
+                style={{ opacity: t === "light" ? 1 : 0 }}
+              />
+            </span>
           </Link>
 
           {/* Burger (centre) */}
@@ -40,16 +106,16 @@ export function SiteHeader() {
           >
             <span className="relative block h-3 w-[52px] transition-transform duration-300 ease-[cubic-bezier(0.19,1,0.22,1)] group-hover:scale-y-75">
               <motion.span
-                className="absolute left-0 block h-0.5 w-full bg-text"
+                className="absolute left-0 block h-0.5 w-full bg-current"
                 initial={false}
                 animate={open ? { top: "50%", y: "-50%", rotate: 45 } : { top: 0, y: 0, rotate: 0 }}
-                transition={{ duration: 0.4, ease: [0.19, 1, 0.22, 1] }}
+                transition={{ duration: 0.4, ease: EASE }}
               />
               <motion.span
-                className="absolute left-0 block h-0.5 w-full bg-text"
+                className="absolute left-0 block h-0.5 w-full bg-current"
                 initial={false}
                 animate={open ? { bottom: "50%", y: "50%", rotate: -45 } : { bottom: 0, y: 0, rotate: 0 }}
-                transition={{ duration: 0.4, ease: [0.19, 1, 0.22, 1] }}
+                transition={{ duration: 0.4, ease: EASE }}
               />
             </span>
           </button>
@@ -58,13 +124,17 @@ export function SiteHeader() {
           <div className="flex items-center gap-5 justify-self-end">
             <Link
               href="/connexion"
-              className="hidden text-sm text-muted transition-colors hover:text-text sm:inline"
+              className="hidden text-sm opacity-70 transition-opacity hover:opacity-100 sm:inline"
             >
               Se connecter
             </Link>
             <Link
               href="/connexion"
-              className="rounded-full bg-text px-5 py-2 text-sm font-medium text-bg transition-colors hover:bg-white"
+              className={`rounded-full px-5 py-2 text-sm font-medium transition-colors duration-500 ${
+                t === "light"
+                  ? "bg-neutral-950 text-white hover:bg-neutral-800"
+                  : "bg-white text-neutral-950 hover:bg-white/90"
+              }`}
             >
               Ajouter un bien
             </Link>

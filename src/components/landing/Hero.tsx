@@ -51,7 +51,10 @@ export function Hero() {
   const titre = ["Compare.", "Décide.", "Investis."];
 
   return (
-    <header className="relative flex min-h-[100svh] w-full flex-col overflow-hidden bg-bg">
+    <header
+      data-header-theme="dark"
+      className="relative flex min-h-[100svh] w-full flex-col overflow-hidden bg-bg"
+    >
       {/* Blob glossy en fond */}
       <div
         aria-hidden

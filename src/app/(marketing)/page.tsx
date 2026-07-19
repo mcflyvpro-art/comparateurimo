@@ -37,6 +37,8 @@ export default function Home() {
     <>
       <Hero />
 
+      {/* Sous le hero : fond clair (le header s'adapte : logo/texte sombres) */}
+      <div className="section-light" data-header-theme="light">
       <main className="mx-auto max-w-6xl px-6">
       {/* Principe — zig-zag */}
       <section id="principe" className="scroll-mt-24 py-20 lg:py-28">
@@ -137,6 +139,7 @@ export default function Home() {
         </Reveal>
       </section>
       </main>
+      </div>
     </>
   );
 }

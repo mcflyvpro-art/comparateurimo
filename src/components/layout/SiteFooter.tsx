@@ -4,7 +4,7 @@ import { footerGroups } from "./nav-links";
 /** Pied de page enrichi : marque + 3 colonnes de liens + barre légale. */
 export function SiteFooter() {
   return (
-    <footer className="mt-24 border-t border-border">
+    <footer data-header-theme="dark" className="border-t border-border">
       <div className="mx-auto grid max-w-6xl gap-10 px-6 py-14 sm:grid-cols-2 lg:grid-cols-4">
         <div>
           <Link href="/" aria-label="Estio — accueil" className="inline-block">

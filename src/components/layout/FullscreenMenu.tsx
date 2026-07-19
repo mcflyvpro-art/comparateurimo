@@ -89,12 +89,12 @@ export function FullscreenMenu({
                             active ? "pointer-events-none text-faint" : "text-text"
                           }`}
                         >
-                          {/* Mot + soulignement épais (déployé au survol) */}
-                          <span className="relative inline-block pb-[0.14em]">
+                          {/* Mot qui avance + soulignement (façon speedy.io) */}
+                          <span className="relative inline-block pb-[0.12em] transition-transform duration-500 ease-[cubic-bezier(0.19,1,0.22,1)] group-hover:translate-x-[0.32em]">
                             <span className={`block font-medium leading-[1.02] tracking-[-0.03em] ${l.size}`}>
                               {l.label}
                             </span>
-                            <span className="absolute bottom-0 left-0 right-0 h-[0.09em] origin-left scale-x-0 bg-current transition-transform duration-500 ease-[cubic-bezier(0.19,1,0.22,1)] group-hover:scale-x-100" />
+                            <span className="absolute bottom-0 left-0 right-0 h-[6px] origin-left scale-x-0 bg-current transition-transform duration-500 ease-[cubic-bezier(0.19,1,0.22,1)] group-hover:scale-x-100" />
                           </span>
                           {/* Sous-titre en exposant (haut-droite), une seule ligne */}
                           <span className="ml-2 mt-[0.25em] self-start whitespace-nowrap text-sm text-muted lg:ml-3 lg:text-base">

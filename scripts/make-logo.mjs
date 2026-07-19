@@ -3,14 +3,16 @@
 //  - src/app/icon.svg          : la favicon = l'icône « e » découpée, sur carré sombre
 import { readFileSync, writeFileSync, mkdirSync } from "node:fs";
 
-const src = readFileSync("estiologofoncer.svg", "utf8");
-
-// Récupère tous les <path .../>
-const paths = [...src.matchAll(/<path\b[^>]*\/>/g)].map((m) => m[0]);
 const dOf = (p) => (p.match(/\bd="([^"]+)"/) || [])[1] || "";
+const extractGlyphs = (file) => {
+  const s = readFileSync(file, "utf8");
+  const paths = [...s.matchAll(/<path\b[^>]*\/>/g)].map((m) => m[0]);
+  return paths.filter((p) => !dOf(p).startsWith("M0 0")); // retire le fond
+};
 
-// Le fond = le path qui démarre en "M0 0"
-const glyphs = paths.filter((p) => !dOf(p).startsWith("M0 0"));
+// Version claire (glyphes blancs) et sombre (glyphes noirs)
+const glyphs = extractGlyphs("estiologofoncer.svg");
+const glyphsDark = extractGlyphs("estiologoclair.svg");
 
 // L'icône = les deux tours (corps pleins). On retire la diagonale d'ombrage
 // (M460) pour garder un gap transparent entre les tours, et on recolore en
@@ -28,6 +30,13 @@ ${glyphs.join("\n")}
 </svg>
 `;
 writeFileSync("public/estio-wordmark.svg", wordmark);
+
+// Wordmark sombre (pour fond clair) — depuis la version claire
+const wordmarkDark = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="305 344 968 292" fill="none">
+${glyphsDark.join("\n")}
+</svg>
+`;
+writeFileSync("public/estio-wordmark-dark.svg", wordmarkDark);
 
 // Favicon : fond transparent, les deux tours seules, couleur adaptative
 const favicon = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="308 350 250 278" fill="none">
