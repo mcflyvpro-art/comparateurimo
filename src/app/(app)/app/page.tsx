@@ -14,9 +14,9 @@ export default function AppDashboard() {
       </h1>
 
       <div className="mt-10 rounded-2xl border border-border bg-bg-alt px-6 py-16 text-center">
-        <p className="text-lg text-text">Aucun bien analysé pour l&apos;instant.</p>
+        <p className="text-lg text-text">Aucun bien analysé pour l’instant.</p>
         <p className="mt-2 text-sm text-muted">
-          Importez une annonce pour l&apos;analyser et l&apos;ajouter à votre wallet.
+          Importez une annonce pour l’analyser et l’ajouter à votre wallet.
         </p>
         <span
           aria-disabled="true"
