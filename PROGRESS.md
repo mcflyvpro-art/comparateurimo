@@ -58,7 +58,7 @@ Les hypothèses risquées (réorientation §10) restent à valider *en construis
 ### Le build « structure » découpé en 8 petits plans (exécutés 1 par 1, validés sur Vercel)
 > Chaque plan détaillé est écrit **juste avant** son exécution (contre le vrai code). Plan 1 écrit : `docs/superpowers/plans/2026-07-21-plan1-schema-seed.md`.
 - [x] **Plan 1 — Schéma Supabase & seed** : toutes les tables + enums + RLS + Storage (photos/docs) + utilisateur démo + seed + client serveur démo + types TS. **Validé sur Vercel le 2026-07-21** (`/app` affiche les 2 projets seedés réels).
-- [ ] **Plan 2 — App shell & navigation** : layout `(app)`, sidebar (projets+switcher+nav), barre du haut, onglets de vues, page projets, refonte du `/app`. **Exécuté et poussé sur Vercel le 2026-07-21 — en attente du « c'est bon » de l'utilisateur.**
+- [x] **Plan 2 — App shell & navigation** : layout `(app)`, sidebar (projets+switcher+nav), barre du haut, onglets de vues, page projets, refonte du `/app`. **Validé sur Vercel le 2026-07-21.**
 - [ ] **Plan 3 — Vue Pipeline (board + drawer)** : Kanban 6 colonnes, carte-bien riche, drag & drop + `status_history`, drawer d'aperçu.
 - [ ] **Plan 4 — Vue Tableau** : table dense triable, colonnes chiffrées (moteur `calc/`).
 - [ ] **Plan 5 — Fiche complète** : page pleine (sections ①→⑨), scénario en direct, tooltips « ? », photos/documents.
@@ -111,7 +111,7 @@ Les hypothèses risquées (réorientation §10) restent à valider *en construis
 - **Convention confirmée** : pas de framework de test dans ce repo → vérification par `tsc --noEmit` + `npm run build` + `npm run lint` + vérification manuelle (curl sur serveur de dev pour la Tâche 8), comme au Plan 1.
 - **8 tâches approuvées** individuellement + **revue finale de branche : Ready to merge** (aucun Critical/Important, 4 notes Minor sans action requise — duplication de fetch proportionnée à un build « structure », détail cosmétique sidebar, prop `emptyLabel` inatteignable).
 - Commits : `6602f12`→`bfb1904` (+ `69c7c91` doc). **Poussé sur `main`** (accord utilisateur).
-- **En attente** : validation utilisateur de `/app`, `/app/projects`, `/app/p/[id]` sur Vercel → « c'est bon » → cocher Plan 2. **Prochaine action** : Plan 3 (Vue Pipeline — board + drawer).
+- **Validé par l'utilisateur sur Vercel** (« c'est bon ») → Plan 2 coché. **Prochaine action** : brainstorm/écriture du Plan 3 (Vue Pipeline — board + drawer).
 
 ### Session 10 — 2026-07-21 — Plan 1 exécuté (schéma Supabase & seed)
 **Étape : 🔨 impl — Plan 1**
