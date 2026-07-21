@@ -57,7 +57,7 @@ Les hypothèses risquées (réorientation §10) restent à valider *en construis
 
 ### Le build « structure » découpé en 8 petits plans (exécutés 1 par 1, validés sur Vercel)
 > Chaque plan détaillé est écrit **juste avant** son exécution (contre le vrai code). Plan 1 écrit : `docs/superpowers/plans/2026-07-21-plan1-schema-seed.md`.
-- [x] **Plan 1 — Schéma Supabase & seed** : toutes les tables + enums + RLS + Storage (photos/docs) + utilisateur démo + seed + client serveur démo + types TS. **Validé sur Vercel le 2026-07-21.**
+- [x] **Plan 1 — Schéma Supabase & seed** : toutes les tables + enums + RLS + Storage (photos/docs) + utilisateur démo + seed + client serveur démo + types TS. **Validé sur Vercel le 2026-07-21** (`/app` affiche les 2 projets seedés réels).
 - [ ] **Plan 2 — App shell & navigation** : layout `(app)`, sidebar (projets+switcher+nav), barre du haut, onglets de vues, page projets, refonte du `/app`.
 - [ ] **Plan 3 — Vue Pipeline (board + drawer)** : Kanban 6 colonnes, carte-bien riche, drag & drop + `status_history`, drawer d'aperçu.
 - [ ] **Plan 4 — Vue Tableau** : table dense triable, colonnes chiffrées (moteur `calc/`).
