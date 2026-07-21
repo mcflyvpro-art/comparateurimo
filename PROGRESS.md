@@ -101,6 +101,16 @@ Les hypothèses risquées (réorientation §10) restent à valider *en construis
 
 > Journal factuel. Les coches vivent dans la roadmap, décidées par l'utilisateur.
 
+### Session 10 — 2026-07-21 — Plan 1 exécuté (schéma Supabase & seed)
+**Étape : 🔨 impl — Plan 1**
+- **Plan 1 exécuté inline** (migrations couplées → inline plutôt que subagent ; subagent-driven réservé aux plans UI 2-8). Les 8 tâches faites.
+- **Base Supabase `cltvujujsmigbbtnslmk` : 12 tables + enums + RLS + 2 buckets Storage privés.** Advisor sécurité : 0 alerte. Migrations committées dans `supabase/migrations/` (`20260721000001`→`…07`).
+- **Seed** : user démo (`…e5`), 2 projets, 6 biens (tous statuts), 6 scénarios, 3 notes, 1 contact, 1 market_snapshot. Vérifié.
+- **App** : `src/lib/supabase/demo.ts` (`getDemoClient()` service role filtré par `DEMO_USER_ID`) + types générés `types.ts` + `/app` lit les projets réels. Écart vs plan : service role au lieu de `signInWithPassword` (plus robuste). Exclu les fichiers de référence du lint. **Build + lint verts.**
+- Commits : `3e9d1e1` (plan), `ea163e9` (schéma), `ca94785` (seed), `0248dbb` (app). Poussé sur `main`.
+- **⚠️ Vercel** : `/app` requiert `SUPABASE_SECRET_KEY` en env var Vercel (sinon KO).
+- **En attente** : validation utilisateur de `/app` sur Vercel → « c'est bon » → cocher Plan 1. **Prochaine action** : Plan 2 (App shell & navigation).
+
 ### Session 9 — 2026-07-21 — Brainstorm Phase 2 (l'outil) + spec + Plan 1
 **Étape : 🗺️ brainstorm → spec → plans**
 - L'utilisateur fournit `simulateur-esio.jsx` (proto mobile) comme **référence de parcours uniquement** (rien du design/couleurs/calculs).
