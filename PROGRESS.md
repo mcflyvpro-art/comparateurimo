@@ -1,159 +1,148 @@
 # PROGRESS.md — Journal & Roadmap Estio
 
 > Pilote unique de l'avancement. Grandes lignes des 7 phases + détail de la phase en cours + historique des sessions.
+> **Direction (réorientation 2026-07-21) : le pipeline de décision alimenté par capture universelle.** Voir `REORIENTATION-ESTIO.md`. Périmètre : **France entière**.
+
+---
+
+## Priorité stratégique (à lire en premier)
+
+Décision utilisateur : **on saute les raffinements design et on va directement au dev de l'OUTIL** (le pipeline). Le pointeur est sur la **Phase 2**.
+
+Les hypothèses risquées (réorientation §10) restent à valider *en construisant*, pas en amont — notée pour mémoire :
+1. **Fiabilité N2 sur France entière** — les chiffres sont-ils crédibles ? (afficher un indice de confiance)
+2. **Confiance** — un investisseur confierait-il une décision au verdict ?
+3. **Willingness-to-pay** — payer un abonnement pour piloter sa recherche ?
+4. **Ingestion hors-portail** — la capture tient-elle sur des documents variés ?
+
+> Un **prototype UX** du parcours (React, mobile-first : board à statuts, capture simulée, fiche avec recalcul live, arbitrage avec profils, 3 abonnements avec gating) a été construit et **validé côté ergonomie**. Il fait référence pour l'UX de la Phase 2.
 
 ---
 
 ## Méthodologie de travail — NON NÉGOCIABLE
 
 1. **Chaque phase débute par un gros brainstorm** (`superpowers:brainstorming`). Pas de code avant brainstorm.
-2. **Le brainstorm → immense spec → découpée en petits plans.** Petite feature, petite spec, petit plan. Petit à petit.
-3. **L'utilisateur est la SOURCE DE VÉRITÉ.** Il est le **SEUL** à cocher les cases `- [ ]`. Claude ne coche **JAMAIS**.
-4. **La mémoire retient chaque session.** Nouvelle session → Claude reprend au **dernier point non coché**.
-5. **On avance 1 par 1.** L'utilisateur valide chaque petite feature **avant** de passer à la suivante.
+2. **Le brainstorm → immense spec → découpée en petits plans.** Petite feature, petite spec, petit plan.
+3. **L'utilisateur est la SOURCE DE VÉRITÉ.** Claude ne coche qu'après un **« c'est bon » explicite** (validation sur Vercel).
+4. **La mémoire retient chaque session.** Nouvelle session → reprendre au **dernier point non coché**.
+5. **On avance 1 par 1.** Validation utilisateur **avant** de passer à la suivante.
 
-**STOP — Claude demande avant de :** passer à la feature/phase suivante · cocher une case (jamais).
+**STOP — Claude demande avant de :** passer à la feature/phase suivante · cocher sans le « c'est bon ».
 
 ### Comment lire ce fichier
-- `- [ ]` = à faire · `- [x]` = **coché par l'utilisateur uniquement**.
-- Chaque phase = un brainstorm qui remplit sa section détaillée ci-dessous.
-- Seule la **phase en cours** est détaillée. Les phases suivantes restent en grandes lignes jusqu'à leur brainstorm.
+- `- [ ]` = à faire · `- [x]` = **validé par l'utilisateur** (« c'est bon » sur Vercel).
+- Seule la **phase en cours** est détaillée ; les suivantes restent en grandes lignes jusqu'à leur brainstorm.
 
 ---
 
 ## Roadmap — 7 phases (grandes lignes)
 
-- [ ] **Phase 1 — Design/UI & arborescence** : landing propre (placeholders OK) + toutes les pages du site créées.
-- [ ] **Phase 2 — Le comparateur (cœur produit)** : import annonce → extraction Grok → analyse du bien → wallet visible → 2e bien → comparaison. Crédits, anti-contournement, floutage.
-- [ ] **Phase 3 — Le wallet** : feature à part entière + tarifs.
-- [ ] **Phase 4 — Pages header/footer** : légales, À propos, textes obligatoires.
-- [ ] **Phase 5 — Comptes & sessions** : Google + email/mot de passe, connecté au wallet.
-- [ ] **Phase 6 — Stripe** : tarifs et abonnements.
+- [ ] **Phase 1 — Design/UI & arborescence** *(largement fait S3-S7 ; on ne s'y attarde plus)*.
+- [ ] **Phase 2 — L'OUTIL : le pipeline de décision** *(EN COURS)* : modèle Projet→Biens(N1) · capture universelle (Grok) · N2 recalculé · moteur déterministe · board à statuts · fiche + scénario live · score perso · arbitrage langage naturel · floutage freemium (pas de crédits).
+- [ ] **Phase 3 — Surveillance & rétention** : alertes prix/taux, notifications vivantes.
+- [ ] **Phase 4 — Pages header/footer** : légales, disclaimers, À propos.
+- [ ] **Phase 5 — Comptes & sessions** : Google + email/mot de passe.
+- [ ] **Phase 6 — Stripe** : abonnements Free/Pro/Expert + gating.
 - [ ] **Phase 7 — Cybersécurité** : code review, polish, attaques via repo Strix.
 
 ---
 
-## ▶ Phase en cours : Phase 1 — Design/UI & arborescence
+## ▶ Phase en cours : Phase 2 — L'OUTIL : le pipeline de décision
 
-> Objectif : une landing quasi finie (placeholders tolérés) ET **toute l'arborescence** du site en place — chaque page existe, stylée, liens vivants.
+> Objectif : le cœur produit fonctionnel — créer un projet, alimenter le board, piloter les statuts, voir une fiche bien avec analyse poussée + scénario en direct, arbitrer entre finalistes. Parcours `REORIENTATION-ESTIO.md` §7. Détail features : `MVP.md` Phase 2.
 
-### Brainstorm de phase
-- [x] Brainstorm Phase 1 → spec `docs/superpowers/specs/2026-07-19-phase1-design-arborescence-design.md` (arborescence 13 routes, découpage **1a structure / 1b design-craft**, placeholders assumés).
+### Brainstorm & spec (fait le 2026-07-21)
+- [ ] **Brainstorm `superpowers` Phase 2** — fait (companion visuel). Décisions : desktop-first CRM (Attio/Notion/Monday), identité dark grotesk de la landing, 3 vues (Pipeline/Tableau/Carte), Comparer=action+arbitrage intégré, fiche drawer + analyse complète, flux d'ajout en 2 temps, schéma Supabase complet, utilisateur démo seedé, pas de freemium mais tooltips « ? ». **France entière.**
+- [ ] **Spec écrite** — `docs/superpowers/specs/2026-07-21-outil-pipeline-structure-design.md` (validée par l'utilisateur).
 
-### Sous-phase 1a — structure (arborescence + coquilles)
-- [x] Design system & tokens Estio (couleurs, typo géante, motion) — S3
-- [x] Inventaire figé de **toute** l'arborescence (13 routes) — spec §3
-- [x] Toutes les pages créées en coquilles stylées (10 marketing + 404 + groupe app) — S5
-- [x] Layout marketing partagé header + footer (liens vivants, responsive) — S5
-- [x] Placeholders identifiés et assumés (spec §7)
+### Le build « structure » découpé en 8 petits plans (exécutés 1 par 1, validés sur Vercel)
+> Chaque plan détaillé est écrit **juste avant** son exécution (contre le vrai code). Plan 1 écrit : `docs/superpowers/plans/2026-07-21-plan1-schema-seed.md`.
+- [ ] **Plan 1 — Schéma Supabase & seed** : toutes les tables + enums + RLS + Storage (photos/docs) + utilisateur démo + seed + client serveur démo + types TS. *(plan écrit, prêt à exécuter)*
+- [ ] **Plan 2 — App shell & navigation** : layout `(app)`, sidebar (projets+switcher+nav), barre du haut, onglets de vues, page projets, refonte du `/app`.
+- [ ] **Plan 3 — Vue Pipeline (board + drawer)** : Kanban 6 colonnes, carte-bien riche, drag & drop + `status_history`, drawer d'aperçu.
+- [ ] **Plan 4 — Vue Tableau** : table dense triable, colonnes chiffrées (moteur `calc/`).
+- [ ] **Plan 5 — Fiche complète** : page pleine (sections ①→⑨), scénario en direct, tooltips « ? », photos/documents.
+- [ ] **Plan 6 — Vue Carte** : MapLibre + épingles par score + mini-aperçu.
+- [ ] **Plan 7 — Comparer / Arbitrage** : sélection multi, côte à côte, verdict langage naturel (gabarit déterministe), profils de priorité.
+- [ ] **Plan 8 — Flux Ajouter un bien** : écran d'entrée (rampes → exemple généré) → formulaire de vérif/ajout, widget extension + coquille `/extension`.
 
-### Sous-phase 1b — design-craft (refonte UI façon speedy.io) — EN COURS
-> Réf. teardown `docs/brand/speedy-teardown.md`. On **itère encore**, pas de clôture.
-- [x] Hero dark plein écran (blob, cartes flottantes, reveal) — S4/S6
-- [x] **Section pin 600vh** + stepper style Stripe (5 étapes : formulaire → analyse → comparaison → score → décision), rail continu au scroll — **validé S7**
-- [x] **Smooth scroll Lenis** global, synchro ScrollTrigger (le pin reste calé) — **validé S7**
-- [x] Sections score / données / CTA au niveau premium (`.h-lg`/`.h-display`, CTA dark bookend, marquee agrandi) — **validé S7**
-- [ ] Header / footer / PageHeader harmonisés premium (fait S7 — **à valider sur Vercel**)
-- [ ] Touches signature restantes : texte détouré, cards décalées, marquee avancé
-- [ ] Revue finale design/UI 1b par l'utilisateur (clôture Phase 1)
+> **Hors de ce build (étapes ultérieures) :** vrai piochage web N2 · rampes d'extraction réelles (Grok) · formules fiscales exactes · floutage freemium + Stripe · auth réelle · surveillance/alertes · version mobile.
 
 ---
 
 ## Phases suivantes (grandes lignes — à détailler à leur brainstorm)
 
-### Phase 2 — Le comparateur (cœur produit)
-- [ ] Brainstorm `superpowers` Phase 2 (import + extraction + analyse + wallet + comparaison + crédits + anti-contournement + floutage, de bout en bout)
-- [ ] Import annonce : les 3 rampes (capture / copier-coller / formulaire) avec **fallback + pré-remplissage** vers un formulaire de confirmation unique
-- [ ] Connexion **API Grok** (multimodal, gratuit) → extraction N1 uniquement
-- [ ] Connecteurs données extérieures (N2) + appels API bases open data
-- [ ] Affichage analytique d'un bien après formulaire complet
-- [ ] Stockage du bien dans le **wallet visible**
-- [ ] Ajout d'un 2e bien → bouton « Comparer » (pousser à la comparaison)
-- [ ] **Anti-contournement** : empêcher d'analyser 2 biens séparément et de les juxtaposer d'une page à l'autre
-- [ ] Crédits : 1 crédit / analyse de bien, 1 crédit / comparaison
-- [ ] Données analytiques **enrichies uniquement en comparaison** (une analyse seule n'a pas de référentiel)
-- [ ] Écrit clair : ce qu'on analyse et ce que chaque abonnement débloque ; le reste **flouté complet** → pousse à l'achat (idem wallet)
-
-### Phase 3 — Le wallet
+### Phase 3 — Surveillance & rétention
 - [ ] Brainstorm `superpowers` Phase 3
-- [ ] Wallet comme feature centrale (tout géré à ce niveau)
-- [ ] Grille tarifaire intégrée au wallet
+- [ ] Surveillance projet actif (baisse de prix, taux, nouveau comparable)
+- [ ] Notifications vivantes + alertes prix/taux (hebdo Pro / temps réel Expert)
 
 ### Phase 4 — Pages header/footer
 - [ ] Brainstorm `superpowers` Phase 4
-- [ ] Pages obligatoires (mentions légales, CGU, confidentialité)
-- [ ] Pages de texte (À propos, etc.)
+- [ ] Mentions légales, CGU, confidentialité, **disclaimers** (aide à la décision, pas conseil réglementé)
+- [ ] À propos + pages de texte
 
 ### Phase 5 — Comptes & sessions
 - [ ] Brainstorm `superpowers` Phase 5
-- [ ] Connexion Google
-- [ ] Connexion email + mot de passe
-- [ ] Session utilisateur connectée au wallet
+- [ ] Google · email/mot de passe · session connectée aux projets · RLS
 
 ### Phase 6 — Stripe
 - [ ] Brainstorm `superpowers` Phase 6
-- [ ] Intégration paiement Stripe
-- [ ] Tarifs et abonnements
+- [ ] Abonnements Free/Pro/Expert (mensuel/annuel) + gating serveur
 
 ### Phase 7 — Cybersécurité
 - [ ] Brainstorm `superpowers` Phase 7
-- [ ] Code review détaillée (tous les petits détails, polish)
-- [ ] Campagne d'attaques via le repo **Strix**
-- [ ] Corrections des failles trouvées
+- [ ] Code review + durcissement (RLS, validation, secrets, rate-limit)
+- [ ] Campagne d'attaques repo **Strix** + corrections
 
 ---
 
 ## Historique des sessions (le plus récent en haut)
 
-> Journal factuel. Aucune coche ici : les coches vivent dans la roadmap ci-dessus, décidées par l'utilisateur.
+> Journal factuel. Les coches vivent dans la roadmap, décidées par l'utilisateur.
+
+### Session 9 — 2026-07-21 — Brainstorm Phase 2 (l'outil) + spec + Plan 1
+**Étape : 🗺️ brainstorm → spec → plans**
+- L'utilisateur fournit `simulateur-esio.jsx` (proto mobile) comme **référence de parcours uniquement** (rien du design/couleurs/calculs).
+- **Brainstorm `superpowers`** avec companion visuel (maquettes dans le navigateur). Décisions figées : **desktop-first CRM** (refs Attio/Notion/Monday, « pas vide », orienté client) · identité **dark grotesk de la landing** (pas le teal du proto) · **3 vues** Pipeline/Tableau/Carte · **Comparer = action** avec **arbitrage (verdict langage naturel + profils) intégré** (pas une vue séparée) · fiche = **drawer + page d'analyse complète** (la plus poussée : marché exhaustif, financement poussé, tous calculs, fiscalité tous régimes, scénario live) · **flux d'ajout en 2 temps** (rampes → exemple → formulaire de vérif) + widget **extension** → page `/extension` · **schéma Supabase complet dès maintenant** (toutes les tables, photos/docs) · **utilisateur démo seedé** (auth réelle = Phase 5) · **pas de freemium** dans ce build mais **tooltips « ? »** partout. **France entière** (confirmé).
+- **Spec** écrite + committée (`6e18efd`) : `docs/superpowers/specs/2026-07-21-outil-pipeline-structure-design.md`. Découpage en **8 petits plans**.
+- **Plan 1** écrit + committé (`3e9d1e1`) : `docs/superpowers/plans/2026-07-21-plan1-schema-seed.md` (8 tâches : migrations → RLS → seed démo → client serveur + types).
+- Supabase cible : projet **comparateurimo** `cltvujujsmigbbtnslmk` (vide, prêt).
+- **Méthode de plans** : chaque plan détaillé est écrit **juste avant** son exécution (contre le vrai code), pas les 8 d'un coup.
+- **Prochaine action** : exécuter le **Plan 1** (subagent-driven ou inline), valider sur Vercel, puis écrire le Plan 2.
+
+### Session 8 — 2026-07-21 — RÉORIENTATION : pipeline de décision
+**Étape : 📋 cadrage — pivot stratégique**
+- L'utilisateur a fourni `REORIENTATION-ESTIO.md` : Estio n'est plus « comparateur/analyseur d'annonces » (marché saturé) mais **le pipeline de décision de l'investisseur** (« le CRM de ta recherche immo »), alimenté par **capture universelle**.
+- Changements majeurs : board à statuts (Kanban) = cœur · on stocke le **bien (N1)**, N2/N3 **recalculés à la volée** (fin du « wallet obsolète ») · modèle **abonnement, PAS de crédits sur le cœur** · arbitrage en **langage naturel** · fiche avec **scénario en direct**.
+- **Décisions utilisateur explicites cette session :** (1) **France entière**, pas 1-2 villes (contre la reco §8/§10 du doc — le risque N2 est assumé, à mitiger par un indice de confiance). (2) **On saute les raffinements design** et on va **directement au dev de l'outil** → pointeur placé sur **Phase 2**.
+- Réécriture complète de `CLAUDE.md`, `MVP.md`, `ARCHITECTURE.md`, `PROGRESS.md` + mémoire projet selon la nouvelle direction.
+- **Prochaine action : brainstorm `superpowers` Phase 2** (parcours §7 de bout en bout), puis découpage E0→E7.
 
 ### Session 7 — 2026-07-20 — Refonte landing 1b (scroll signature speedy.io)
 **Étape : 🔨 impl — sous-phase 1b (design-craft)**
-- Reprise du fil 1b : refonte UI landing façon **speedy.io** (fond dark, typo géante, scroll storytelling). Étude du vrai scroll via captures locales (`inspi/auto/`, `speedy-io-html`).
-- **Section pin 600vh** (`PinnedNiveaux.tsx`) réécrite fidèle speedy : scène sticky 100vh, **5 étapes** qui crossfadent (formulaire → analyse → comparaison → score → décision), placeholders d'aperçu à droite (futurs screens de l'outil).
-- **Stepper** refait 3× jusqu'à validation : style **Stripe** (puce passé ✓ / actif ● halo / futur ○), **rail noir continu** qui se remplit au scroll (`scaleY` = progression), centré vertical.
-- **Lenis** : constat d'un **doublon** (j'avais créé `layout/SmoothScroll` alors que `providers/SmoothScroll` existait déjà) → doublon supprimé, un seul Lenis synchro ScrollTrigger.
-- **Sections sous le pin** (score/données/CTA) passées au niveau premium (`.h-lg`/`.h-display`, largeur `106rem`/`6vw`, CTA **dark bookend**, marquee agrandi).
-- **Harmonisation** : `PageHeader` premium (impacte les 10 pages), `SiteFooter` aligné en largeur. Aucune couleur en dur dans les composants marketing → pages dark-cohérentes via tokens.
-- Fix lint pré-existant `PageLoader` (setState hors corps d'effet) → **lint global vert**. Build vert.
+- Section pin 600vh (`PinnedNiveaux.tsx`, 5 étapes crossfade + stepper style Stripe, rail continu), smooth scroll Lenis (un seul, `providers/SmoothScroll`), sections score/données/CTA premium, PageHeader + footer harmonisés. Lint + build verts.
 - Commits : `27e62c0`, `57ab411`, `fba18c9`, `120acf7`, `76dc173`, `0b4ece7`, `9d87411`.
-- **Décision méthodo** : l'utilisateur m'a **exceptionnellement autorisé à cocher** les cases de cette session (règle n°3 normalement : lui seul). Coché uniquement le **fait + validé** ; header/pages + revue finale laissés ouverts (on n'a pas clôturé).
-- **Prochaine action** : valider header/pages sur Vercel, puis itérer les touches signature restantes (texte détouré, cards) avant revue finale 1b.
+- *Note post-réorientation : le design est désormais mis en pause au profit du dev de l'outil.*
 
 ### Session 6 — 2026-07-19 — Adoption de la méthodo 7 phases
 **Étape : 📋 cadrage méthodo**
-- L'utilisateur a défini les **5 règles de travail non négociables** et la **roadmap en 7 phases**.
-- Réécriture de `CLAUDE.md`, `PROGRESS.md`, `MVP.md`, `ARCHITECTURE.md` selon cette méthodo, en cases à cocher que **seul l'utilisateur** valide.
-- Décisions figées : LLM d'extraction = **API Grok** (multimodal, gratuit) ; auth = **Google + email/mdp** ; cyber = repo **Strix** ; crédits = **1/analyse + 1/comparaison** ; analyse enrichie **uniquement** en comparaison.
-- **Prochaine action** : brainstorm Phase 1 (ou validation que Phase 1 est déjà couverte par S3-S5).
+- 5 règles non négociables + roadmap 7 phases. Réécriture des docs de travail. *(La vision « crédits/comparateur » de cette session est remplacée par la réorientation S8.)*
 
 ### Session 5 — 2026-07-19 — Site public (header, pages, footer, modèle éco)
-**Étape : 🔨 impl** — amorce Phase 1 & 4
-- `SiteHeader` + `MobileMenu` (liens réels, état actif, burger mobile), `SiteFooter` (4 colonnes), layout `(marketing)`.
-- 10 routes : `/` + `comment-ca-marche`, `tarifs`, `faq`, `a-propos`, `contact`, `connexion`, `mentions-legales`, `confidentialite`, `cgu`.
-- Composants : `PageHeader`, `PricingTable` (Free/Pro/Expert + toggle mensuel/annuel), `FaqAccordion`, `ContactForm`, `LoginForm` (UI seule), `LegalPage`.
-- Modèle éco spec §11 : wallet de crédits, Free 3 crédits à vie. Mentions « open data » retirées de l'UI. Build + lint verts.
+**Étape : 🔨 impl** — 10 routes, `SiteHeader`/`MobileMenu`/`SiteFooter`, layout `(marketing)`, `PricingTable`/`FaqAccordion`/`ContactForm`/`LoginForm`/`LegalPage`. Build + lint verts.
 
 ### Session 4 — 2026-07-19 — Landing Estio
-**Étape : 🔨 impl** — amorce Phase 1
-- Landing complète (`/apple-design` + `/design-taste-frontend` + `/ui-ux-pro-max`) : hero asymétrique, principe zig-zag, score interactif, sources marquee, CTA.
-- Composants `landing/` : `Reveal`, `HeroVisual`, `MagneticButton`, `ScoreProfiles`, `SourcesMarquee`.
-- Accessibilité : focus-visible global, muted `#75695d` (AA), `aria-pressed`. Springs stiffness 100 / damping 20.
+**Étape : 🔨 impl** — Landing complète (hero, principe zig-zag, score interactif, marquee, CTA). Composants `landing/`. Accessibilité AA.
 
 ### Session 3 — 2026-07-19 — Marque & design system
-**Étape : 🔨 impl** — amorce Phase 1
-- Nom **Estio** (`estio.immo`). Charte `docs/brand/estio-brandkit.md`. Tokens `src/design/tokens.{css,ts}`. General Sans + Motion. Logo placeholder, 4 maquettes.
+**Étape : 🔨 impl** — Nom **Estio**. Charte `docs/brand/estio-brandkit.md`. Tokens `src/design/tokens.{css,ts}`. General Sans + Motion.
 
 ### Session 2 — 2026-07-19 — Scaffold + Supabase
-**Étape : 🔨 impl (infra)**
-- Next.js 16.2.10 (App Router, TS 5, Tailwind 4, `src/`, ESLint). Supabase SSR (`client/server/middleware` + `proxy.ts`). `.env.local` + `/api/health`. Commit `02661af`.
-- Décisions : moteur calcul en **TS pur** (pas FastAPI), **Fluid Compute** Vercel.
-- ⚠️ Action utilisateur en attente : régénérer les clés Supabase (exposées en S2), importer sur Vercel.
+**Étape : 🔨 impl (infra)** — Next.js 16.2.10 (App Router, TS 5, Tailwind 4). Supabase SSR. `.env.local` + `/api/health`. Moteur calc en TS pur. Fluid Compute.
 
 ### Session 1 — 2026-07-19 — Cadrage & doc initiale
-**Étape : 📋 specs**
-- Validé `comparateur-immo-specs.md` (v0.1). Créé `CLAUDE.md`, `MVP.md`, `ARCHITECTURE.md`, `PROGRESS.md`.
-- Décisions : moteur TS pur ; rampe d'import universelle = capture d'écran lue par LLM.
+**Étape : 📋 specs** — Validé `comparateur-immo-specs.md`. Créé les docs de travail. Rampe d'import = capture lue par LLM.
 
 ---
 
