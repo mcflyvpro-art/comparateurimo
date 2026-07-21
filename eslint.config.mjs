@@ -12,6 +12,11 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    // Prototypes/références hors application (non lintés)
+    "simulateur-esio.jsx",
+    "speedy-io-html/**",
+    "firecrawl-crawl/**",
+    "graphify-out/**",
   ]),
 ]);
 
