@@ -59,7 +59,7 @@ Les hypothèses risquées (réorientation §10) restent à valider *en construis
 > Chaque plan détaillé est écrit **juste avant** son exécution (contre le vrai code). Plan 1 écrit : `docs/superpowers/plans/2026-07-21-plan1-schema-seed.md`.
 - [x] **Plan 1 — Schéma Supabase & seed** : toutes les tables + enums + RLS + Storage (photos/docs) + utilisateur démo + seed + client serveur démo + types TS. **Validé sur Vercel le 2026-07-21** (`/app` affiche les 2 projets seedés réels).
 - [x] **Plan 2 — App shell & navigation** : layout `(app)`, sidebar (projets+switcher+nav), barre du haut, onglets de vues, page projets, refonte du `/app`. **Validé sur Vercel le 2026-07-21.**
-- [ ] **Plan 3 — Vue Pipeline (board + drawer)** : Kanban 6 colonnes, carte-bien riche, drag & drop + `status_history`, drawer d'aperçu.
+- [x] **Plan 3 — Vue Pipeline (board + drawer)** : Kanban 6 colonnes, carte-bien riche, drag & drop + `status_history`, drawer d'aperçu. **Validé sur Vercel le 2026-07-22.**
 - [ ] **Plan 4 — Vue Tableau** : table dense triable, colonnes chiffrées (moteur `calc/`).
 - [ ] **Plan 5 — Fiche complète** : page pleine (sections ①→⑨), scénario en direct, tooltips « ? », photos/documents.
 - [ ] **Plan 6 — Vue Carte** : MapLibre + épingles par score + mini-aperçu.
@@ -67,6 +67,16 @@ Les hypothèses risquées (réorientation §10) restent à valider *en construis
 - [ ] **Plan 8 — Flux Ajouter un bien** : écran d'entrée (rampes → exemple généré) → formulaire de vérif/ajout, widget extension + coquille `/extension`.
 
 > **Hors de ce build (étapes ultérieures) :** vrai piochage web N2 · rampes d'extraction réelles (Grok) · formules fiscales exactes · floutage freemium + Stripe · auth réelle · surveillance/alertes · version mobile.
+
+### Repères techniques (à lire en priorité à la reprise — évite de ré-explorer le repo)
+
+> Mis à jour après chaque plan. But : reprendre directement au brainstorm du plan suivant sans Glob/Grep/Read exploratoires.
+
+- **Schéma & données** : `supabase/migrations/2026072100000{1-7}*.sql` (tables/enums/RLS/seed) · types générés `src/lib/supabase/types.ts` (`Database`) · accès `getDemoClient()` + `DEMO_USER_ID` (`src/lib/supabase/demo.ts`), toujours filtrer `user_id` (et `project_id` sur écritures ciblées).
+- **App shell (Plan 2)** : `src/components/app/AppSidebar.tsx`, `AppTopbar.tsx`, `ViewTabs.tsx` (+`type ViewKey`), `ViewPlaceholder.tsx`, `CreateProjectForm.tsx` · route `/app/p/[projectId]/{layout,page}.tsx`.
+- **Pipeline (Plan 3)** : `src/lib/pipeline-types.ts` (`PropertyStatus`, `NoteKind`, `PipelineProperty`, `STATUS_COLUMNS` — types partagés à réutiliser tels quels, ne pas redéfinir) · `src/lib/calc/score.ts` (moteur pur : `computeRendementBrutPct`, `computeVerdict`, `verdictLabel` — mono-critère provisoire, pondération multi-critères = Plan 7) · `src/lib/format.ts` (`formatEUR`, `formatPercent`, `formatM2`, `formatPricePerM2`, `daysSince`) · `src/lib/board-position.ts` (`computeDropPosition`, fractional indexing) · composants `VerdictBadge`, `PropertyCard`, `PipelineColumn`, `PropertyDrawer`, `DiscardReasonModal`, `PipelineBoard` (`src/components/app/`) · server actions `moveProperty`/`addQuickNote` (`src/app/(app)/app/p/[projectId]/actions.ts`).
+- **Conventions figées** (valables pour tous les plans restants) : dark grotesk only (`src/design/tokens.css`/`globals.css`, classes `bg-bg`/`bg-bg-alt`/`text-text`/`text-muted`/`text-faint`/`text-brand`/`border-border`/`text-score-{high,mid,low}`) · pas de lib d'icônes (fait-main), `@dnd-kit` = seule exception lib UI validée · **aucun framework de test** → vérif = `npx tsc --noEmit` + `npm run build` + `npm run lint` + vérif manuelle (jamais de test unitaire à écrire) · `export const dynamic = "force-dynamic"` sur toute route Server Component qui lit Supabase · fonctionnalités pas encore construites = état désactivé avec `title` explicite, jamais un lien mort.
+- **Pour le Plan 4 (Vue Tableau)** : réutiliser directement `computeRendementBrutPct`/`computeVerdict` (Task 2 du Plan 3) et les formatters de `src/lib/format.ts` — ne pas les redéfinir. Colonnes de la table = mêmes champs que `PipelineProperty`.
 
 ---
 
@@ -100,6 +110,18 @@ Les hypothèses risquées (réorientation §10) restent à valider *en construis
 ## Historique des sessions (le plus récent en haut)
 
 > Journal factuel. Les coches vivent dans la roadmap, décidées par l'utilisateur.
+
+### Session 12 — 2026-07-22 — Plan 3 exécuté (Vue Pipeline) + optimisation reprise de session
+**Étape : 🔨 impl — Plan 3**
+- Plan 2 validé sur Vercel en amont → coché.
+- **Brainstorm + spec** : `docs/superpowers/specs/2026-07-21-plan-3-vue-pipeline-design.md`. Décisions clés : mini moteur `calc/` créé dès ce plan (pas de mock statique), drag & drop via `@dnd-kit` (pas de fait-main, board jugé trop fragile), carte riche avec fallback photo obligatoire (aucune photo seedée/upload avant Plan 5), raison d'écart via modale bloquante, drawer interactif (statut + note rapide), score provisoire = rendement brut mono-critère.
+- **Plan écrit** : `docs/superpowers/plans/2026-07-21-plan3-vue-pipeline.md` (10 tâches, code complet).
+- **Exécuté par un unique subagent** (pas de subagent-driven par tâche cette fois, un seul agent a déroulé les 10 tâches + commits + cases cochées), sur `main`. `tsc`/`build`/`lint` vérifiés indépendamment après coup par Claude (trust but verify) : tous verts.
+- **Livré** : `src/lib/pipeline-types.ts`, `src/lib/calc/score.ts`, `src/lib/format.ts`, `src/lib/board-position.ts`, `VerdictBadge`/`PropertyCard`/`PipelineColumn`/`PropertyDrawer`/`DiscardReasonModal`/`PipelineBoard`, server actions `moveProperty`/`addQuickNote`, `page.tsx` branché sur les vraies données.
+- Commits `0fa31c5`→`e92e0ef`. **Poussé sur `main`** (accord utilisateur) → déploiement Vercel auto.
+- **Validé par l'utilisateur sur Vercel** (« c'est bon ») → Plan 3 coché.
+- **Optimisation demandée par l'utilisateur** : chaque reprise de session coûte des dizaines de milliers de tokens d'exploration (Glob/Grep/Read sur migrations, types, composants). Option `/graphify` évaluée et écartée pour ce besoin précis : le graphe existant (`graphify-out/`) date du 2026-07-19 (avant toute la Phase 2), a coûté 182k tokens input à générer, et se re-génère à ce prix à chaque mise à jour — pas rentable pour un repo que Claude connaît déjà. **Solution retenue** : section « Repères techniques » ajoutée ci-dessus dans ce fichier, tenue à jour après chaque plan (fichiers/types/conventions déjà posés), à lire en priorité à la reprise au lieu de ré-explorer le repo.
+- **Prochaine action** : brainstorm/écriture du Plan 4 (Vue Tableau).
 
 ### Session 11 — 2026-07-21 — Plan 2 exécuté (app shell & navigation)
 **Étape : 🔨 impl — Plan 2**
