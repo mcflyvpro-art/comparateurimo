@@ -52,12 +52,12 @@ Les hypothèses risquées (réorientation §10) restent à valider *en construis
 > Objectif : le cœur produit fonctionnel — créer un projet, alimenter le board, piloter les statuts, voir une fiche bien avec analyse poussée + scénario en direct, arbitrer entre finalistes. Parcours `REORIENTATION-ESTIO.md` §7. Détail features : `MVP.md` Phase 2.
 
 ### Brainstorm & spec (fait le 2026-07-21)
-- [ ] **Brainstorm `superpowers` Phase 2** — fait (companion visuel). Décisions : desktop-first CRM (Attio/Notion/Monday), identité dark grotesk de la landing, 3 vues (Pipeline/Tableau/Carte), Comparer=action+arbitrage intégré, fiche drawer + analyse complète, flux d'ajout en 2 temps, schéma Supabase complet, utilisateur démo seedé, pas de freemium mais tooltips « ? ». **France entière.**
-- [ ] **Spec écrite** — `docs/superpowers/specs/2026-07-21-outil-pipeline-structure-design.md` (validée par l'utilisateur).
+- [x] **Brainstorm `superpowers` Phase 2** — fait (companion visuel). Décisions : desktop-first CRM (Attio/Notion/Monday), identité dark grotesk de la landing, 3 vues (Pipeline/Tableau/Carte), Comparer=action+arbitrage intégré, fiche drawer + analyse complète, flux d'ajout en 2 temps, schéma Supabase complet, utilisateur démo seedé, pas de freemium mais tooltips « ? ». **France entière.**
+- [x] **Spec écrite** — `docs/superpowers/specs/2026-07-21-outil-pipeline-structure-design.md` (validée par l'utilisateur).
 
 ### Le build « structure » découpé en 8 petits plans (exécutés 1 par 1, validés sur Vercel)
 > Chaque plan détaillé est écrit **juste avant** son exécution (contre le vrai code). Plan 1 écrit : `docs/superpowers/plans/2026-07-21-plan1-schema-seed.md`.
-- [ ] **Plan 1 — Schéma Supabase & seed** : toutes les tables + enums + RLS + Storage (photos/docs) + utilisateur démo + seed + client serveur démo + types TS. *(plan écrit, prêt à exécuter)*
+- [x] **Plan 1 — Schéma Supabase & seed** : toutes les tables + enums + RLS + Storage (photos/docs) + utilisateur démo + seed + client serveur démo + types TS. **Validé sur Vercel le 2026-07-21.**
 - [ ] **Plan 2 — App shell & navigation** : layout `(app)`, sidebar (projets+switcher+nav), barre du haut, onglets de vues, page projets, refonte du `/app`.
 - [ ] **Plan 3 — Vue Pipeline (board + drawer)** : Kanban 6 colonnes, carte-bien riche, drag & drop + `status_history`, drawer d'aperçu.
 - [ ] **Plan 4 — Vue Tableau** : table dense triable, colonnes chiffrées (moteur `calc/`).
