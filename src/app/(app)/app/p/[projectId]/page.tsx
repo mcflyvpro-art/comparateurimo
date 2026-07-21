@@ -1,21 +1,16 @@
 import { ViewTabs, type ViewKey } from "@/components/app/ViewTabs";
 import { ViewPlaceholder } from "@/components/app/ViewPlaceholder";
 import { PipelineBoard } from "@/components/app/PipelineBoard";
+import { PropertyTable } from "@/components/app/PropertyTable";
 import { getDemoClient, DEMO_USER_ID } from "@/lib/supabase/demo";
 import { daysSince } from "@/lib/format";
 import type { NoteKind, PipelineNote, PipelineProperty, PropertyStatus } from "@/lib/pipeline-types";
 
 export const dynamic = "force-dynamic";
 
-const PLACEHOLDERS: Record<Exclude<ViewKey, "pipeline">, { title: string; plan: string }> = {
-  tableau: {
-    title: "Vue Tableau",
-    plan: "Table dense et triable, colonnes chiffrées — arrive au Plan 4.",
-  },
-  carte: {
-    title: "Vue Carte",
-    plan: "Carte MapLibre, épingles par score — arrive au Plan 6.",
-  },
+const CARTE_PLACEHOLDER = {
+  title: "Vue Carte",
+  plan: "Carte MapLibre, épingles par score — arrive au Plan 6.",
 };
 
 export default async function ProjectBoardPage({
@@ -29,12 +24,11 @@ export default async function ProjectBoardPage({
   const { view } = await searchParams;
   const active: ViewKey = view === "tableau" || view === "carte" ? view : "pipeline";
 
-  if (active !== "pipeline") {
-    const placeholder = PLACEHOLDERS[active];
+  if (active === "carte") {
     return (
       <div className="flex flex-1 flex-col">
         <ViewTabs projectId={projectId} active={active} />
-        <ViewPlaceholder title={placeholder.title} plan={placeholder.plan} />
+        <ViewPlaceholder title={CARTE_PLACEHOLDER.title} plan={CARTE_PLACEHOLDER.plan} />
       </div>
     );
   }
@@ -112,7 +106,11 @@ export default async function ProjectBoardPage({
   return (
     <div className="flex flex-1 flex-col">
       <ViewTabs projectId={projectId} active={active} />
-      <PipelineBoard projectId={projectId} initialProperties={pipelineProperties} />
+      {active === "pipeline" ? (
+        <PipelineBoard projectId={projectId} initialProperties={pipelineProperties} />
+      ) : (
+        <PropertyTable projectId={projectId} initialProperties={pipelineProperties} />
+      )}
     </div>
   );
 }
