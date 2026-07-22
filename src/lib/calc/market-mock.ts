@@ -29,11 +29,11 @@ export function computeMockMarketData(inseeCode: string | null, address: string 
   const hash = hashString(key);
 
   const pricePerM2DVF = 1800 + (hash % 6200); // 1800 → 8000 €/m²
-  const rentPerM2 = 9 + ((hash >> 4) % 16); // 9 → 25 €/m²
-  const tensionLocative = (["faible", "moyenne", "forte"] as const)[(hash >> 8) % 3];
-  const vacancyPct = 2 + ((hash >> 12) % 10); // 2 → 12 %
-  const riskLevel = (["faible", "modere", "eleve"] as const)[(hash >> 16) % 3];
-  const demographicTrend = (["declin", "stable", "croissance"] as const)[(hash >> 20) % 3];
+  const rentPerM2 = 9 + ((hash >>> 4) % 16); // 9 → 25 €/m²
+  const tensionLocative = (["faible", "moyenne", "forte"] as const)[(hash >>> 8) % 3];
+  const vacancyPct = 2 + ((hash >>> 12) % 10); // 2 → 12 %
+  const riskLevel = (["faible", "modere", "eleve"] as const)[(hash >>> 16) % 3];
+  const demographicTrend = (["declin", "stable", "croissance"] as const)[(hash >>> 20) % 3];
 
   return { pricePerM2DVF, rentPerM2, tensionLocative, vacancyPct, riskLevel, demographicTrend };
 }
