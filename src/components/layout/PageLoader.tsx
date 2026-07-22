@@ -3,16 +3,14 @@
 import { useEffect, useState } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import type Lenis from "lenis";
-import { EstioLoaderMark } from "./EstioLoaderMark";
 
 const EASE = [0.19, 1, 0.22, 1] as const;
 const getLenis = () => (window as unknown as { __lenis?: Lenis }).__lenis;
 
 /**
- * Loader d'intro : fond noir, wordmark en grand. Les 2 immeubles alternent
- * plein ↔ contour (lent, fluide). Quand l'alternation se TERMINE (animationend),
- * le logo « tombe pile » à sa place dans le header, puis l'overlay se dissout et
- * on émet « estio:loaded » pour lancer l'entrée du hero.
+ * Loader d'intro : fond noir, wordmark officiel en grand. Après un temps fixe,
+ * le logo « tombe pile » à sa place dans le header, puis l'overlay se dissout
+ * et on émet « estio:loaded » pour lancer l'entrée du hero.
  */
 export function PageLoader() {
   const reduce = useReducedMotion();
@@ -28,9 +26,8 @@ export function PageLoader() {
     });
     if (reduce) return () => cancelAnimationFrame(raf);
     getLenis()?.stop();
-    // L'alternation CSS (2 tours × 1.8s) et ce timer démarrent au même rendu :
-    // le dock « tombe pile » à la fin de l'animation.
-    const t = setTimeout(() => setPhase((p) => (p === "intro" ? "dock" : p)), 3650);
+    // Le logo reste affiché un court instant avant de « docker » dans le header.
+    const t = setTimeout(() => setPhase((p) => (p === "intro" ? "dock" : p)), 1400);
     return () => {
       cancelAnimationFrame(raf);
       clearTimeout(t);
@@ -72,7 +69,12 @@ export function PageLoader() {
               }
               transition={{ duration: phase === "intro" ? 0.5 : 0.9, ease: EASE }}
             >
-              <EstioLoaderMark className="loader-mark" style={{ height: "100%", width: "auto", display: "block" }} />
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src="/estio-wordmark.svg"
+                alt="Estio"
+                style={{ height: "100%", width: "auto", display: "block" }}
+              />
             </motion.div>
           )}
         </motion.div>
