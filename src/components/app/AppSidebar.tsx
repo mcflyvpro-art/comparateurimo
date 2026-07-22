@@ -21,11 +21,9 @@ export function AppSidebar({ projects }: { projects: SidebarProject[] }) {
   return (
     <aside className="flex h-screen w-64 shrink-0 flex-col border-r border-border bg-bg-alt">
       <div className="px-5 py-6">
-        <Link
-          href="/app"
-          className="font-sans text-xl font-semibold tracking-tight text-text"
-        >
-          estio<span className="text-brand">.</span>
+        <Link href="/app" aria-label="Estio — accueil" className="inline-block">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src="/estio-wordmark.svg" alt="Estio" className="h-7 w-auto" />
         </Link>
       </div>
 

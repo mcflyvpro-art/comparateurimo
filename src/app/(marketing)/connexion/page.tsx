@@ -10,11 +10,9 @@ export const metadata: Metadata = {
 export default function Connexion() {
   return (
     <main className="mx-auto flex min-h-[70vh] max-w-md flex-col justify-center px-6 py-16">
-      <Link
-        href="/"
-        className="font-sans text-2xl font-semibold tracking-tight text-text"
-      >
-        estio<span className="text-brand">.</span>
+      <Link href="/" aria-label="Estio — accueil" className="inline-block">
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img src="/estio-wordmark.svg" alt="Estio" className="h-8 w-auto" />
       </Link>
       <h1 className="mt-8 font-sans text-3xl font-semibold tracking-[-0.02em] text-text">
         Content de te revoir.
