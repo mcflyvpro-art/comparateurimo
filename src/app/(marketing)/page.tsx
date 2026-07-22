@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Reveal } from "@/components/landing/Reveal";
 import { Hero } from "@/components/landing/Hero";
+import { ScrollWorldHero } from "@/components/landing/ScrollWorldHero";
 import { ScoreProfiles } from "@/components/landing/ScoreProfiles";
 import { SourcesMarquee } from "@/components/landing/SourcesMarquee";
 import { MagneticButton } from "@/components/landing/MagneticButton";
@@ -16,7 +17,10 @@ export default function Home() {
     <>
       <Hero />
 
-      {/* Sous le hero : fond clair (le header s'adapte : logo/texte sombres) */}
+      {/* Vol de caméra scrubbé au scroll — Analyse → Comparaison → Décision */}
+      <ScrollWorldHero />
+
+      {/* Sous le pin : fond clair (le header s'adapte : logo/texte sombres) */}
       <div className="section-light" data-header-theme="light">
       <main className="mx-auto max-w-[106rem] px-[6vw]">
       {/* Score */}
