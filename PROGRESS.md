@@ -60,7 +60,7 @@ Les hypothèses risquées (réorientation §10) restent à valider *en construis
 - [x] **Plan 1 — Schéma Supabase & seed** : toutes les tables + enums + RLS + Storage (photos/docs) + utilisateur démo + seed + client serveur démo + types TS. **Validé sur Vercel le 2026-07-21** (`/app` affiche les 2 projets seedés réels).
 - [x] **Plan 2 — App shell & navigation** : layout `(app)`, sidebar (projets+switcher+nav), barre du haut, onglets de vues, page projets, refonte du `/app`. **Validé sur Vercel le 2026-07-21.**
 - [x] **Plan 3 — Vue Pipeline (board + drawer)** : Kanban 6 colonnes, carte-bien riche, drag & drop + `status_history`, drawer d'aperçu. **Validé sur Vercel le 2026-07-22.**
-- [ ] **Plan 4 — Vue Tableau** : table dense triable, colonnes chiffrées (moteur `calc/`).
+- [x] **Plan 4 — Vue Tableau** : table dense triable, colonnes chiffrées (moteur `calc/`). **Validé sur Vercel le 2026-07-22.**
 - [ ] **Plan 5 — Fiche complète** : page pleine (sections ①→⑨), scénario en direct, tooltips « ? », photos/documents.
 - [ ] **Plan 6 — Vue Carte** : MapLibre + épingles par score + mini-aperçu.
 - [ ] **Plan 7 — Comparer / Arbitrage** : sélection multi, côte à côte, verdict langage naturel (gabarit déterministe), profils de priorité.
@@ -111,6 +111,12 @@ Les hypothèses risquées (réorientation §10) restent à valider *en construis
 ## Historique des sessions (le plus récent en haut)
 
 > Journal factuel. Les coches vivent dans la roadmap, décidées par l'utilisateur.
+
+### Session 13 — 2026-07-22 — Plan 4 validé, démarrage Plan 5
+**Étape : 🗺️ brainstorm → spec → plan**
+- **Plan 4 (Vue Tableau) validé sur Vercel** (« c'est bon ») → coché. Commits `71fb335`→`74b4d9a` (+ fix lint `b6b7c2d`).
+- Digression logo/branding et animation hero traitée hors roadmap cette session (voir mémoire `logo-officiel-estio`, `scroll-video-higgsfield-abandonne`) — sans impact sur Phase 2.
+- **Prochaine action** : brainstorm `superpowers` du Plan 5 (Fiche complète).
 
 ### Session 12 — 2026-07-22 — Plan 3 exécuté (Vue Pipeline) + optimisation reprise de session
 **Étape : 🔨 impl — Plan 3**
