@@ -59,7 +59,13 @@ export function SectionCalculs({
     scenario.loan_type === "in_fine"
       ? computeInFineSchedule(costs.loanPrincipal, scenario.interest_rate, months)
       : computeAmortizationSchedule(costs.loanPrincipal, scenario.interest_rate, months, scenario.deferral_months);
-  const monthlyPayment = computeMonthlyPayment(costs.loanPrincipal, scenario.interest_rate, months);
+  // Prêt in fine : mensualité = intérêts seuls sur le capital (jamais la
+  // formule amortissable classique, qui suppose un remboursement de capital
+  // progressif inexistant ici) — même correction que SectionFinancement (Task 9).
+  const monthlyPayment =
+    scenario.loan_type === "in_fine"
+      ? (costs.loanPrincipal * (scenario.interest_rate / 100)) / 12
+      : computeMonthlyPayment(costs.loanPrincipal, scenario.interest_rate, months);
   const insuranceBase = scenario.insurance_on_initial ? costs.loanPrincipal : (schedule[0]?.remainingBalance ?? costs.loanPrincipal);
   const monthlyInsurance = (insuranceBase * (scenario.insurance_rate / 100)) / 12;
 
