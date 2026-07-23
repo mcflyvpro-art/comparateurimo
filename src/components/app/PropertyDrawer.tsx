@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useState, useTransition } from "react";
 import { computeRendementBrutPct, computeVerdict } from "@/lib/calc/score";
 import { formatEUR, formatM2, formatPercent, formatPricePerM2 } from "@/lib/format";
@@ -8,11 +9,13 @@ import { STATUS_COLUMNS, type PipelineProperty, type PropertyStatus } from "@/li
 
 export function PropertyDrawer({
   property,
+  projectId,
   onClose,
   onStatusChange,
   onAddNote,
 }: {
   property: PipelineProperty;
+  projectId: string;
   onClose: () => void;
   onStatusChange: (status: PropertyStatus) => void;
   onAddNote: (body: string) => Promise<void>;
@@ -121,14 +124,12 @@ export function PropertyDrawer({
           </div>
         </div>
 
-        <button
-          type="button"
-          disabled
-          title="Arrive au Plan 5 (Fiche complète)"
-          className="mt-6 w-full rounded-full border border-border py-2.5 text-sm font-medium text-muted disabled:cursor-not-allowed disabled:opacity-60"
+        <Link
+          href={`/app/p/${projectId}/bien/${property.id}`}
+          className="mt-6 block w-full rounded-full border border-border py-2.5 text-center text-sm font-medium text-text transition-colors hover:border-brand"
         >
           Analyse complète →
-        </button>
+        </Link>
       </aside>
     </div>
   );

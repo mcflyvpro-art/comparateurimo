@@ -208,6 +208,7 @@ export function PropertyTable({
       {selectedProperty && (
         <PropertyDrawer
           property={selectedProperty}
+          projectId={projectId}
           onClose={closeDrawer}
           onStatusChange={handleStatusChange}
           onAddNote={handleAddNote}
