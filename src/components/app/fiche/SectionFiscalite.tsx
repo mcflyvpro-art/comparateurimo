@@ -1,3 +1,4 @@
+import { computeFinancingCosts } from "@/lib/calc/financing";
 import { compareTaxRegimes } from "@/lib/calc/tax";
 import { formatEUR } from "@/lib/format";
 import { SectionCard } from "@/components/app/fiche/SectionCard";
@@ -10,11 +11,22 @@ export function SectionFiscalite({
   property: PropertyRow;
   scenario: PropertyScenarioRow;
 }) {
-  // Année 1 approximée : intérêts non recalculés ici (déjà fait dans
-  // SectionCalculs) — ce tableau compare les régimes entre eux à charges/
-  // loyer égaux, l'exactitude de l'intérêt exact n'affecte pas le classement
-  // relatif de façon significative pour cette vue comparative.
-  const annualInterestEstimate = (property.asking_price ?? 0) * (1 - scenario.apport_pct / 100) * (scenario.interest_rate / 100);
+  // Année 1 approximée : la base de capital emprunté est désormais cohérente
+  // avec SectionCalculs/SectionFinancement (computeFinancingCosts — travaux
+  // et frais de financement inclus). Seule approximation restante : l'intérêt
+  // est calculé sur le capital initial plutôt que sur un vrai tableau
+  // d'amortissement année par année, simplification acceptable et documentée
+  // pour cette vue comparative entre régimes à charges/loyer égaux.
+  const costs = computeFinancingCosts({
+    askingPrice: property.asking_price ?? 0,
+    worksEstimate: property.works_estimate,
+    apportPct: scenario.apport_pct,
+    notaryFeesPct: scenario.notary_fees_pct,
+    dossierFees: scenario.dossier_fees,
+    guaranteeFees: scenario.guarantee_fees,
+    brokerFees: scenario.broker_fees,
+  });
+  const annualInterestEstimate = costs.loanPrincipal * (scenario.interest_rate / 100);
   const results = compareTaxRegimes({
     annualRent: (property.estimated_rent ?? 0) * 12,
     annualCharges: property.monthly_copro_charges * 12 + property.property_tax,
