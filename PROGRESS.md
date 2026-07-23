@@ -61,7 +61,7 @@ Les hypothèses risquées (réorientation §10) restent à valider *en construis
 - [x] **Plan 2 — App shell & navigation** : layout `(app)`, sidebar (projets+switcher+nav), barre du haut, onglets de vues, page projets, refonte du `/app`. **Validé sur Vercel le 2026-07-21.**
 - [x] **Plan 3 — Vue Pipeline (board + drawer)** : Kanban 6 colonnes, carte-bien riche, drag & drop + `status_history`, drawer d'aperçu. **Validé sur Vercel le 2026-07-22.**
 - [x] **Plan 4 — Vue Tableau** : table dense triable, colonnes chiffrées (moteur `calc/`). **Validé sur Vercel le 2026-07-22.**
-- [ ] **Plan 5a — Fiche complète (moteur + page statique)** : page pleine (sections ①→⑨) sur données réelles, moteur de calcul complet (financement/cashflow/fiscalité/marché mock), scénario en lecture seule. **Livré et poussé le 2026-07-23, en attente de validation Vercel.** Suite : Plan 5b (scénario en direct), Plan 5c (photos/documents).
+- [x] **Plan 5a — Fiche complète (moteur + page statique)** : page pleine (sections ①→⑨) sur données réelles, moteur de calcul complet (financement/cashflow/fiscalité/marché mock), scénario en lecture seule. **Validé sur Vercel le 2026-07-23.** Suite : Plan 5b (scénario en direct), Plan 5c (photos/documents).
 - [ ] **Plan 6 — Vue Carte** : MapLibre + épingles par score + mini-aperçu.
 - [ ] **Plan 7 — Comparer / Arbitrage** : sélection multi, côte à côte, verdict langage naturel (gabarit déterministe), profils de priorité.
 - [ ] **Plan 8 — Flux Ajouter un bien** : écran d'entrée (rampes → exemple généré) → formulaire de vérif/ajout, widget extension + coquille `/extension`.
