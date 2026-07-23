@@ -53,13 +53,19 @@ export default async function PropertyDetailPage({
       .from("property_notes")
       .select("id, kind, body, created_at")
       .eq("property_id", propertyId)
+      .eq("user_id", DEMO_USER_ID)
       .order("created_at", { ascending: false }),
     supabase
       .from("property_photos")
       .select("id, storage_path, caption, sort_order")
       .eq("property_id", propertyId)
+      .eq("user_id", DEMO_USER_ID)
       .order("sort_order"),
-    supabase.from("property_documents").select("id, storage_path, filename, doc_type").eq("property_id", propertyId),
+    supabase
+      .from("property_documents")
+      .select("id, storage_path, filename, doc_type")
+      .eq("property_id", propertyId)
+      .eq("user_id", DEMO_USER_ID),
   ]);
 
   const contact = contactRes.data ?? null;
