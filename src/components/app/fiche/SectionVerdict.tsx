@@ -3,15 +3,11 @@ import { VerdictBadge } from "@/components/app/VerdictBadge";
 import { formatEUR, formatPercent, formatPricePerM2 } from "@/lib/format";
 import { SectionCard } from "@/components/app/fiche/SectionCard";
 import type { PropertyRow } from "@/lib/property-detail-types";
+import { STATUS_COLUMNS } from "@/lib/pipeline-types";
 
-const STATUS_LABELS: Record<PropertyRow["status"], string> = {
-  analyser: "À analyser",
-  analyse: "Analysé",
-  visite: "Visite",
-  nego: "En négo",
-  ecarte: "Écarté",
-  offre: "Offre",
-};
+const STATUS_LABELS: Record<PropertyRow["status"], string> = Object.fromEntries(
+  STATUS_COLUMNS.map((c) => [c.key, c.label]),
+) as Record<PropertyRow["status"], string>;
 
 /** Phrase de pré-verdict en français — gabarit déterministe (pas un LLM),
  *  affinée avec le vrai scoring multi-critère au Plan 7. */
