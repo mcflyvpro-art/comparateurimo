@@ -41,7 +41,10 @@ export function SectionFinancement({
     [costs.loanPrincipal, scenario.interest_rate, scenario.loan_type, scenario.deferral_months, months],
   );
 
-  const monthlyPayment = computeMonthlyPayment(costs.loanPrincipal, scenario.interest_rate, months);
+  const monthlyPayment =
+    scenario.loan_type === "in_fine"
+      ? (costs.loanPrincipal * (scenario.interest_rate / 100)) / 12
+      : computeMonthlyPayment(costs.loanPrincipal, scenario.interest_rate, months);
   const insuranceBase = scenario.insurance_on_initial
     ? costs.loanPrincipal
     : monthlySchedule.length > 0
@@ -60,7 +63,9 @@ export function SectionFinancement({
           <dd className="mt-0.5 text-sm font-medium text-text">{formatEUR(costs.loanPrincipal)}</dd>
         </div>
         <div>
-          <dt className="text-xs text-faint">Mensualité (hors assurance)</dt>
+          <dt className="text-xs text-faint">
+            {scenario.loan_type === "in_fine" ? "Mensualité intérêts seuls (hors assurance)" : "Mensualité (hors assurance)"}
+          </dt>
           <dd className="mt-0.5 text-sm font-medium text-text">{formatEUR(monthlyPayment)}</dd>
         </div>
         <div>
