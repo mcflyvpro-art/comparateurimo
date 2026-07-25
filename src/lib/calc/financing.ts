@@ -77,6 +77,16 @@ export function computeInFineSchedule(principal: number, annualRatePct: number, 
   return rows;
 }
 
+/** Mensualité d'un prêt in fine = intérêts seuls sur tout le capital (aucun
+ *  remboursement de capital avant le dernier mois) — jamais la formule
+ *  amortissable classique. Centralisée ici pour éviter la duplication entre
+ *  `SectionFinancement` et `SectionCalculs`/`metrics.ts` (dette technique
+ *  notée au Plan 5a, corrigée au Plan 5b). */
+export function computeInFineMonthlyPayment(principal: number, annualRatePct: number): number {
+  if (principal <= 0) return 0;
+  return (principal * (annualRatePct / 100)) / 12;
+}
+
 /** Regroupe un tableau mensuel en récapitulatif annuel (une ligne par
  *  paquet de 12 mois) — utilisé par le toggle annuel/mensuel de l'UI. */
 export function groupAmortizationByYear(schedule: AmortizationRow[]): AnnualAmortizationRow[] {
