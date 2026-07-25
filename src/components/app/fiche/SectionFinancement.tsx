@@ -4,6 +4,7 @@ import { useMemo, useState } from "react";
 import {
   computeAmortizationSchedule,
   computeFinancingCosts,
+  computeInFineMonthlyPayment,
   computeInFineSchedule,
   computeMonthlyPayment,
   groupAmortizationByYear,
@@ -43,7 +44,7 @@ export function SectionFinancement({
 
   const monthlyPayment =
     scenario.loan_type === "in_fine"
-      ? (costs.loanPrincipal * (scenario.interest_rate / 100)) / 12
+      ? computeInFineMonthlyPayment(costs.loanPrincipal, scenario.interest_rate)
       : computeMonthlyPayment(costs.loanPrincipal, scenario.interest_rate, months);
   const insuranceBase = scenario.insurance_on_initial
     ? costs.loanPrincipal
