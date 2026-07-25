@@ -1,3 +1,5 @@
+"use client";
+
 import { formatEUR, formatPercent } from "@/lib/format";
 import { SectionCard } from "@/components/app/fiche/SectionCard";
 import type { PropertyRow, PropertyScenarioRow } from "@/lib/property-detail-types";
