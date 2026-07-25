@@ -1,14 +1,7 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getDemoClient, DEMO_USER_ID } from "@/lib/supabase/demo";
-import { SectionVerdict } from "@/components/app/fiche/SectionVerdict";
-import { SectionBien } from "@/components/app/fiche/SectionBien";
-import { SectionMarche } from "@/components/app/fiche/SectionMarche";
-import { SectionFinancement } from "@/components/app/fiche/SectionFinancement";
-import { SectionCalculs } from "@/components/app/fiche/SectionCalculs";
-import { SectionFiscalite } from "@/components/app/fiche/SectionFiscalite";
-import { SectionScenario } from "@/components/app/fiche/SectionScenario";
-import { SectionCharges } from "@/components/app/fiche/SectionCharges";
+import { FicheScenarioSections } from "@/components/app/fiche/FicheScenarioSections";
 import { SectionHumain } from "@/components/app/fiche/SectionHumain";
 
 export const dynamic = "force-dynamic";
@@ -84,14 +77,7 @@ export default async function PropertyDetailPage({
       <p className="text-sm text-muted">{property.city ?? "—"}</p>
 
       <div className="mt-6 flex flex-col gap-6">
-        <SectionVerdict property={property} />
-        <SectionBien property={property} />
-        <SectionMarche property={property} />
-        <SectionFinancement property={property} scenario={scenario} />
-        <SectionCalculs property={property} scenario={scenario} />
-        <SectionFiscalite property={property} scenario={scenario} />
-        <SectionScenario scenario={scenario} />
-        <SectionCharges property={property} scenario={scenario} />
+        <FicheScenarioSections property={property} scenario={scenario} propertyId={propertyId} />
         <SectionHumain property={property} contact={contact} notes={notes} photos={photos} documents={documents} />
       </div>
 
