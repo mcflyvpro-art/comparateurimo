@@ -1,3 +1,5 @@
+"use client";
+
 import { computeFinancingCosts } from "@/lib/calc/financing";
 import { compareTaxRegimes } from "@/lib/calc/tax";
 import { formatEUR } from "@/lib/format";
