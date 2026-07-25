@@ -22,7 +22,7 @@ export type TaxResult = {
   annualTax: number;
 };
 
-const REGIME_LABELS: Record<TaxRegime, string> = {
+export const REGIME_LABELS: Record<TaxRegime, string> = {
   nu_micro: "Location nue — micro-foncier",
   nu_reel: "Location nue — réel",
   lmnp_micro: "LMNP — micro-BIC",
