@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { FileDropzone } from "@/components/app/fiche/FileDropzone";
+import { useConfirmDelete } from "@/lib/hooks/use-confirm-delete";
 import { useFileUpload } from "@/lib/hooks/use-file-upload";
 import {
   ACCEPTED_DOCUMENT_MIME_TYPES,
@@ -35,7 +36,7 @@ export function DocumentList({
   initialDocuments: PropertyDetailDocumentWithUrl[];
 }) {
   const [documents, setDocuments] = useState<PropertyDetailDocumentWithUrl[]>(initialDocuments);
-  const [pendingDeleteId, setPendingDeleteId] = useState<string | null>(null);
+  const { pendingId: pendingDeleteId, requestConfirm } = useConfirmDelete();
   const [validationError, setValidationError] = useState<string | null>(null);
   const { status, error, uploadFiles } = useFileUpload();
 
@@ -72,12 +73,7 @@ export function DocumentList({
   }
 
   function handleDeleteClick(documentId: string, storagePath: string) {
-    if (pendingDeleteId !== documentId) {
-      setPendingDeleteId(documentId);
-      setTimeout(() => setPendingDeleteId((current) => (current === documentId ? null : current)), 3000);
-      return;
-    }
-    setPendingDeleteId(null);
+    if (!requestConfirm(documentId)) return;
     setDocuments((current) => current.filter((d) => d.id !== documentId));
     deletePropertyDocument(propertyId, documentId, storagePath).catch(() => {});
   }

@@ -14,6 +14,7 @@ import { CSS } from "@dnd-kit/utilities";
 import { computeDropPosition } from "@/lib/board-position";
 import { FileDropzone } from "@/components/app/fiche/FileDropzone";
 import { PhotoLightbox } from "@/components/app/fiche/PhotoLightbox";
+import { useConfirmDelete } from "@/lib/hooks/use-confirm-delete";
 import { useFileUpload } from "@/lib/hooks/use-file-upload";
 import { ACCEPTED_PHOTO_MIME_TYPES, MAX_PHOTOS_PER_PROPERTY, isAcceptedPhotoType } from "@/lib/file-limits";
 import {
@@ -33,7 +34,7 @@ export function PhotoGrid({
 }) {
   const [photos, setPhotos] = useState<PropertyDetailPhotoWithUrl[]>(initialPhotos);
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
-  const [pendingDeleteId, setPendingDeleteId] = useState<string | null>(null);
+  const { pendingId: pendingDeleteId, requestConfirm } = useConfirmDelete();
   const [validationError, setValidationError] = useState<string | null>(null);
   const { status, error, uploadFiles } = useFileUpload();
   const sensors = useSensors(useSensor(PointerSensor, { activationConstraint: { distance: 8 } }));
@@ -91,17 +92,15 @@ export function PhotoGrid({
   }
 
   function handleCaptionBlur(photoId: string, value: string) {
-    setPhotos((current) => current.map((p) => (p.id === photoId ? { ...p, caption: value || null } : p)));
+    const trimmed = value.trim();
+    setPhotos((current) =>
+      current.map((p) => (p.id === photoId ? { ...p, caption: trimmed.length > 0 ? trimmed : null } : p)),
+    );
     updatePhotoCaption(photoId, propertyId, value).catch(() => {});
   }
 
   function handleDeleteClick(photoId: string, storagePath: string) {
-    if (pendingDeleteId !== photoId) {
-      setPendingDeleteId(photoId);
-      setTimeout(() => setPendingDeleteId((current) => (current === photoId ? null : current)), 3000);
-      return;
-    }
-    setPendingDeleteId(null);
+    if (!requestConfirm(photoId)) return;
     setPhotos((current) => current.filter((p) => p.id !== photoId));
     if (lightboxIndex !== null && photos[lightboxIndex]?.id === photoId) setLightboxIndex(null);
     deletePropertyPhoto(propertyId, photoId, storagePath).catch(() => {});
