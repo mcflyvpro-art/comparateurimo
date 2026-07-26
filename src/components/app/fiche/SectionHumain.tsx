@@ -1,10 +1,14 @@
+"use client";
+
 import { formatEUR } from "@/lib/format";
 import { SectionCard } from "@/components/app/fiche/SectionCard";
+import { PhotoGrid } from "@/components/app/fiche/PhotoGrid";
+import { DocumentList } from "@/components/app/fiche/DocumentList";
 import type {
   ContactRow,
-  PropertyDetailDocument,
+  PropertyDetailDocumentWithUrl,
   PropertyDetailNote,
-  PropertyDetailPhoto,
+  PropertyDetailPhotoWithUrl,
   PropertyRow,
 } from "@/lib/property-detail-types";
 
@@ -22,12 +26,14 @@ export function SectionHumain({
   notes,
   photos,
   documents,
+  propertyId,
 }: {
   property: PropertyRow;
   contact: ContactRow | null;
   notes: PropertyDetailNote[];
-  photos: PropertyDetailPhoto[];
-  documents: PropertyDetailDocument[];
+  photos: PropertyDetailPhotoWithUrl[];
+  documents: PropertyDetailDocumentWithUrl[];
+  propertyId: string;
 }) {
   return (
     <SectionCard number="⑨" title="Contexte humain">
@@ -75,23 +81,14 @@ export function SectionHumain({
         )}
       </div>
 
-      <div className="mt-5 grid gap-4 sm:grid-cols-2">
-        <div
-          title="Ajout de photos — arrive au Plan 5c"
-          className="flex min-h-24 cursor-not-allowed items-center justify-center rounded-xl border border-dashed border-border-strong text-center text-xs text-faint"
-        >
-          {photos.length === 0
-            ? "Aucune photo — l'ajout de photos arrive au Plan 5c."
-            : `${photos.length} photo(s)`}
-        </div>
-        <div
-          title="Ajout de documents — arrive au Plan 5c"
-          className="flex min-h-24 cursor-not-allowed items-center justify-center rounded-xl border border-dashed border-border-strong text-center text-xs text-faint"
-        >
-          {documents.length === 0
-            ? "Aucun document — l'ajout de documents arrive au Plan 5c."
-            : `${documents.length} document(s)`}
-        </div>
+      <div className="mt-5">
+        <h3 className="mb-2 text-xs uppercase tracking-wide text-faint">Photos</h3>
+        <PhotoGrid propertyId={propertyId} initialPhotos={photos} />
+      </div>
+
+      <div className="mt-5">
+        <h3 className="mb-2 text-xs uppercase tracking-wide text-faint">Documents</h3>
+        <DocumentList propertyId={propertyId} initialDocuments={documents} />
       </div>
     </SectionCard>
   );
