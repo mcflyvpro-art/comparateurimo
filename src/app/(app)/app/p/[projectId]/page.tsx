@@ -1,17 +1,17 @@
 import { ViewTabs, type ViewKey } from "@/components/app/ViewTabs";
-import { ViewPlaceholder } from "@/components/app/ViewPlaceholder";
 import { PipelineBoard } from "@/components/app/PipelineBoard";
 import { PropertyTable } from "@/components/app/PropertyTable";
+import { MapView, type GeolocatedProperty } from "@/components/app/MapView";
 import { getDemoClient, DEMO_USER_ID } from "@/lib/supabase/demo";
 import { daysSince } from "@/lib/format";
 import type { NoteKind, PipelineNote, PipelineProperty, PropertyStatus } from "@/lib/pipeline-types";
+import type { PropertyRow, PropertyScenarioRow } from "@/lib/property-detail-types";
 
 export const dynamic = "force-dynamic";
 
-const CARTE_PLACEHOLDER = {
-  title: "Vue Carte",
-  plan: "Carte MapLibre, épingles par score — arrive au Plan 6.",
-};
+function hasCoordinates(property: PropertyRow): property is GeolocatedProperty {
+  return property.lat !== null && property.lng !== null;
+}
 
 export default async function ProjectBoardPage({
   params,
@@ -23,17 +23,46 @@ export default async function ProjectBoardPage({
   const { projectId } = await params;
   const { view } = await searchParams;
   const active: ViewKey = view === "tableau" || view === "carte" ? view : "pipeline";
+  const supabase = getDemoClient();
 
   if (active === "carte") {
+    const { data: rawCarteProperties } = await supabase
+      .from("properties")
+      .select("*")
+      .eq("project_id", projectId)
+      .eq("user_id", DEMO_USER_ID);
+
+    const allProperties = rawCarteProperties ?? [];
+    const geolocated = allProperties.filter(hasCoordinates);
+    const unlocatedCount = allProperties.length - geolocated.length;
+
+    let seedScenario: PropertyScenarioRow | null = null;
+    if (geolocated.length > 0) {
+      const { data: scenarios } = await supabase
+        .from("property_scenarios")
+        .select("*")
+        .in(
+          "property_id",
+          geolocated.map((p) => p.id),
+        )
+        .eq("user_id", DEMO_USER_ID)
+        .limit(1);
+      seedScenario = scenarios?.[0] ?? null;
+    }
+
     return (
       <div className="flex flex-1 flex-col">
         <ViewTabs projectId={projectId} active={active} />
-        <ViewPlaceholder title={CARTE_PLACEHOLDER.title} plan={CARTE_PLACEHOLDER.plan} />
+        <MapView
+          properties={geolocated}
+          scenario={seedScenario}
+          unlocatedCount={unlocatedCount}
+          projectId={projectId}
+        />
       </div>
     );
   }
 
-  const supabase = getDemoClient();
   const { data: rawProperties } = await supabase
     .from("properties")
     .select(
