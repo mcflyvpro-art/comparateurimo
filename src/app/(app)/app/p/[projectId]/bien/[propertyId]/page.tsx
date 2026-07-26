@@ -66,6 +66,21 @@ export default async function PropertyDetailPage({
   const photos = photosRes.data ?? [];
   const documents = documentsRes.data ?? [];
 
+  const [photosWithUrls, documentsWithUrls] = await Promise.all([
+    Promise.all(
+      photos.map(async (photo) => {
+        const { data } = await supabase.storage.from("property-photos").createSignedUrl(photo.storage_path, 3600);
+        return { ...photo, signedUrl: data?.signedUrl ?? "" };
+      }),
+    ),
+    Promise.all(
+      documents.map(async (doc) => {
+        const { data } = await supabase.storage.from("property-documents").createSignedUrl(doc.storage_path, 3600);
+        return { ...doc, signedUrl: data?.signedUrl ?? "" };
+      }),
+    ),
+  ]);
+
   return (
     <div className="mx-auto max-w-4xl px-6 py-8">
       <Link href={`/app/p/${projectId}`} className="text-sm text-muted transition-colors hover:text-text">
@@ -78,7 +93,14 @@ export default async function PropertyDetailPage({
 
       <div className="mt-6 flex flex-col gap-6">
         <FicheScenarioSections property={property} scenario={scenario} propertyId={propertyId} />
-        <SectionHumain property={property} contact={contact} notes={notes} photos={photos} documents={documents} />
+        <SectionHumain
+          property={property}
+          contact={contact}
+          notes={notes}
+          photos={photosWithUrls}
+          documents={documentsWithUrls}
+          propertyId={propertyId}
+        />
       </div>
 
       <p className="mt-8 border-t border-border pt-4 text-xs text-faint">
