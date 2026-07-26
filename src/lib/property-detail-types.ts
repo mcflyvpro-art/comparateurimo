@@ -40,3 +40,12 @@ export type PropertyDetail = {
   photos: PropertyDetailPhoto[];
   documents: PropertyDetailDocument[];
 };
+
+/**
+ * Photo/document avec son URL signée (générée côté serveur, validité 1h,
+ * bucket privé — Plan 5c). Un fichier tout juste uploadé reçoit une URL
+ * locale temporaire (`URL.createObjectURL`) à la place le temps de la
+ * session, voir `PhotoGrid`/`DocumentList`.
+ */
+export type PropertyDetailPhotoWithUrl = PropertyDetailPhoto & { signedUrl: string };
+export type PropertyDetailDocumentWithUrl = PropertyDetailDocument & { signedUrl: string };
