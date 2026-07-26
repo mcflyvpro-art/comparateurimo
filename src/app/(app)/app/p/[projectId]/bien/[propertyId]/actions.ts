@@ -2,7 +2,14 @@
 
 import { DEMO_USER_ID, getDemoClient } from "@/lib/supabase/demo";
 import type { PropertyScenarioRow } from "@/lib/property-detail-types";
-import { MAX_FILE_SIZE_BYTES, MAX_PHOTOS_PER_PROPERTY, isAcceptedPhotoType } from "@/lib/file-limits";
+import {
+  MAX_DOCUMENTS_PER_PROPERTY,
+  MAX_FILE_SIZE_BYTES,
+  MAX_PHOTOS_PER_PROPERTY,
+  isAcceptedDocumentType,
+  isAcceptedPhotoType,
+  type DocType,
+} from "@/lib/file-limits";
 
 export type ScenarioPatch = Partial<
   Pick<
@@ -191,6 +198,98 @@ export async function reorderPropertyPhoto(propertyId: string, photoId: string, 
     .from("property_photos")
     .update({ sort_order: newSortOrder })
     .eq("id", photoId)
+    .eq("property_id", propertyId)
+    .eq("user_id", DEMO_USER_ID);
+  if (error) throw new Error(error.message);
+}
+
+export type UploadedDocument = {
+  id: string;
+  storage_path: string;
+  filename: string;
+  doc_type: string;
+};
+
+/** Même logique que `uploadPropertyPhoto` (Task 4) côté documents — pas de
+ *  compression (un PDF ne se compresse pas simplement), type par défaut
+ *  "autre" si non fourni. */
+export async function uploadPropertyDocument(propertyId: string, formData: FormData): Promise<UploadedDocument> {
+  const supabase = getDemoClient();
+
+  const { data: property } = await supabase
+    .from("properties")
+    .select("id")
+    .eq("id", propertyId)
+    .eq("user_id", DEMO_USER_ID)
+    .maybeSingle();
+  if (!property) throw new Error("Bien introuvable.");
+
+  const { count } = await supabase
+    .from("property_documents")
+    .select("id", { count: "exact", head: true })
+    .eq("property_id", propertyId)
+    .eq("user_id", DEMO_USER_ID);
+  if ((count ?? 0) >= MAX_DOCUMENTS_PER_PROPERTY) {
+    throw new Error(`Limite de ${MAX_DOCUMENTS_PER_PROPERTY} documents atteinte pour ce bien.`);
+  }
+
+  const file = formData.get("file");
+  if (!(file instanceof File)) throw new Error("Fichier manquant.");
+  if (!isAcceptedDocumentType(file.type)) {
+    throw new Error("Format de document non supporté (PDF, JPG ou PNG uniquement).");
+  }
+  if (file.size > MAX_FILE_SIZE_BYTES) throw new Error("Document trop volumineux (8 Mo maximum).");
+
+  const docTypeValue = formData.get("docType");
+  const resolvedDocType = typeof docTypeValue === "string" && docTypeValue.length > 0 ? docTypeValue : "autre";
+
+  const storagePath = `${DEMO_USER_ID}/${propertyId}/${crypto.randomUUID()}-${file.name}`;
+  const { error: uploadError } = await supabase.storage
+    .from("property-documents")
+    .upload(storagePath, file, { contentType: file.type });
+  if (uploadError) throw new Error(uploadError.message);
+
+  const { data: inserted, error: insertError } = await supabase
+    .from("property_documents")
+    .insert({
+      property_id: propertyId,
+      user_id: DEMO_USER_ID,
+      storage_path: storagePath,
+      filename: file.name,
+      doc_type: resolvedDocType,
+    })
+    .select("id, storage_path, filename, doc_type")
+    .single();
+  if (insertError || !inserted) throw new Error(insertError?.message ?? "Échec de l'enregistrement du document.");
+
+  return inserted;
+}
+
+export async function deletePropertyDocument(
+  propertyId: string,
+  documentId: string,
+  storagePath: string,
+): Promise<void> {
+  const supabase = getDemoClient();
+
+  const { error: storageError } = await supabase.storage.from("property-documents").remove([storagePath]);
+  if (storageError) throw new Error(storageError.message);
+
+  const { error: deleteError } = await supabase
+    .from("property_documents")
+    .delete()
+    .eq("id", documentId)
+    .eq("property_id", propertyId)
+    .eq("user_id", DEMO_USER_ID);
+  if (deleteError) throw new Error(deleteError.message);
+}
+
+export async function updateDocumentType(documentId: string, propertyId: string, docType: DocType): Promise<void> {
+  const supabase = getDemoClient();
+  const { error } = await supabase
+    .from("property_documents")
+    .update({ doc_type: docType })
+    .eq("id", documentId)
     .eq("property_id", propertyId)
     .eq("user_id", DEMO_USER_ID);
   if (error) throw new Error(error.message);
