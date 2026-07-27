@@ -1,8 +1,18 @@
 "use client";
 
 import { useState, type FormEvent } from "react";
+import { Input } from "@/components/ui/Field";
+import { Button } from "@/components/ui/Button";
+import { Notice } from "@/components/ui/Feedback";
+import { IconArrowRight, IconMail } from "@/components/ui/Icon";
 
-/** Connexion — coquille : aucune auth réelle (viendra avec Supabase, E7). */
+/**
+ * Connexion — coquille visuelle.
+ *
+ * L'authentification réelle (Supabase, Google et e-mail) arrive plus loin dans la
+ * feuille de route. Le formulaire est complet et accessible dès maintenant pour
+ * que le branchement soit une substitution, pas une refonte.
+ */
 export function LoginForm() {
   const [info, setInfo] = useState(false);
 
@@ -13,48 +23,59 @@ export function LoginForm() {
 
   return (
     <form onSubmit={onSubmit} className="flex flex-col gap-5">
-      <div className="flex flex-col gap-2">
-        <label htmlFor="email" className="text-sm font-medium text-text">
-          Email
-        </label>
-        <input
-          id="email"
-          name="email"
-          type="email"
-          required
-          autoComplete="email"
-          className="rounded-lg border border-border bg-bg-elevated px-4 py-3 text-text outline-none focus:border-brand"
-        />
-      </div>
-      <div className="flex flex-col gap-2">
-        <label htmlFor="password" className="text-sm font-medium text-text">
-          Mot de passe
-        </label>
-        <input
-          id="password"
-          name="password"
-          type="password"
-          required
-          autoComplete="current-password"
-          className="rounded-lg border border-border bg-bg-elevated px-4 py-3 text-text outline-none focus:border-brand"
-        />
+      <Button
+        type="button"
+        variant="outline"
+        size="lg"
+        className="w-full"
+        icon={<IconMail size={15} />}
+        onClick={() => setInfo(true)}
+      >
+        Continuer avec Google
+      </Button>
+
+      <div className="flex items-center gap-4">
+        <span className="h-px flex-1 bg-hairline" aria-hidden />
+        <span className="t-caps">ou</span>
+        <span className="h-px flex-1 bg-hairline" aria-hidden />
       </div>
 
-      {info ? (
-        <p
-          role="status"
-          className="rounded-lg border border-border bg-bg-alt px-4 py-3 text-sm text-muted"
-        >
-          La connexion n’est pas encore disponible — elle arrive bientôt.
-        </p>
-      ) : null}
+      <Input
+        id="email"
+        name="email"
+        type="email"
+        required
+        autoComplete="email"
+        label="Adresse e-mail"
+        placeholder="vous@exemple.fr"
+      />
 
-      <button
+      <Input
+        id="password"
+        name="password"
+        type="password"
+        required
+        autoComplete="current-password"
+        label="Mot de passe"
+        placeholder="••••••••"
+      />
+
+      {info && (
+        <Notice>
+          La connexion n&apos;est pas encore branchée — comptes et sessions arrivent avec
+          l&apos;authentification Supabase.
+        </Notice>
+      )}
+
+      <Button
         type="submit"
-        className="cursor-pointer rounded-full bg-brand px-6 py-3 font-medium text-white transition-[transform,background-color] duration-100 hover:bg-brand-hover active:scale-[0.97]"
+        variant="solid"
+        size="lg"
+        className="mt-1 w-full"
+        trailing={<IconArrowRight size={15} />}
       >
         Se connecter
-      </button>
+      </Button>
     </form>
   );
 }

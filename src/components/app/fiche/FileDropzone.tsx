@@ -1,12 +1,16 @@
 "use client";
 
 import { useRef, useState } from "react";
+import { IconUpload } from "@/components/ui/Icon";
+import { cx } from "@/lib/cx";
 
-/** Zone de glisser-déposer + sélecteur de fichiers, générique (ne connaît
- *  ni photos ni documents — juste des `File[]` bruts). `accept`/`multiple`
- *  filtrent le sélecteur natif, mais le glisser-déposer peut contourner ce
- *  filtre : la validation réelle des types/tailles vit chez l'appelant
- *  (`PhotoGrid`/`DocumentList`) et côté serveur (défense en profondeur). */
+/**
+ * Zone de dépôt — générique : elle ne connaît ni photos ni documents, juste des
+ * `File[]`. La validation réelle vit chez l'appelant et côté serveur.
+ *
+ * Au survol d'un fichier, le pointillé devient continu et s'allume à la braise :
+ * la cible se referme sur ce qu'on tient, plutôt que de clignoter.
+ */
 export function FileDropzone({
   accept,
   multiple = true,
@@ -31,7 +35,10 @@ export function FileDropzone({
   }
 
   return (
-    <div
+    <button
+      type="button"
+      disabled={disabled}
+      onClick={() => inputRef.current?.click()}
       onDragOver={(e) => {
         e.preventDefault();
         if (!disabled) setIsDraggingOver(true);
@@ -43,23 +50,25 @@ export function FileDropzone({
         if (disabled) return;
         handleFiles(e.dataTransfer.files);
       }}
-      className={`flex min-h-24 flex-col items-center justify-center gap-2 rounded-xl border border-dashed p-4 text-center text-xs transition-colors ${
+      className={cx(
+        "group flex w-full items-center justify-center gap-2.5 rounded-md border px-4 py-5",
+        "text-[12px] transition-[border-color,background-color,color] duration-[140ms]",
         disabled
-          ? "cursor-not-allowed border-border text-faint"
+          ? "cursor-not-allowed border-dashed border-hairline text-text-4"
           : isDraggingOver
-            ? "border-brand bg-brand/5 text-text"
-            : "border-border-strong text-faint hover:border-brand/50"
-      }`}
+            ? "border-solid border-hairline-ember bg-[var(--brand-wash)] text-brand-hot"
+            : "cursor-pointer border-dashed border-hairline-2 text-text-3 hover:border-hairline-3 hover:text-text-2",
+      )}
     >
-      <p>{disabled ? disabledMessage : label}</p>
-      <button
-        type="button"
-        disabled={disabled}
-        onClick={() => inputRef.current?.click()}
-        className="rounded-full border border-border-strong px-3 py-1 text-xs font-medium text-text transition-colors hover:border-brand disabled:cursor-not-allowed disabled:opacity-50"
-      >
-        Parcourir
-      </button>
+      <IconUpload
+        size={15}
+        className={cx(
+          "transition-transform duration-[220ms] ease-[cubic-bezier(0.16,1,0.3,1)]",
+          isDraggingOver && "-translate-y-0.5",
+        )}
+      />
+      <span>{disabled ? disabledMessage : isDraggingOver ? "Relâchez" : label}</span>
+
       <input
         ref={inputRef}
         type="file"
@@ -72,6 +81,6 @@ export function FileDropzone({
         }}
         className="hidden"
       />
-    </div>
+    </button>
   );
 }

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, type ReactNode } from "react";
 import { FileDropzone } from "@/components/app/fiche/FileDropzone";
 import { useConfirmDelete } from "@/lib/hooks/use-confirm-delete";
 import { useFileUpload } from "@/lib/hooks/use-file-upload";
@@ -16,16 +16,20 @@ import {
   updateDocumentType,
   uploadPropertyDocument,
 } from "@/app/(app)/app/p/[projectId]/bien/[propertyId]/actions";
+import { IconDownload, IconGauge, IconLayers, IconNote, IconTrash } from "@/components/ui/Icon";
+import { cx } from "@/lib/cx";
 import type { PropertyDetailDocumentWithUrl } from "@/lib/property-detail-types";
 
-/** Icône par type — fait main (pas de lib d'icônes), un simple glyphe/emoji
- *  reconnaissable. `doc_type` étant du texte libre en base (pas un enum
- *  Supabase), une valeur inconnue retombe sur l'icône générique. */
-const DOC_TYPE_ICON: Record<string, string> = {
-  diagnostic: "🩺",
-  compromis: "📝",
-  plan: "📐",
-  autre: "📄",
+/**
+ * Pièces du dossier. Aucun émoji : chaque type porte un pictogramme du jeu
+ * maison, tracé au même trait que le reste de l'interface. `doc_type` étant du
+ * texte libre en base, une valeur inconnue retombe sur l'icône générique.
+ */
+const DOC_TYPE_ICON: Record<string, ReactNode> = {
+  diagnostic: <IconGauge size={15} />,
+  compromis: <IconNote size={15} />,
+  plan: <IconLayers size={15} />,
+  autre: <IconNote size={15} />,
 };
 
 export function DocumentList({
@@ -35,7 +39,8 @@ export function DocumentList({
   propertyId: string;
   initialDocuments: PropertyDetailDocumentWithUrl[];
 }) {
-  const [documents, setDocuments] = useState<PropertyDetailDocumentWithUrl[]>(initialDocuments);
+  const [documents, setDocuments] =
+    useState<PropertyDetailDocumentWithUrl[]>(initialDocuments);
   const { pendingId: pendingDeleteId, requestConfirm } = useConfirmDelete();
   const [validationError, setValidationError] = useState<string | null>(null);
   const { status, error, uploadFiles } = useFileUpload();
@@ -68,7 +73,9 @@ export function DocumentList({
   }
 
   function handleTypeChange(documentId: string, docType: DocType) {
-    setDocuments((current) => current.map((d) => (d.id === documentId ? { ...d, doc_type: docType } : d)));
+    setDocuments((current) =>
+      current.map((d) => (d.id === documentId ? { ...d, doc_type: docType } : d)),
+    );
     updateDocumentType(documentId, propertyId, docType).catch(() => {});
   }
 
@@ -83,27 +90,39 @@ export function DocumentList({
       <FileDropzone
         accept={ACCEPTED_DOCUMENT_MIME_TYPES.join(",")}
         disabled={atLimit}
-        disabledMessage={`Limite de ${MAX_DOCUMENTS_PER_PROPERTY} documents atteinte.`}
-        label="Glisse des documents ici ou clique pour en choisir."
+        disabledMessage={`Limite de ${MAX_DOCUMENTS_PER_PROPERTY} documents atteinte`}
+        label="Déposez des documents, ou cliquez pour les choisir"
         onFilesSelected={handleFilesSelected}
       />
-      {status === "uploading" && <p className="mt-2 text-xs text-faint">Envoi…</p>}
-      {validationError && <p className="mt-2 text-xs text-score-mid">{validationError}</p>}
-      {error && <p className="mt-2 text-xs text-score-low">{error}</p>}
+
+      {(status === "uploading" || validationError || error) && (
+        <div className="mt-2 flex flex-col gap-1">
+          {status === "uploading" && <p className="text-[11px] text-text-4">Envoi…</p>}
+          {validationError && <p className="text-[11px] text-ember-800">{validationError}</p>}
+          {error && <p className="text-[11px] text-danger">{error}</p>}
+        </div>
+      )}
 
       {documents.length > 0 && (
-        <ul className="mt-3 space-y-2">
+        <ul className="mt-3 overflow-hidden rounded-md border border-hairline">
           {documents.map((doc) => (
             <li
               key={doc.id}
-              className="flex items-center gap-3 rounded-xl border border-border bg-bg p-3 text-sm text-text"
+              className="group flex items-center gap-3 border-b border-hairline px-3 py-2.5 transition-colors last:border-0 hover:bg-raised"
             >
-              <span className="text-lg">{DOC_TYPE_ICON[doc.doc_type] ?? "📄"}</span>
-              <span className="min-w-0 flex-1 truncate">{doc.filename}</span>
+              <span className="shrink-0 text-text-3">
+                {DOC_TYPE_ICON[doc.doc_type] ?? DOC_TYPE_ICON.autre}
+              </span>
+
+              <span className="min-w-0 flex-1 truncate text-[13px] text-text">
+                {doc.filename}
+              </span>
+
               <select
                 value={doc.doc_type}
                 onChange={(e) => handleTypeChange(doc.id, e.target.value as DocType)}
-                className="rounded-lg border border-border bg-bg px-2 py-1 text-xs text-text"
+                aria-label="Type de document"
+                className="shrink-0 cursor-pointer rounded-sm border border-hairline-2 bg-sunken px-2 py-1 text-[11px] text-text-2 outline-none transition-colors hover:border-hairline-3 focus:border-brand"
               >
                 {DOC_TYPE_OPTIONS.map((opt) => (
                   <option key={opt.value} value={opt.value}>
@@ -111,24 +130,34 @@ export function DocumentList({
                   </option>
                 ))}
               </select>
+
               <a
                 href={doc.signedUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="rounded-full border border-border-strong px-2.5 py-1 text-xs text-text transition-colors hover:border-brand"
+                aria-label={`Télécharger ${doc.filename}`}
+                className="shrink-0 rounded-sm p-1.5 text-text-4 opacity-0 transition-all duration-[140ms] hover:text-text group-hover:opacity-100 focus-visible:opacity-100"
               >
-                Télécharger
+                <IconDownload size={14} />
               </a>
+
               <button
                 type="button"
                 onClick={() => handleDeleteClick(doc.id, doc.storage_path)}
-                className={`rounded-full border px-2.5 py-1 text-xs font-medium transition-colors ${
+                aria-label={
                   pendingDeleteId === doc.id
-                    ? "border-score-low bg-score-low/10 text-score-low"
-                    : "border-border-strong text-faint hover:border-score-low hover:text-score-low"
-                }`}
+                    ? "Confirmer la suppression"
+                    : `Supprimer ${doc.filename}`
+                }
+                className={cx(
+                  "flex shrink-0 items-center gap-1 rounded-sm px-1.5 py-1 text-[10px] transition-all duration-[140ms]",
+                  pendingDeleteId === doc.id
+                    ? "bg-[var(--danger-wash)] text-danger opacity-100"
+                    : "text-text-4 opacity-0 hover:text-danger group-hover:opacity-100 focus-visible:opacity-100",
+                )}
               >
-                {pendingDeleteId === doc.id ? "Confirmer ?" : "Supprimer"}
+                <IconTrash size={14} />
+                {pendingDeleteId === doc.id && "Confirmer"}
               </button>
             </li>
           ))}

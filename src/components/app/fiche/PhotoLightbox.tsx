@@ -1,12 +1,16 @@
 "use client";
 
 import { useEffect } from "react";
+import { Lightbox } from "@/components/ui/Overlay";
+import { Button, IconButton } from "@/components/ui/Button";
+import { IconArrowLeft, IconArrowRight, IconTrash } from "@/components/ui/Icon";
 import type { PropertyDetailPhotoWithUrl } from "@/lib/property-detail-types";
 
-/** Aperçu plein écran fait main (pas de lib) — même pattern d'accessibilité
- *  que `InfoTooltip` (Échap pour fermer), + navigation clavier gauche/droite.
- *  Le clic sur le fond ferme la lightbox ; le clic sur le contenu (image,
- *  légende, boutons) ne propage pas au fond (`stopPropagation`). */
+/**
+ * Aperçu plein cadre. Le fond ne fait pas que s'assombrir : il est flouté, donc
+ * la fiche reste perceptible derrière sans jamais concurrencer l'image.
+ * Navigation au clavier (flèches) et fermeture à Échap.
+ */
 export function PhotoLightbox({
   photos,
   index,
@@ -15,79 +19,81 @@ export function PhotoLightbox({
   onDelete,
 }: {
   photos: PropertyDetailPhotoWithUrl[];
-  index: number;
+  index: number | null;
   onClose: () => void;
   onNavigate: (nextIndex: number) => void;
   onDelete: (photoId: string) => void;
 }) {
-  const photo = photos[index];
-
   useEffect(() => {
+    if (index === null) return;
     function handleKeyDown(event: KeyboardEvent) {
-      if (event.key === "Escape") onClose();
+      if (index === null) return;
       if (event.key === "ArrowRight" && index < photos.length - 1) onNavigate(index + 1);
       if (event.key === "ArrowLeft" && index > 0) onNavigate(index - 1);
     }
     document.addEventListener("keydown", handleKeyDown);
     return () => document.removeEventListener("keydown", handleKeyDown);
-  }, [index, photos.length, onClose, onNavigate]);
+  }, [index, photos.length, onNavigate]);
 
-  if (!photo) return null;
+  const photo = index !== null ? photos[index] : null;
 
   return (
-    <div
-      role="dialog"
-      aria-modal="true"
-      onClick={onClose}
-      className="fixed inset-0 z-50 flex flex-col items-center justify-center gap-4 bg-bg/95 p-6"
+    <Lightbox
+      open={Boolean(photo)}
+      onClose={onClose}
+      toolbar={
+        photo && index !== null ? (
+          <>
+            <IconButton
+              aria-label="Photo précédente"
+              variant="outline"
+              size="sm"
+              disabled={index === 0}
+              onClick={() => onNavigate(index - 1)}
+            >
+              <IconArrowLeft size={15} />
+            </IconButton>
+            <span className="num min-w-16 text-center text-[11px] text-text-3">
+              {index + 1} / {photos.length}
+            </span>
+            <IconButton
+              aria-label="Photo suivante"
+              variant="outline"
+              size="sm"
+              disabled={index === photos.length - 1}
+              onClick={() => onNavigate(index + 1)}
+            >
+              <IconArrowRight size={15} />
+            </IconButton>
+            <span className="mx-1 h-5 w-px bg-hairline-2" aria-hidden />
+            <Button
+              variant="danger"
+              size="sm"
+              icon={<IconTrash size={13} />}
+              onClick={() => onDelete(photo.id)}
+            >
+              Supprimer
+            </Button>
+            <Button variant="quiet" size="sm" onClick={onClose}>
+              Fermer
+            </Button>
+          </>
+        ) : null
+      }
     >
-      {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img
-        src={photo.signedUrl}
-        alt={photo.caption ?? "Photo du bien"}
-        onClick={(e) => e.stopPropagation()}
-        className="max-h-[75vh] max-w-full rounded-2xl object-contain"
-      />
-      {photo.caption && (
-        <p onClick={(e) => e.stopPropagation()} className="text-sm text-text">
-          {photo.caption}
-        </p>
+      {photo && (
+        <figure onClick={(e) => e.stopPropagation()} className="flex flex-col items-center gap-3">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src={photo.signedUrl}
+            alt={photo.caption ?? "Photo du bien"}
+            className="max-h-[72vh] max-w-full rounded-md border border-hairline-2 object-contain"
+          />
+          {photo.caption && (
+            <figcaption className="text-[12px] text-text-2">{photo.caption}</figcaption>
+          )}
+        </figure>
       )}
-      <div onClick={(e) => e.stopPropagation()} className="flex items-center gap-3">
-        <button
-          type="button"
-          disabled={index === 0}
-          onClick={() => onNavigate(index - 1)}
-          className="rounded-full border border-border-strong px-3 py-1 text-xs text-text disabled:opacity-30"
-        >
-          ← Précédente
-        </button>
-        <span className="text-xs text-faint">
-          {index + 1} / {photos.length}
-        </span>
-        <button
-          type="button"
-          disabled={index === photos.length - 1}
-          onClick={() => onNavigate(index + 1)}
-          className="rounded-full border border-border-strong px-3 py-1 text-xs text-text disabled:opacity-30"
-        >
-          Suivante →
-        </button>
-        <button
-          type="button"
-          onClick={() => onDelete(photo.id)}
-          className="rounded-full border border-score-low/40 px-3 py-1 text-xs text-score-low"
-        >
-          Supprimer
-        </button>
-        <button
-          type="button"
-          onClick={onClose}
-          className="rounded-full border border-border-strong px-3 py-1 text-xs text-text"
-        >
-          Fermer (Échap)
-        </button>
-      </div>
-    </div>
+    </Lightbox>
   );
 }

@@ -1,17 +1,24 @@
-import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getDemoClient, DEMO_USER_ID } from "@/lib/supabase/demo";
-import { FicheScenarioSections } from "@/components/app/fiche/FicheScenarioSections";
+import { FicheShell } from "@/components/app/fiche/FicheShell";
 import { SectionHumain } from "@/components/app/fiche/SectionHumain";
 
 export const dynamic = "force-dynamic";
 
 export default async function PropertyDetailPage({
   params,
+  searchParams,
 }: {
   params: Promise<{ projectId: string; propertyId: string }>;
+  searchParams: Promise<{ vue?: string }>;
 }) {
   const { projectId, propertyId } = await params;
+  // Le mode d'affichage est lu ICI, côté serveur. La coque cliente ne doit
+  // surtout pas le relire avec `useSearchParams()` — voir le commentaire dans
+  // `FicheShell`, c'est ce qui empêchait toute la fiche de s'hydrater.
+  const { vue } = await searchParams;
+  const mode = vue === "complet" ? "complet" : "simple";
+
   const supabase = getDemoClient();
 
   const { data: property } = await supabase
@@ -82,17 +89,13 @@ export default async function PropertyDetailPage({
   ]);
 
   return (
-    <div className="mx-auto max-w-4xl px-6 py-8">
-      <Link href={`/app/p/${projectId}`} className="text-sm text-muted transition-colors hover:text-text">
-        ← Retour au projet
-      </Link>
-      <h1 className="mt-3 font-sans text-2xl font-semibold text-text">
-        {property.address ?? "Adresse non renseignée"}
-      </h1>
-      <p className="text-sm text-muted">{property.city ?? "—"}</p>
-
-      <div className="mt-6 flex flex-col gap-6">
-        <FicheScenarioSections property={property} scenario={scenario} propertyId={propertyId} />
+    <FicheShell
+      property={property}
+      scenario={scenario}
+      propertyId={propertyId}
+      projectId={projectId}
+      mode={mode}
+      humanSection={
         <SectionHumain
           property={property}
           contact={contact}
@@ -101,12 +104,7 @@ export default async function PropertyDetailPage({
           documents={documentsWithUrls}
           propertyId={propertyId}
         />
-      </div>
-
-      <p className="mt-8 border-t border-border pt-4 text-xs text-faint">
-        Estio est un outil d&apos;aide à la décision, pas un conseil en investissement réglementé. Vérifie toujours
-        les chiffres importants auprès d&apos;un professionnel avant de t&apos;engager.
-      </p>
-    </div>
+      }
+    />
   );
 }

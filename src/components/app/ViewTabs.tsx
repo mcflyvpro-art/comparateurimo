@@ -1,13 +1,23 @@
-import Link from "next/link";
+"use client";
+
+import { Segmented } from "@/components/ui/Controls";
+import { IconBoard, IconMap, IconTable } from "@/components/ui/Icon";
 
 const VIEWS = [
-  { key: "pipeline", label: "Pipeline" },
-  { key: "tableau", label: "Tableau" },
-  { key: "carte", label: "Carte" },
+  { key: "pipeline", label: "Pipeline", icon: <IconBoard size={14} /> },
+  { key: "tableau", label: "Tableau", icon: <IconTable size={14} /> },
+  { key: "carte", label: "Carte", icon: <IconMap size={14} /> },
 ] as const;
 
 export type ViewKey = (typeof VIEWS)[number]["key"];
 
+/**
+ * Bascule de vue.
+ *
+ * La légende des trois niveaux de données a disparu d'ici : elle expliquait un
+ * code couleur qui n'existe plus. Une barre d'onglets ne doit rien contenir
+ * d'autre que des onglets.
+ */
 export function ViewTabs({
   projectId,
   active,
@@ -16,24 +26,17 @@ export function ViewTabs({
   active: ViewKey;
 }) {
   return (
-    <div className="flex gap-1 border-b border-border px-6">
-      {VIEWS.map((v) => {
-        const isActive = v.key === active;
-        return (
-          <Link
-            key={v.key}
-            href={`/app/p/${projectId}?view=${v.key}`}
-            aria-current={isActive ? "page" : undefined}
-            className={`border-b-2 px-3 py-3 text-sm transition-colors ${
-              isActive
-                ? "border-brand font-medium text-text"
-                : "border-transparent text-muted hover:text-text"
-            }`}
-          >
-            {v.label}
-          </Link>
-        );
-      })}
+    <div className="border-b border-hairline px-5">
+      <Segmented
+        layoutKey="project-views"
+        active={active}
+        items={VIEWS.map((v) => ({
+          key: v.key,
+          label: v.label,
+          icon: v.icon,
+          href: `/app/p/${projectId}?view=${v.key}`,
+        }))}
+      />
     </div>
   );
 }

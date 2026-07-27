@@ -1,190 +1,483 @@
 @import "tailwindcss";
 @import "../design/tokens.css";
 
-/* Expose les tokens sémantiques comme utilitaires Tailwind 4 (bg-bg, text-muted, rounded-lg…) */
+/* =============================================================================
+   ESTIO — SYSTÈME « FOCALE » v2 · couche applicative
+   ========================================================================== */
+
 @theme inline {
+  /* --- Surfaces --------------------------------------------------------- */
   --color-bg: var(--bg);
-  --color-bg-elevated: var(--bg-elevated);
-  --color-bg-alt: var(--bg-alt);
+  --color-sunken: var(--bg-sunken);
+  --color-surface: var(--surface);
+  --color-raised: var(--surface-raised);
+  --color-high: var(--surface-high);
+
+  /* --- Texte ------------------------------------------------------------ */
   --color-text: var(--text);
-  --color-muted: var(--text-muted);
-  --color-faint: var(--text-faint);
+  --color-text-2: var(--text-2);
+  --color-text-3: var(--text-3);
+  --color-text-4: var(--text-4);
+  --color-inverse: var(--text-inverse);
+
+  /* --- Filets ----------------------------------------------------------- */
+  --color-hairline: var(--hairline);
+  --color-hairline-2: var(--hairline-2);
+  --color-hairline-3: var(--hairline-3);
+
+  /* --- Marque : actions uniquement -------------------------------------- */
   --color-brand: var(--brand);
-  --color-brand-hover: var(--brand-hover);
-  --color-accent: var(--accent);
-  --color-score-high: var(--score-high);
-  --color-score-mid: var(--score-mid);
-  --color-score-low: var(--score-low);
-  --color-border: var(--border);
-  --color-border-strong: var(--border-strong);
+  --color-brand-hot: var(--brand-hot);
+  --color-ember-100: var(--ember-100);
+  --color-ember-200: var(--ember-200);
+  --color-ember-700: var(--ember-700);
+  --color-ember-900: var(--ember-900);
 
-  --radius-sm: 12px;
-  --radius-md: 16px;
-  --radius-lg: 20px;
-  --radius-xl: 24px;
+  /* --- Verdict : données uniquement ------------------------------------- */
+  --color-good: var(--good);
+  --color-good-300: var(--good-300);
+  --color-good-100: var(--good-100);
+  --color-mid: var(--mid);
+  --color-mid-300: var(--mid-300);
+  --color-mid-100: var(--mid-100);
+  --color-risk: var(--risk);
+  --color-risk-300: var(--risk-300);
+  --color-risk-100: var(--risk-100);
+  --color-none: var(--none);
 
-  --font-sans: var(--font-grotesk), "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --color-info: var(--info);
+  --color-danger: var(--danger);
+
+  --color-ink-700: var(--ink-700);
+  --color-ink-600: var(--ink-600);
+  --color-ink-500: var(--ink-500);
+  --color-bone-300: var(--bone-300);
+  --color-bone-400: var(--bone-400);
+
+  /* --- Forme ------------------------------------------------------------ */
+  --radius-xs: var(--r-xs);
+  --radius-sm: var(--r-sm);
+  --radius-md: var(--r-md);
+  --radius-lg: var(--r-lg);
+  --radius-xl: var(--r-xl);
+  --radius-2xl: var(--r-2xl);
+
+  /* --- Typographie ------------------------------------------------------ */
+  --font-sans: var(--font-grotesk), "Helvetica Neue", Arial, sans-serif;
+  --font-mono: var(--font-mono-jb), ui-monospace, "SF Mono", monospace;
 }
+
+/* =============================================================================
+   BASE
+   ========================================================================== */
 
 html {
   background: var(--bg);
-}
-
-/* Section « claire » : on inverse localement les tokens sémantiques → tout enfant
-   basé sur les tokens (text-text, text-muted, border-border, bg-bg…) bascule seul.
-   Transition douce pour l'effet « le fond passe au blanc » façon speedy.io. */
-.section-light {
-  --bg: #f5f4f1;
-  --bg-elevated: #ffffff;
-  --bg-alt: #ecebe6;
-  --text: #0a0a0b;
-  --text-muted: #57534e;
-  --text-faint: #8b857d;
-  --brand: #6b62b0;
-  --border: rgba(10, 10, 11, 0.12);
-  --border-strong: rgba(10, 10, 11, 0.2);
-  background: var(--bg);
-  color: var(--text);
-  transition: background-color 0.6s var(--ease-expo);
+  color-scheme: dark;
 }
 
 body {
   background: var(--bg);
   color: var(--text);
-  font-family: var(--font-grotesk), "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-family: var(--font-grotesk), "Helvetica Neue", Arial, sans-serif;
+  font-feature-settings: "ss01" 1, "ss03" 1;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
 }
 
-/* =========================================================================
-   Échelle typographique « géante » (réf. speedy.io) — fluide en clamp().
-   line-height 1, tracking serré. Utilisée sur les titres et gros chiffres.
-   ========================================================================= */
-.h-display {
-  font-weight: 500;
-  font-size: clamp(2.75rem, 8vw, 8.375rem); /* → 134px */
-  line-height: 0.98;
-  letter-spacing: -0.03em;
-}
-/* Liens géants du menu plein écran (≈ 110px) */
-.h-giant {
-  font-weight: 500;
-  font-size: clamp(2.5rem, 7vw, 7rem);
-  line-height: 1.05;
-  letter-spacing: -0.03em;
-}
-.h-lg {
-  font-weight: 500;
-  font-size: clamp(2rem, 4.8vw, 4.75rem); /* → 76px */
-  line-height: 1;
-  letter-spacing: -0.025em;
-}
-.h-md {
-  font-weight: 500;
-  font-size: clamp(1.7rem, 3.9vw, 4rem); /* → 64px */
-  line-height: 1.02;
-  letter-spacing: -0.02em;
-}
-.h-sm {
-  font-weight: 500;
-  font-size: clamp(1.4rem, 2.2vw, 2.25rem); /* → 36px */
-  line-height: 1.05;
-  letter-spacing: -0.015em;
-}
-.p-lead {
-  font-size: clamp(1.1rem, 1.35vw, 1.5rem); /* → 24px */
-  line-height: 1.25;
-}
-
-/* Titre « détouré » (outline) — signature Büro : -webkit-text-stroke. */
-.text-stroke {
-  color: transparent;
-  -webkit-text-fill-color: transparent;
-  -webkit-text-stroke: 1px var(--text);
-}
-
-/* =========================================================================
-   Accessibilité clavier
-   ========================================================================= */
-:focus-visible {
-  outline: 2px solid var(--brand);
-  outline-offset: 3px;
-  border-radius: 4px;
+/* Le noir n'est jamais plat : grain de film au-dessus de tout, inerte. */
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  pointer-events: none;
+  background-image: var(--grain);
+  background-size: 180px 180px;
+  opacity: 0.026;
+  mix-blend-mode: overlay;
 }
 
 ::selection {
-  background: var(--lilas);
-  color: var(--noir);
+  background: var(--ember-700);
+  color: var(--ink-950);
 }
 
-/* =========================================================================
-   Marquee infini (bande de sources) — transform only, guardé reduced-motion
-   ========================================================================= */
-@keyframes estio-marquee {
+:focus-visible {
+  outline: 2px solid var(--ember-700);
+  outline-offset: 2px;
+  border-radius: var(--r-xs);
+}
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--ink-500) transparent;
+}
+*::-webkit-scrollbar {
+  width: 9px;
+  height: 9px;
+}
+*::-webkit-scrollbar-track {
+  background: transparent;
+}
+*::-webkit-scrollbar-thumb {
+  background: var(--ink-500);
+  border-radius: var(--r-pill);
+  border: 2px solid transparent;
+  background-clip: content-box;
+}
+*::-webkit-scrollbar-thumb:hover {
+  background: var(--ink-400);
+  background-clip: content-box;
+}
+
+/* =============================================================================
+   ÉCHELLE TYPOGRAPHIQUE
+   ========================================================================== */
+
+.t-hero {
+  font-size: clamp(3.25rem, 10.5vw, 10.5rem);
+  line-height: 0.86;
+  letter-spacing: -0.048em;
+  font-weight: 500;
+}
+.t-display {
+  font-size: clamp(2.4rem, 6vw, 5.25rem);
+  line-height: 0.95;
+  letter-spacing: -0.036em;
+  font-weight: 500;
+}
+.t-title {
+  font-size: clamp(1.7rem, 3.2vw, 2.75rem);
+  line-height: 1.04;
+  letter-spacing: -0.026em;
+  font-weight: 500;
+}
+.t-head {
+  font-size: clamp(1.15rem, 1.7vw, 1.5rem);
+  line-height: 1.2;
+  letter-spacing: -0.016em;
+  font-weight: 500;
+}
+.t-lead {
+  font-size: clamp(1.0625rem, 1.2vw, 1.25rem);
+  line-height: 1.55;
+  letter-spacing: -0.005em;
+  color: var(--text-2);
+}
+
+/* -----------------------------------------------------------------------------
+   ÉTIQUETTE — le changement le plus rentable de la v2.
+   En v1 c'était une petite capitale à 11 px avec 0,13em d'interlettrage, répétée
+   des dizaines de fois par écran : illisible, et ça criait. Désormais une
+   étiquette est simplement du texte, en casse de phrase, à une taille qu'on lit.
+   `.t-caps` reste disponible pour les rares surtitres de la vitrine.
+   -------------------------------------------------------------------------- */
+.t-label {
+  font-size: 0.75rem;
+  line-height: 1.35;
+  letter-spacing: 0;
+  text-transform: none;
+  font-weight: 500;
+  color: var(--text-3);
+}
+
+.t-caps {
+  font-size: 0.6875rem;
+  line-height: 1;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+  font-weight: 500;
+  color: var(--text-3);
+}
+
+/* Tout chiffre passe par là : chasses fixes, colonnes alignées. */
+.num {
+  font-family: var(--font-mono-jb), ui-monospace, monospace;
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum" 1, "zero" 1;
+  letter-spacing: -0.02em;
+}
+
+.num-hero {
+  font-family: var(--font-mono-jb), ui-monospace, monospace;
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum" 1, "zero" 1;
+  font-size: clamp(2.25rem, 3.6vw, 3.5rem);
+  line-height: 0.92;
+  letter-spacing: -0.05em;
+  font-weight: 500;
+}
+
+.t-outline {
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+  -webkit-text-stroke: 1px var(--hairline-3);
+}
+
+/* =============================================================================
+   LE GESTE SIGNATURE — LE CALAGE FOCAL
+   ========================================================================== */
+
+@keyframes focal-settle {
   from {
-    transform: translateX(0);
+    opacity: 0;
+    filter: blur(9px);
+    transform: translate3d(0, 10px, 0) scale(0.994);
   }
   to {
-    transform: translateX(-50%);
+    opacity: 1;
+    filter: blur(0);
+    transform: none;
+  }
+}
+
+.focal-in {
+  animation: focal-settle var(--t-base) var(--e-focal) both;
+}
+.focal-in-slow {
+  animation: focal-settle var(--t-cine) var(--e-focal) both;
+}
+
+.focal-stagger > * {
+  animation: focal-settle var(--t-base) var(--e-focal) both;
+}
+.focal-stagger > *:nth-child(1) { animation-delay: 0ms; }
+.focal-stagger > *:nth-child(2) { animation-delay: 40ms; }
+.focal-stagger > *:nth-child(3) { animation-delay: 80ms; }
+.focal-stagger > *:nth-child(4) { animation-delay: 120ms; }
+.focal-stagger > *:nth-child(5) { animation-delay: 160ms; }
+.focal-stagger > *:nth-child(6) { animation-delay: 200ms; }
+.focal-stagger > *:nth-child(n + 7) { animation-delay: 240ms; }
+
+/* =============================================================================
+   HORS FOCALE — le verrou freemium.
+   ========================================================================== */
+
+.defocused {
+  filter: blur(7px) saturate(0.4);
+  opacity: 0.55;
+  user-select: none;
+  pointer-events: none;
+  transition:
+    filter var(--t-slow) var(--e-focal),
+    opacity var(--t-slow) var(--e-focal);
+}
+.defocused-soft {
+  filter: blur(4px);
+  opacity: 0.6;
+  user-select: none;
+}
+
+/* =============================================================================
+   REPLIS — l'ossature de la divulgation progressive.
+   ========================================================================== */
+
+.disclosure-body {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows var(--t-slow) var(--e-focal);
+}
+.disclosure-body[data-open="true"] {
+  grid-template-rows: 1fr;
+}
+.disclosure-body > * {
+  overflow: hidden;
+  min-height: 0;
+}
+
+/* =============================================================================
+   CURSEUR D'INSTRUMENT
+   ========================================================================== */
+
+.estio-range {
+  --fill: 0%;
+  appearance: none;
+  -webkit-appearance: none;
+  width: 100%;
+  height: 22px;
+  background: transparent;
+  cursor: pointer;
+  display: block;
+}
+.estio-range:disabled {
+  cursor: not-allowed;
+}
+
+.estio-range::-webkit-slider-runnable-track {
+  height: 4px;
+  border-radius: 2px;
+  background: linear-gradient(
+    90deg,
+    var(--ember-700) 0%,
+    var(--ember-700) var(--fill),
+    var(--ink-600) var(--fill),
+    var(--ink-600) 100%
+  );
+}
+.estio-range::-webkit-slider-thumb {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 14px;
+  height: 14px;
+  margin-top: -5px;
+  border-radius: 50%;
+  border: 0;
+  background: var(--bone-100);
+  box-shadow: 0 1px 3px rgb(0 0 0 / 0.5);
+  transition:
+    background-color var(--t-fast) var(--e-snap),
+    transform var(--t-fast) var(--e-snap);
+}
+.estio-range:hover::-webkit-slider-thumb,
+.estio-range:focus-visible::-webkit-slider-thumb {
+  transform: scale(1.18);
+  background: #fff;
+}
+
+.estio-range::-moz-range-track {
+  height: 4px;
+  border-radius: 2px;
+  background: var(--ink-600);
+}
+.estio-range::-moz-range-progress {
+  height: 4px;
+  border-radius: 2px;
+  background: var(--ember-700);
+}
+.estio-range::-moz-range-thumb {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  border: 0;
+  background: var(--bone-100);
+  box-shadow: 0 1px 3px rgb(0 0 0 / 0.5);
+}
+.estio-range:focus-visible {
+  outline: none;
+}
+
+/* =============================================================================
+   CARTE — ramener une tuile extérieure dans le monde d'Estio.
+   ========================================================================== */
+
+.estio-map .maplibregl-canvas {
+  filter: saturate(0.28) sepia(0.22) brightness(0.8) contrast(1.1);
+}
+
+.estio-map .maplibregl-ctrl-attrib {
+  background: rgb(11 10 9 / 0.72) !important;
+  backdrop-filter: blur(4px);
+  border-radius: var(--r-xs) 0 0 0;
+  font-size: 10px;
+  padding: 2px 6px;
+}
+.estio-map .maplibregl-ctrl-attrib a {
+  color: var(--bone-400);
+}
+.estio-map .maplibregl-ctrl-attrib-button {
+  filter: invert(1) opacity(0.4);
+}
+
+.estio-pin {
+  display: grid;
+  place-items: center;
+  width: 22px;
+  height: 22px;
+  cursor: pointer;
+  transition: transform var(--t-base) var(--e-focal);
+}
+.estio-pin:hover {
+  transform: scale(1.3);
+}
+.estio-pin i {
+  display: block;
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  box-shadow: 0 0 0 2px rgb(11 10 9 / 0.9);
+}
+
+/* =============================================================================
+   RAILS & MASQUES
+   ========================================================================== */
+
+.fade-x {
+  mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+}
+.fade-b {
+  mask-image: linear-gradient(180deg, #000 55%, transparent);
+}
+
+.rail-x {
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+}
+
+/* =============================================================================
+   MOUVEMENTS D'AMBIANCE — vitrine uniquement.
+   ========================================================================== */
+
+@keyframes drift {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
+  50% {
+    transform: translate3d(0, -12px, 0);
+  }
+}
+.animate-drift {
+  animation: drift 7s var(--e-swing) infinite;
+}
+
+@keyframes marquee-x {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    transform: translate3d(-50%, 0, 0);
   }
 }
 .animate-marquee {
-  animation: estio-marquee 30s linear infinite;
+  animation: marquee-x 46s linear infinite;
 }
 
-/* Descente d'invite de scroll (indicateur du hero) */
-@keyframes estio-scroll-dot {
-  0% {
-    transform: translateY(0);
-    opacity: 0;
-  }
-  40% {
-    opacity: 1;
-  }
-  80% {
-    transform: translateY(8px);
-    opacity: 0;
-  }
-  100% {
-    opacity: 0;
-  }
-}
-.animate-scroll-dot {
-  animation: estio-scroll-dot 1.8s var(--ease-expo) infinite;
-}
-
-/* Blob glossy du hero — masse sombre qui respire/tourne lentement en fond */
-@keyframes estio-blob {
-  0% {
-    transform: translate3d(0, 0, 0) rotate(0deg) scale(1);
-  }
-  50% {
-    transform: translate3d(2%, -3%, 0) rotate(8deg) scale(1.08);
-  }
-  100% {
-    transform: translate3d(0, 0, 0) rotate(0deg) scale(1);
-  }
-}
-.animate-blob {
-  animation: estio-blob 18s var(--ease-expo) infinite;
-}
-
-/* Flottement doux des cartes du hero */
-@keyframes estio-float {
+@keyframes breathe {
   0%,
   100% {
-    transform: translateY(0);
+    opacity: 0.35;
   }
   50% {
-    transform: translateY(-14px);
+    opacity: 1;
   }
 }
-.animate-float {
-  animation: estio-float 6s var(--ease-expo) infinite;
+.animate-breathe {
+  animation: breathe 2.6s var(--e-swing) infinite;
 }
 
-/* Réservation de scroll pour Lenis (évite le double scrollbar) */
+@keyframes scan-down {
+  0% {
+    transform: translateY(-2px);
+    opacity: 0;
+  }
+  35% {
+    opacity: 1;
+  }
+  85% {
+    transform: translateY(9px);
+    opacity: 0;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+.animate-scan {
+  animation: scan-down 2s var(--e-focal) infinite;
+}
+
+/* Lenis — réservation de scroll. */
 html.lenis,
 html.lenis body {
   height: auto;
@@ -199,43 +492,31 @@ html.lenis body {
   overflow: hidden;
 }
 
-/* Loader : les deux tours alternent plein ↔ contour (clair/foncé), lentement
-   et fluidement (ease-in-out). État A ↔ État B en fondu croisé. */
-@keyframes estio-alt-on {
-  0%,
-  100% {
-    opacity: 1;
-  }
-  50% {
-    opacity: 0;
-  }
-}
-@keyframes estio-alt-off {
-  0%,
-  100% {
-    opacity: 0;
-  }
-  50% {
-    opacity: 1;
-  }
-}
-.loader-mark .grpA {
-  animation: estio-alt-on 1.8s ease-in-out 2 forwards;
-}
-.loader-mark .grpB {
-  animation: estio-alt-off 1.8s ease-in-out 2 forwards;
-}
+/* =============================================================================
+   ACCESSIBILITÉ — mouvement réduit.
+   ========================================================================== */
 
 @media (prefers-reduced-motion: reduce) {
-  .animate-marquee,
-  .animate-scroll-dot,
-  .animate-blob,
-  .animate-float,
-  .loader-mark .grpA,
-  .loader-mark .grpB {
-    animation: none;
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
   }
-  .loader-mark .grpB {
-    opacity: 0;
+  .focal-in,
+  .focal-in-slow,
+  .focal-stagger > * {
+    animation: none;
+    opacity: 1;
+    filter: none;
+    transform: none;
+  }
+  .defocused {
+    filter: blur(4px);
+  }
+  .disclosure-body {
+    transition: none;
   }
 }

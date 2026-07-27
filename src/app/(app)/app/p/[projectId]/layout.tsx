@@ -23,7 +23,7 @@ export default async function ProjectLayout({
   if (!project) notFound();
 
   return (
-    <div className="flex min-h-screen flex-1 flex-col">
+    <div className="flex min-h-0 flex-1 flex-col">
       <AppTopbar project={project} />
       {children}
     </div>

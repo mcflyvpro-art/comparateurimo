@@ -1,7 +1,7 @@
 "use client";
 
 import { useMemo, useState, useTransition } from "react";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { computeDropPosition } from "@/lib/board-position";
 import { moveProperty, addQuickNote } from "@/app/(app)/app/p/[projectId]/actions";
 import { STATUS_COLUMNS, type PipelineProperty, type PropertyStatus } from "@/lib/pipeline-types";
@@ -15,11 +15,20 @@ type PendingDiscard = {
 /** Logique partagée entre la vue Pipeline (board) et la vue Tableau : état des
  *  biens, ouverture/fermeture du drawer via le paramètre d'URL `bien`,
  *  déplacement de statut (avec position fractionnée), ajout de note optimiste,
- *  et le passage obligatoire par une raison quand un bien est écarté. */
-export function usePropertyDrawer(projectId: string, initialProperties: PipelineProperty[]) {
+ *  et le passage obligatoire par une raison quand un bien est écarté.
+ *
+ *  ⚠ Les paramètres d'URL sont LUS CÔTÉ SERVEUR et descendus en prop (`view`,
+ *  `bien`). Ne jamais les relire ici avec `useSearchParams()` : ce hook, appelé
+ *  dans un composant client sans limite `<Suspense>` au-dessus, fait basculer
+ *  la page en rendu client et l'hydratation ne se termine plus — le board
+ *  restait entièrement inerte. Le routeur seul suffit pour écrire. */
+export function usePropertyDrawer(
+  projectId: string,
+  initialProperties: PipelineProperty[],
+  urlState: { view?: string; bien?: string } = {},
+) {
   const router = useRouter();
   const pathname = usePathname();
-  const searchParams = useSearchParams();
   const [properties, setProperties] = useState(initialProperties);
   const [pendingDiscard, setPendingDiscard] = useState<PendingDiscard | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -37,19 +46,23 @@ export function usePropertyDrawer(projectId: string, initialProperties: Pipeline
     return grouped;
   }, [properties]);
 
-  const selectedId = searchParams.get("bien");
-  const selectedProperty = properties.find((p) => p.id === selectedId) ?? null;
+  const selectedProperty = properties.find((p) => p.id === urlState.bien) ?? null;
+
+  /** Reconstruit l'URL de la vue courante, avec ou sans bien sélectionné. */
+  function urlWith(bien?: string) {
+    const params = new URLSearchParams();
+    if (urlState.view) params.set("view", urlState.view);
+    if (bien) params.set("bien", bien);
+    const qs = params.toString();
+    return qs ? `${pathname}?${qs}` : pathname;
+  }
 
   function openDrawer(id: string) {
-    const params = new URLSearchParams(searchParams.toString());
-    params.set("bien", id);
-    router.replace(`${pathname}?${params.toString()}`, { scroll: false });
+    router.replace(urlWith(id), { scroll: false });
   }
 
   function closeDrawer() {
-    const params = new URLSearchParams(searchParams.toString());
-    params.delete("bien");
-    router.replace(`${pathname}?${params.toString()}`, { scroll: false });
+    router.replace(urlWith(), { scroll: false });
   }
 
   function applyMove(
@@ -77,7 +90,7 @@ export function usePropertyDrawer(projectId: string, initialProperties: Pipeline
       try {
         await moveProperty({ projectId, propertyId, fromStatus, toStatus, newPosition, discardReason });
       } catch {
-        setError("Le déplacement n'a pas pu être enregistré. Réessaie.");
+        setError("Le déplacement n'a pas pu être enregistré. Réessayez.");
         router.refresh();
       }
     });
@@ -151,7 +164,7 @@ export function usePropertyDrawer(projectId: string, initialProperties: Pipeline
         );
       })
       .catch(() => {
-        setError("La note n'a pas pu être enregistrée. Réessaie.");
+        setError("La note n'a pas pu être enregistrée. Réessayez.");
         router.refresh();
       });
   }

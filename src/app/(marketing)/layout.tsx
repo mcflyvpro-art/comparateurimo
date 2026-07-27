@@ -1,7 +1,5 @@
-import { SiteHeader } from "@/components/layout/SiteHeader";
-import { SiteFooter } from "@/components/layout/SiteFooter";
 import { SmoothScroll } from "@/components/providers/SmoothScroll";
-import { PageLoader } from "@/components/layout/PageLoader";
+import { MarketingChrome } from "@/components/layout/MarketingChrome";
 
 export default function MarketingLayout({
   children,
@@ -10,10 +8,7 @@ export default function MarketingLayout({
 }) {
   return (
     <SmoothScroll>
-      <PageLoader />
-      <SiteHeader />
-      {children}
-      <SiteFooter />
+      <MarketingChrome>{children}</MarketingChrome>
     </SmoothScroll>
   );
 }

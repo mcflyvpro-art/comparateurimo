@@ -1,7 +1,7 @@
-"use client";
-
 import { formatEUR } from "@/lib/format";
-import { SectionCard } from "@/components/app/fiche/SectionCard";
+import { Panel } from "@/components/ui/Panel";
+import { Stat, StatGrid, SourceTag } from "@/components/ui/Stat";
+import { Disclosure } from "@/components/ui/Disclosure";
 import { PhotoGrid } from "@/components/app/fiche/PhotoGrid";
 import { DocumentList } from "@/components/app/fiche/DocumentList";
 import type {
@@ -20,6 +20,17 @@ const CONTACT_KIND_LABELS: Record<ContactRow["kind"], string> = {
   autre: "Autre",
 };
 
+/**
+ * Votre suivi — la moitié du dossier qui ne se calcule pas.
+ *
+ * Les chiffres se recalculent à chaque ouverture ; ce bloc, non. C'est votre
+ * mémoire : le prix plancher lâché au téléphone, la raison de l'hésitation, la
+ * photo de la fissure. C'est ce qui fait qu'on ne réanalyse jamais deux fois le
+ * même bien — et ce qu'aucun agrégateur ne détient.
+ *
+ * Les photos restent visibles, les documents se déplient : on regarde des
+ * photos, on consulte des documents.
+ */
 export function SectionHumain({
   property,
   contact,
@@ -35,61 +46,91 @@ export function SectionHumain({
   documents: PropertyDetailDocumentWithUrl[];
   propertyId: string;
 }) {
-  return (
-    <SectionCard number="⑨" title="Contexte humain">
-      <dl className="grid grid-cols-2 gap-x-6 gap-y-4 sm:grid-cols-3">
-        <div>
-          <dt className="text-xs text-faint">Prix max</dt>
-          <dd className="mt-0.5 text-sm font-medium text-text">{formatEUR(property.max_price)}</dd>
-        </div>
-        {contact && (
-          <>
-            <div>
-              <dt className="text-xs text-faint">Contact</dt>
-              <dd className="mt-0.5 text-sm font-medium text-text">
-                {contact.name} · {CONTACT_KIND_LABELS[contact.kind]}
-              </dd>
-            </div>
-            {contact.phone && (
-              <div>
-                <dt className="text-xs text-faint">Téléphone</dt>
-                <dd className="mt-0.5 text-sm font-medium text-text">{contact.phone}</dd>
-              </div>
-            )}
-          </>
-        )}
-        {property.status === "ecarte" && property.discard_reason && (
-          <div className="col-span-full">
-            <dt className="text-xs text-faint">Raison de l&apos;écart</dt>
-            <dd className="mt-0.5 text-sm font-medium text-text">{property.discard_reason}</dd>
-          </div>
-        )}
-      </dl>
+  const hasContext = property.max_price !== null || contact !== null;
 
-      <div className="mt-5">
-        <h3 className="mb-2 text-xs uppercase tracking-wide text-faint">Notes</h3>
-        {notes.length === 0 ? (
-          <p className="text-sm text-faint">Aucune note pour l&apos;instant.</p>
-        ) : (
-          <ul className="space-y-2">
-            {notes.map((note) => (
-              <li key={note.id} className="rounded-xl border border-border bg-bg p-3 text-sm text-text">
-                {note.body}
-              </li>
-            ))}
-          </ul>
+  return (
+    <Panel>
+      <div className="mb-6 flex items-center justify-between gap-4">
+        <h2 className="t-head text-text">Votre suivi</h2>
+        <SourceTag kind="vous" />
+      </div>
+
+      {hasContext && (
+        <StatGrid cols={3} className="mb-8">
+          {property.max_price !== null && (
+            <Stat label="Votre prix maximum" value={formatEUR(property.max_price)} />
+          )}
+          {contact && (
+            <Stat
+              label="Interlocuteur"
+              value={contact.name}
+              hint={CONTACT_KIND_LABELS[contact.kind]}
+            />
+          )}
+          {contact?.phone && <Stat label="Téléphone" value={contact.phone} />}
+        </StatGrid>
+      )}
+
+      {property.status === "ecarte" && property.discard_reason && (
+        <div className="mb-8 rounded-sm bg-raised px-4 py-3.5">
+          <p className="mb-1.5 text-[12px] text-text-4">Raison de l&apos;écart</p>
+          <p className="text-[13.5px] leading-relaxed text-text-2">
+            {property.discard_reason}
+          </p>
+        </div>
+      )}
+
+      <div className="mb-3 flex items-baseline justify-between">
+        <h3 className="text-[13px] font-medium text-text-2">Notes</h3>
+        {notes.length > 0 && (
+          <span className="num text-[11px] text-text-4">{notes.length}</span>
         )}
       </div>
 
-      <div className="mt-5">
-        <h3 className="mb-2 text-xs uppercase tracking-wide text-faint">Photos</h3>
+      {notes.length === 0 ? (
+        <p className="text-[12.5px] leading-relaxed text-text-4">
+          Aucune note. Elles s&apos;ajoutent depuis le panneau du pipeline, en un clic
+          sur la carte du bien.
+        </p>
+      ) : (
+        <ol className="flex flex-col gap-4">
+          {notes.map((note) => (
+            <li key={note.id}>
+              <p className="text-[13.5px] leading-relaxed text-text-2">{note.body}</p>
+              <span className="num mt-1 block text-[11px] text-text-4">
+                {new Date(note.created_at).toLocaleDateString("fr-FR", {
+                  day: "2-digit",
+                  month: "long",
+                  year: "numeric",
+                })}
+              </span>
+            </li>
+          ))}
+        </ol>
+      )}
+
+      <div className="mt-8">
+        <div className="mb-3 flex items-baseline justify-between">
+          <h3 className="text-[13px] font-medium text-text-2">Photos</h3>
+          {photos.length > 0 && (
+            <span className="num text-[11px] text-text-4">{photos.length}</span>
+          )}
+        </div>
         <PhotoGrid propertyId={propertyId} initialPhotos={photos} />
       </div>
 
-      <div className="mt-5">
-        <h3 className="mb-2 text-xs uppercase tracking-wide text-faint">Documents</h3>
-        <DocumentList propertyId={propertyId} initialDocuments={documents} />
+      <div className="mt-8">
+        <Disclosure
+          title="Documents"
+          summary={
+            documents.length > 0
+              ? `${documents.length} pièce${documents.length > 1 ? "s" : ""}`
+              : "aucun"
+          }
+        >
+          <DocumentList propertyId={propertyId} initialDocuments={documents} />
+        </Disclosure>
       </div>
-    </SectionCard>
+    </Panel>
   );
 }

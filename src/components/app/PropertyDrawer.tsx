@@ -1,12 +1,26 @@
 "use client";
 
-import Link from "next/link";
 import { useState, useTransition } from "react";
-import { computeRendementBrutPct, computeVerdict } from "@/lib/calc/score";
+import { computeRendementBrutPct } from "@/lib/calc/score";
+import { scoreFromRendement } from "@/lib/verdict";
 import { formatEUR, formatM2, formatPercent, formatPricePerM2 } from "@/lib/format";
-import { VerdictBadge } from "@/components/app/VerdictBadge";
-import { STATUS_COLUMNS, type PipelineProperty, type PropertyStatus } from "@/lib/pipeline-types";
+import { Sheet } from "@/components/ui/Overlay";
+import { VerdictBlock } from "@/components/ui/Verdict";
+import { Stat, StatGrid } from "@/components/ui/Stat";
+import { StageRail } from "@/components/app/StageRail";
+import { ButtonLink, IconButton } from "@/components/ui/Button";
+import { Input } from "@/components/ui/Field";
+import { Rule } from "@/components/ui/Panel";
+import { IconArrowRight, IconPlus } from "@/components/ui/Icon";
+import type { PipelineProperty, PropertyStatus } from "@/lib/pipeline-types";
 
+/**
+ * Panneau d'aperçu — le coup d'œil, pas l'analyse.
+ *
+ * Quatre blocs, dans l'ordre où l'on se pose les questions : est-ce que ça vaut
+ * le coup, combien ça coûte, où en est le dossier, qu'est-ce que j'avais noté.
+ * L'analyse complète reste à un clic, jamais imposée.
+ */
 export function PropertyDrawer({
   property,
   projectId,
@@ -14,7 +28,7 @@ export function PropertyDrawer({
   onStatusChange,
   onAddNote,
 }: {
-  property: PipelineProperty;
+  property: PipelineProperty | null;
   projectId: string;
   onClose: () => void;
   onStatusChange: (status: PropertyStatus) => void;
@@ -23,10 +37,10 @@ export function PropertyDrawer({
   const [noteBody, setNoteBody] = useState("");
   const [isPending, startTransition] = useTransition();
 
-  const rendement = computeRendementBrutPct(property);
-  const verdict = computeVerdict(rendement);
+  const rendement = property ? computeRendementBrutPct(property) : null;
+  const score = scoreFromRendement(rendement);
 
-  function handleAddNote() {
+  function submitNote() {
     const trimmed = noteBody.trim();
     if (!trimmed) return;
     startTransition(async () => {
@@ -36,110 +50,128 @@ export function PropertyDrawer({
   }
 
   return (
-    <div className="fixed inset-0 z-40 flex justify-end bg-black/50" onClick={onClose}>
-      <aside
-        onClick={(e) => e.stopPropagation()}
-        className="flex h-full w-full max-w-md flex-col overflow-y-auto border-l border-border bg-bg-alt p-6"
-      >
-        <div className="flex items-start justify-between gap-4">
-          <div>
-            <h2 className="font-sans text-lg font-medium text-text">
-              {property.address ?? "Adresse non renseignée"}
-            </h2>
-            <p className="text-sm text-muted">{property.city ?? "—"}</p>
-          </div>
-          <button
-            type="button"
-            onClick={onClose}
-            aria-label="Fermer"
-            className="rounded-full border border-border px-2.5 py-1 text-sm text-muted transition-colors hover:text-text"
+    <Sheet
+      open={Boolean(property)}
+      onClose={onClose}
+      title={property?.address ?? "Adresse non renseignée"}
+      subtitle={
+        property
+          ? [property.city, property.property_type].filter(Boolean).join(" · ") || "—"
+          : undefined
+      }
+      footer={
+        property && (
+          <ButtonLink
+            href={`/app/p/${projectId}/bien/${property.id}`}
+            variant="outline"
+            size="md"
+            className="w-full"
+            trailing={<IconArrowRight size={14} />}
           >
-            ✕
-          </button>
-        </div>
+            Analyse complète
+          </ButtonLink>
+        )
+      }
+    >
+      {property && (
+        <div className="flex flex-col gap-7">
+          <VerdictBlock score={score} />
 
-        <div className="mt-4">
-          <VerdictBadge verdict={verdict} />
-        </div>
+          <Rule />
 
-        <dl className="mt-5 grid grid-cols-2 gap-4">
-          <Metric label="Prix" value={formatEUR(property.asking_price)} />
-          <Metric label="Surface" value={formatM2(property.surface_carrez)} />
-          <Metric label="Rendement brut" value={formatPercent(rendement)} />
-          <Metric
-            label="Prix / m²"
-            value={formatPricePerM2(property.asking_price, property.surface_carrez)}
-          />
-        </dl>
-
-        <div className="mt-6">
-          <label htmlFor="status" className="mb-1.5 block text-xs text-muted">
-            Statut
-          </label>
-          <select
-            id="status"
-            value={property.status}
-            onChange={(e) => onStatusChange(e.target.value as PropertyStatus)}
-            className="w-full rounded-xl border border-border bg-bg px-3.5 py-2.5 text-sm text-text outline-none focus:border-brand"
-          >
-            {STATUS_COLUMNS.map((s) => (
-              <option key={s.key} value={s.key}>
-                {s.label}
-              </option>
-            ))}
-          </select>
-          {property.status === "ecarte" && property.discard_reason && (
-            <p className="mt-2 text-sm text-faint">Raison : {property.discard_reason}</p>
-          )}
-        </div>
-
-        <div className="mt-6 flex-1">
-          <h3 className="mb-2 text-xs uppercase tracking-wide text-faint">Notes</h3>
-          <ul className="space-y-2">
-            {property.notes.length === 0 && (
-              <li className="text-sm text-faint">Aucune note pour l&apos;instant.</li>
-            )}
-            {property.notes.map((note) => (
-              <li key={note.id} className="rounded-xl border border-border bg-bg p-3 text-sm text-text">
-                {note.body}
-              </li>
-            ))}
-          </ul>
-
-          <div className="mt-3 flex gap-2">
-            <input
-              value={noteBody}
-              onChange={(e) => setNoteBody(e.target.value)}
-              placeholder="Ajouter une note…"
-              className="flex-1 rounded-xl border border-border bg-bg px-3.5 py-2.5 text-sm text-text outline-none placeholder:text-faint focus:border-brand"
+          <StatGrid cols={2}>
+            <Stat label="Prix affiché" value={formatEUR(property.asking_price)} />
+            <Stat term="surfaceCarrez" value={formatM2(property.surface_carrez)} />
+            <Stat
+              term="prixM2"
+              value={formatPricePerM2(property.asking_price, property.surface_carrez)}
             />
-            <button
-              type="button"
-              disabled={isPending || !noteBody.trim()}
-              onClick={handleAddNote}
-              className="rounded-full bg-brand px-4 py-2 text-sm font-medium text-bg transition-colors disabled:cursor-not-allowed disabled:opacity-60"
-            >
-              Ajouter
-            </button>
+            <Stat term="rendementBrut" value={formatPercent(rendement)} />
+          </StatGrid>
+
+          {property.max_price !== null && (
+            <Stat
+              label="Votre prix maximum"
+              value={formatEUR(property.max_price)}
+              hint={
+                property.asking_price
+                  ? `${formatEUR(property.asking_price - property.max_price)} à négocier`
+                  : undefined
+              }
+            />
+          )}
+
+          <Rule />
+
+          <div>
+            <h3 className="mb-4 text-[13px] font-medium text-text-2">Avancement</h3>
+            <StageRail status={property.status} onChange={onStatusChange} />
+            {property.status === "ecarte" && property.discard_reason && (
+              <p className="mt-3 text-[12.5px] leading-relaxed text-text-3">
+                <span className="text-text-4">Raison : </span>
+                {property.discard_reason}
+              </p>
+            )}
+          </div>
+
+          <Rule />
+
+          <div>
+            <div className="mb-3 flex items-baseline justify-between">
+              <h3 className="text-[13px] font-medium text-text-2">Notes</h3>
+              {property.notes.length > 0 && (
+                <span className="num text-[11px] text-text-4">
+                  {property.notes.length}
+                </span>
+              )}
+            </div>
+
+            {property.notes.length === 0 ? (
+              <p className="text-[12.5px] leading-relaxed text-text-4">
+                Le prix plancher du vendeur, le nom de l&apos;agent, la raison de votre
+                hésitation — c&apos;est ici que ça se garde.
+              </p>
+            ) : (
+              <ul className="flex flex-col gap-2">
+                {property.notes.map((note) => (
+                  <li
+                    key={note.id}
+                    className="rounded-sm bg-raised px-3 py-2.5 text-[12.5px] leading-relaxed text-text-2"
+                  >
+                    {note.body}
+                    <span className="num mt-1.5 block text-[11px] text-text-4">
+                      {new Date(note.created_at).toLocaleDateString("fr-FR", {
+                        day: "2-digit",
+                        month: "short",
+                      })}
+                    </span>
+                  </li>
+                ))}
+              </ul>
+            )}
+
+            <div className="mt-3 flex gap-2">
+              <Input
+                value={noteBody}
+                onChange={(e) => setNoteBody(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") submitNote();
+                }}
+                placeholder="Ajouter une note…"
+                className="flex-1"
+              />
+              <IconButton
+                aria-label="Ajouter la note"
+                variant="outline"
+                disabled={isPending || !noteBody.trim()}
+                onClick={submitNote}
+              >
+                <IconPlus size={15} />
+              </IconButton>
+            </div>
           </div>
         </div>
-
-        <Link
-          href={`/app/p/${projectId}/bien/${property.id}`}
-          className="mt-6 block w-full rounded-full border border-border py-2.5 text-center text-sm font-medium text-text transition-colors hover:border-brand"
-        >
-          Analyse complète →
-        </Link>
-      </aside>
-    </div>
-  );
-}
-
-function Metric({ label, value }: { label: string; value: string }) {
-  return (
-    <div>
-      <dt className="text-xs text-faint">{label}</dt>
-      <dd className="mt-0.5 text-sm font-medium text-text">{value}</dd>
-    </div>
+      )}
+    </Sheet>
   );
 }

@@ -5,147 +5,121 @@ import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { motion } from "motion/react";
 import { FullscreenMenu } from "./FullscreenMenu";
-
-const EASE = [0.19, 1, 0.22, 1] as const;
+import { EASE_FOCAL } from "@/design/tokens";
+import { cx } from "@/lib/cx";
 
 /**
- * Header calqué sur speedy.io : transparent, superposé, 3 zones
- * (logo · burger centré · pill). Deux comportements « Speedy » :
- *  - se cache au scroll vers le bas, réapparaît vers le haut ;
- *  - s'adapte au fond de la section derrière lui (data-header-theme) :
- *    fond sombre → logo/texte clairs ; fond clair → logo/texte sombres,
- *    avec un fondu fluide (le wordmark passe d'une version à l'autre).
+ * En-tête public.
+ *
+ * Un seul univers, donc plus de bascule de thème : le site vit dans la nuit du
+ * premier au dernier pixel. L'en-tête est transparent sur le hero, puis se pose
+ * sur un voile flouté dès qu'on défile — il ne « change » pas, il se matérialise.
+ *
+ * Il s'efface vers le haut quand on descend et revient quand on remonte : sur
+ * une page de récit, la navigation ne doit pas rester dans le champ.
  */
 export function SiteHeader() {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
-  const [theme, setTheme] = useState<"dark" | "light">("dark");
   const [hidden, setHidden] = useState(false);
+  const [settled, setSettled] = useState(false);
   const lastY = useRef(0);
 
   useEffect(() => {
     let raf = 0;
-    const SAMPLE = 44; // ligne d'échantillonnage sous le haut de l'écran
-
     const update = () => {
-      // Thème = section dont la bande traverse le haut de l'écran
-      let t: "dark" | "light" = "dark";
-      document.querySelectorAll<HTMLElement>("[data-header-theme]").forEach((s) => {
-        const r = s.getBoundingClientRect();
-        if (r.top <= SAMPLE && r.bottom > SAMPLE) {
-          t = (s.dataset.headerTheme as "dark" | "light") ?? "dark";
-        }
-      });
-      setTheme(t);
-
-      // Cache/révèle selon le sens du scroll, avec un seuil pour éviter les
-      // à-coups → la transition CSS (600ms) reste fluide dans les deux sens.
       const y = window.scrollY;
-      if (y > lastY.current + 6 && y > 160) setHidden(true);
+      setSettled(y > 40);
+      if (y > lastY.current + 6 && y > 200) setHidden(true);
       else if (y < lastY.current - 6) setHidden(false);
       lastY.current = y;
     };
-
     const onScroll = () => {
       cancelAnimationFrame(raf);
       raf = requestAnimationFrame(update);
     };
     update();
     window.addEventListener("scroll", onScroll, { passive: true });
-    window.addEventListener("resize", onScroll);
     return () => {
       cancelAnimationFrame(raf);
       window.removeEventListener("scroll", onScroll);
-      window.removeEventListener("resize", onScroll);
     };
   }, []);
 
-  // Thème effectif : le menu ouvert force le sombre
-  const t = open ? "dark" : theme;
   const isHidden = !open && hidden;
-  // Seuls le burger + les actions se cachent (le logo, lui, reste toujours)
-  const hideCls = `transition-[transform,opacity] duration-[600ms] ease-[cubic-bezier(0.19,1,0.22,1)] ${
-    isHidden ? "-translate-y-[240%] opacity-0 pointer-events-none" : "translate-y-0 opacity-100"
-  }`;
 
   return (
     <>
-      <header
-        className={`fixed inset-x-0 top-0 z-50 transition-colors duration-500 ease-[cubic-bezier(0.19,1,0.22,1)] ${
-          t === "light" ? "text-neutral-950" : "text-white"
-        }`}
+      <motion.header
+        initial={false}
+        animate={{ y: isHidden ? "-105%" : "0%" }}
+        transition={{ duration: 0.55, ease: EASE_FOCAL }}
+        className={cx(
+          "fixed inset-x-0 top-0 z-50 transition-[background-color,border-color,backdrop-filter] duration-[420ms]",
+          settled && !open
+            ? "border-b border-hairline bg-[rgb(11_10_9/0.72)] backdrop-blur-xl"
+            : "border-b border-transparent",
+        )}
       >
-        <nav className="mx-auto grid max-w-[106rem] grid-cols-3 items-center px-[6vw] py-5">
-          {/* Logo — deux versions en fondu croisé selon le thème */}
+        <nav className="mx-auto grid max-w-[104rem] grid-cols-[1fr_auto_1fr] items-center px-[var(--gutter)] py-4">
           <Link
             href="/"
             onClick={() => setOpen(false)}
             aria-label="Estio — accueil"
             className="justify-self-start"
           >
-            <span className="relative inline-block h-9">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                src="/estio-wordmark.svg"
-                alt="Estio"
-                className="h-9 w-auto transition-opacity duration-500"
-                style={{ opacity: t === "light" ? 0 : 1 }}
-              />
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                src="/estio-wordmark-dark.svg"
-                alt=""
-                aria-hidden
-                className="absolute inset-0 h-9 w-auto transition-opacity duration-500"
-                style={{ opacity: t === "light" ? 1 : 0 }}
-              />
-            </span>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/estio-wordmark.svg" alt="Estio" className="h-6 w-auto" />
           </Link>
 
-          {/* Burger (centre) */}
           <button
             onClick={() => setOpen((v) => !v)}
             aria-label={open ? "Fermer le menu" : "Ouvrir le menu"}
             aria-expanded={open}
-            className={`group flex h-10 w-16 items-center justify-center justify-self-center ${hideCls}`}
+            className="group flex h-10 w-14 items-center justify-center justify-self-center"
           >
-            <span className="relative block h-3 w-[52px] transition-transform duration-300 ease-[cubic-bezier(0.19,1,0.22,1)] group-hover:scale-y-75">
+            {/* Deux filets de longueurs inégales — un repère, pas un hamburger */}
+            <span className="relative block h-2.5 w-9">
               <motion.span
-                className="absolute left-0 block h-0.5 w-full bg-current"
+                className="absolute right-0 block h-px bg-current"
                 initial={false}
-                animate={open ? { top: "50%", y: "-50%", rotate: 45 } : { top: 0, y: 0, rotate: 0 }}
-                transition={{ duration: 0.4, ease: EASE }}
+                animate={
+                  open
+                    ? { top: "50%", width: "100%", rotate: 45, y: "-50%" }
+                    : { top: 0, width: "100%", rotate: 0, y: 0 }
+                }
+                transition={{ duration: 0.45, ease: EASE_FOCAL }}
               />
               <motion.span
-                className="absolute left-0 block h-0.5 w-full bg-current"
+                className="absolute right-0 block h-px bg-current"
                 initial={false}
-                animate={open ? { bottom: "50%", y: "50%", rotate: -45 } : { bottom: 0, y: 0, rotate: 0 }}
-                transition={{ duration: 0.4, ease: EASE }}
+                animate={
+                  open
+                    ? { bottom: "50%", width: "100%", rotate: -45, y: "50%" }
+                    : { bottom: 0, width: "58%", rotate: 0, y: 0 }
+                }
+                transition={{ duration: 0.45, ease: EASE_FOCAL }}
+                whileHover={open ? undefined : { width: "100%" }}
               />
             </span>
           </button>
 
-          {/* Actions (droite) — se cachent au scroll comme le burger */}
-          <div className={`flex items-center gap-5 justify-self-end ${hideCls}`}>
+          <div className="flex items-center gap-4 justify-self-end">
             <Link
               href="/connexion"
-              className="hidden text-sm opacity-70 transition-opacity hover:opacity-100 sm:inline"
+              className="hidden text-[13px] text-text-3 transition-colors hover:text-text sm:inline"
             >
               Se connecter
             </Link>
             <Link
               href="/connexion"
-              className={`rounded-full px-5 py-2 text-sm font-medium transition-colors duration-500 ${
-                t === "light"
-                  ? "bg-neutral-950 text-white hover:bg-neutral-800"
-                  : "bg-white text-neutral-950 hover:bg-white/90"
-              }`}
+              className="rounded-sm bg-brand px-4 py-2 text-[13px] font-medium text-inverse shadow-[inset_0_1px_0_rgb(255_255_255/0.2)] transition-colors duration-[180ms] hover:bg-brand-hot"
             >
-              Ajouter un bien
+              Ouvrir un pipeline
             </Link>
           </div>
         </nav>
-      </header>
+      </motion.header>
 
       <FullscreenMenu open={open} onClose={() => setOpen(false)} pathname={pathname} />
     </>

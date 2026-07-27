@@ -1,33 +1,37 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { AuthPanel } from "@/components/marketing/AuthPanel";
 import { LoginForm } from "@/components/marketing/LoginForm";
 
 export const metadata: Metadata = {
-  title: "Se connecter — Estio",
-  description: "Accède à ton espace Estio.",
+  title: "Se connecter",
+  description: "Retrouvez vos projets, vos pipelines et vos candidats.",
 };
 
 export default function Connexion() {
   return (
-    <main className="mx-auto flex min-h-[70vh] max-w-md flex-col justify-center px-6 py-16">
-      <Link href="/" aria-label="Estio — accueil" className="inline-block">
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src="/estio-wordmark.svg" alt="Estio" className="h-8 w-auto" />
-      </Link>
-      <h1 className="mt-8 font-sans text-3xl font-semibold tracking-[-0.02em] text-text">
-        Content de te revoir.
-      </h1>
-      <p className="mt-2 text-muted">
-        Connecte-toi pour retrouver ton wallet et tes comparaisons.
-      </p>
-
-      <div className="mt-8">
-        <LoginForm />
-      </div>
-
-      <p className="mt-6 text-sm text-faint">
-        Pas encore de compte ? La création arrive bientôt.
-      </p>
-    </main>
+    <AuthPanel
+      eyebrow="Accès"
+      title="Reprenons où vous en étiez."
+      intro="Vos projets, vos candidats, vos notes et les raisons de ce que vous avez écarté vous attendent exactement là où vous les avez laissés."
+      claim={{
+        quote:
+          "Le pipeline se souvient de tout, y compris de ce que vous avez écarté. C'est ce qui fait qu'on ne réanalyse jamais deux fois le même bien.",
+        source: "Principe fondateur",
+      }}
+      footer={
+        <>
+          Pas encore de compte ?{" "}
+          <Link
+            href="/inscription"
+            className="text-brand underline-offset-4 transition-opacity hover:underline hover:opacity-80"
+          >
+            Créer un compte
+          </Link>
+        </>
+      }
+    >
+      <LoginForm />
+    </AuthPanel>
   );
 }

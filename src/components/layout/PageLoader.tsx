@@ -3,78 +3,68 @@
 import { useEffect, useState } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import type Lenis from "lenis";
-import { EstioLoaderMark } from "./EstioLoaderMark";
+import { EASE_FOCAL } from "@/design/tokens";
 
-const EASE = [0.19, 1, 0.22, 1] as const;
 const getLenis = () => (window as unknown as { __lenis?: Lenis }).__lenis;
 
 /**
- * Loader d'intro : fond noir, wordmark en grand. Le petit immeuble alterne
- * plein ↔ contour (lent, fluide). Quand l'alternation se TERMINE (2×1.8s),
- * le logo « tombe pile » à sa place dans le header, puis l'overlay se dissout et
- * on émet « estio:loaded » pour lancer l'entrée du hero.
+ * Ouverture — la première mise au point.
+ *
+ * Le logotype arrive franchement hors focale et se cale net pendant qu'un filet
+ * incandescent parcourt sa base, comme un capteur qui verrouille. Puis le voile
+ * se dissout et le hero prend le relais.
+ *
+ * Durée totale : environ 1,3 s. Un écran d'attente qui dépasse la seconde et
+ * demie n'est plus une signature, c'est une taxe. Sauté intégralement en
+ * mouvement réduit.
  */
 export function PageLoader() {
   const reduce = useReducedMotion();
-  const [phase, setPhase] = useState<"intro" | "dock" | "done">("intro");
-  const [dims, setDims] = useState<{ w: number; h: number } | null>(null);
+  const [settled, setSettled] = useState(false);
 
-  // Setup : mémorise les dimensions (mesure post-montage, hors corps d'effet
-  // pour éviter un setState synchrone) puis fige le scroll.
+  // En mouvement réduit, le voile n'existe pas du tout : on le déduit du rendu
+  // plutôt que de le faire disparaître par un état, ce qui éviterait un rendu
+  // en cascade au montage.
+  const visible = !reduce && !settled;
+
   useEffect(() => {
-    const raf = requestAnimationFrame(() => {
-      setDims({ w: window.innerWidth, h: window.innerHeight });
-      if (reduce) setPhase("done");
-    });
-    if (reduce) return () => cancelAnimationFrame(raf);
+    if (reduce) return;
     getLenis()?.stop();
-    // L'alternation CSS (2 tours × 1.8s) et ce timer démarrent au même rendu :
-    // le dock « tombe pile » à la fin de l'animation.
-    const t = setTimeout(() => setPhase((p) => (p === "intro" ? "dock" : p)), 3650);
-    return () => {
-      cancelAnimationFrame(raf);
-      clearTimeout(t);
-    };
+    const t = setTimeout(() => setSettled(true), 1300);
+    return () => clearTimeout(t);
   }, [reduce]);
 
-  // dock → done (après le vol du logo)
   useEffect(() => {
-    if (phase !== "dock") return;
-    const t = setTimeout(() => setPhase("done"), 950);
-    return () => clearTimeout(t);
-  }, [phase]);
-
-  // done → relance le scroll + signale au hero d'entrer
-  useEffect(() => {
-    if (phase === "done") {
-      getLenis()?.start();
-      window.dispatchEvent(new Event("estio:loaded"));
-    }
-  }, [phase]);
+    if (visible) return;
+    getLenis()?.start();
+    window.dispatchEvent(new Event("estio:loaded"));
+  }, [visible]);
 
   return (
     <AnimatePresence>
-      {phase !== "done" && (
+      {visible && (
         <motion.div
-          className="fixed inset-0 z-[100] bg-black"
+          className="fixed inset-0 z-[100] flex items-center justify-center bg-[var(--ink-950)]"
           initial={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          transition={{ duration: 0.55, ease: EASE }}
+          exit={{ opacity: 0, filter: "blur(12px)" }}
+          transition={{ duration: 0.5, ease: EASE_FOCAL }}
         >
-          {dims && (
-            <motion.div
-              className="absolute inline-block"
-              initial={{ opacity: 0, top: dims.h / 2, left: dims.w / 2, x: "-50%", y: "-50%", height: 150 }}
-              animate={
-                phase === "intro"
-                  ? { opacity: 1, top: dims.h / 2, left: dims.w / 2, x: "-50%", y: "-50%", height: 150 }
-                  : { opacity: 1, top: 20, left: Math.round(dims.w * 0.06), x: "0%", y: "0%", height: 36 }
-              }
-              transition={{ duration: phase === "intro" ? 0.5 : 0.9, ease: EASE }}
-            >
-              <EstioLoaderMark className="loader-mark" style={{ height: "100%", width: "auto", display: "block" }} />
-            </motion.div>
-          )}
+          <div className="relative">
+            <motion.img
+              src="/estio-wordmark.svg"
+              alt="Estio"
+              className="h-9 w-auto"
+              initial={{ opacity: 0, filter: "blur(16px)", scale: 1.06 }}
+              animate={{ opacity: 1, filter: "blur(0px)", scale: 1 }}
+              transition={{ duration: 0.9, ease: EASE_FOCAL }}
+            />
+            <motion.span
+              className="absolute -bottom-3 left-0 block h-px bg-brand"
+              initial={{ width: 0 }}
+              animate={{ width: "100%" }}
+              transition={{ duration: 1.05, ease: EASE_FOCAL, delay: 0.1 }}
+            />
+          </div>
         </motion.div>
       )}
     </AnimatePresence>

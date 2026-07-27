@@ -1,36 +1,28 @@
 "use client";
 
-import Link from "next/link";
 import { useEffect, useRef } from "react";
 import type { Map as MapLibreMap } from "maplibre-gl";
 import "maplibre-gl/dist/maplibre-gl.css";
 import { computeInvestmentMetrics } from "@/lib/calc/metrics";
-import { computeScoreSur100, computeVerdictFromScore } from "@/lib/calc/scoring";
-import type { Verdict } from "@/lib/calc/score";
+import { computeScoreSur100 } from "@/lib/calc/scoring";
+import { verdictFromScore, verdictHexFromScore, VERDICT_HEX } from "@/lib/verdict";
+import { formatEUR } from "@/lib/format";
+import { Empty } from "@/components/ui/Feedback";
+import { ButtonLink } from "@/components/ui/Button";
+import { IconMap, IconTable } from "@/components/ui/Icon";
 import type { PropertyRow, PropertyScenarioRow } from "@/lib/property-detail-types";
 
 const STYLE_URL = "https://tiles.openfreemap.org/styles/dark";
 
-/** Couleurs hex des épingles — mêmes valeurs que `--score-high`/`--score-mid`/
- *  `--score-low` (`src/design/tokens.css`), dupliquées ici car MapLibre ne
- *  peut pas consommer les classes Tailwind ni les `var(--color-*)` CSS dans
- *  un style DOM assigné dynamiquement en JS. */
-const VERDICT_COLORS: Record<Verdict, string> = {
-  pepite: "#7fa98c",
-  solide: "#7fa98c",
-  correct: "#e0a06a",
-  a_eviter: "#d8a7a0",
-};
-
 export type GeolocatedProperty = PropertyRow & { lat: number; lng: number };
 
 /**
- * Vue Carte (Plan 6a) : une épingle par bien géolocalisé du projet, colorée
- * selon son verdict. Le score est calculé **une seule fois**, à partir d'un
- * scénario fixe (celui du premier bien du projet) — le panneau de curseurs
- * éditable partagé, avec recalcul en direct limité au viewport, arrive au
- * Plan 6b. L'aperçu au clic sur une épingle arrive au Plan 6c (aucun
- * gestionnaire de clic sur les épingles dans ce plan).
+ * Vue carte.
+ *
+ * Le fond de tuiles est désaturé et réchauffé par filtre CSS pour appartenir au
+ * monde d'Estio plutôt que d'y être collé. Les épingles portent la couleur du
+ * verdict — trois teintes, lisibles sans légende, mais la légende est là quand
+ * même parce qu'une carte sans clé de lecture n'est qu'un décor.
  */
 export function MapView({
   properties,
@@ -59,6 +51,7 @@ export function MapView({
         style: STYLE_URL,
         center: [properties[0].lng, properties[0].lat],
         zoom: 11,
+        attributionControl: { compact: true },
       });
       mapRef.current = map;
 
@@ -68,24 +61,24 @@ export function MapView({
           for (const property of properties) {
             bounds.extend([property.lng, property.lat]);
           }
-          map.fitBounds(bounds, { padding: 60, maxZoom: 15 });
+          map.fitBounds(bounds, { padding: 80, maxZoom: 15 });
         }
 
         for (const property of properties) {
           const metrics = computeInvestmentMetrics(property, scenario);
-          const breakdown = computeScoreSur100({
+          const { scoreSur100 } = computeScoreSur100({
             rendementNetNetPct: metrics.rendementNetNetPct,
             cashOnCashPct: metrics.cashOnCashPct,
             triPct: metrics.tri,
           });
-          const verdict = computeVerdictFromScore(breakdown.scoreSur100);
 
           const el = document.createElement("div");
-          el.style.width = "16px";
-          el.style.height = "16px";
-          el.style.borderRadius = "50%";
-          el.style.border = "2px solid rgba(244, 244, 244, 0.4)";
-          el.style.backgroundColor = VERDICT_COLORS[verdict];
+          el.className = "estio-pin";
+          el.title = `${property.address ?? "Bien"} — ${verdictFromScore(scoreSur100).label} · ${formatEUR(property.asking_price)}`;
+
+          const core = document.createElement("i");
+          core.style.background = verdictHexFromScore(scoreSur100);
+          el.appendChild(core);
 
           new Marker({ element: el }).setLngLat([property.lng, property.lat]).addTo(map);
         }
@@ -101,30 +94,53 @@ export function MapView({
 
   if (properties.length === 0) {
     return (
-      <div className="flex flex-1 flex-col items-center justify-center px-6 py-24 text-center">
-        <p className="font-sans text-xl font-medium text-text">Aucun bien à afficher sur la carte</p>
-        <p className="mt-2 text-sm text-muted">
-          Aucun bien de ce projet n&apos;a de coordonnées enregistrées pour l&apos;instant.
-        </p>
-        <Link
-          href={`/app/p/${projectId}?view=tableau`}
-          className="mt-4 rounded-full border border-border px-4 py-2 text-sm font-medium text-text transition-colors hover:border-brand"
-        >
-          Voir le tableau →
-        </Link>
-      </div>
+      <Empty
+        icon={<IconMap size={20} />}
+        title="Rien à placer sur la carte"
+        body="Aucun bien de ce projet n'a encore de coordonnées. L'adresse est le champ qui déverrouille tout le reste, carte comprise."
+        action={
+          <ButtonLink
+            href={`/app/p/${projectId}?view=tableau`}
+            variant="outline"
+            size="sm"
+            icon={<IconTable size={14} />}
+          >
+            Voir le tableau
+          </ButtonLink>
+        }
+        className="flex-1"
+      />
     );
   }
 
   return (
-    <div className="flex flex-1 flex-col">
+    <div className="estio-map relative min-h-0 flex-1">
+      <div ref={containerRef} className="absolute inset-0" />
+
+      <div className="pointer-events-none absolute bottom-4 left-4 rounded-md border border-hairline-2 bg-[rgb(11_10_9/0.85)] px-3.5 py-3 backdrop-blur-md">
+        <ul className="flex flex-col gap-2">
+          {[
+            { hex: VERDICT_HEX.good, label: "Bon dossier" },
+            { hex: VERDICT_HEX.mid, label: "À creuser" },
+            { hex: VERDICT_HEX.risk, label: "Peu favorable" },
+          ].map((l) => (
+            <li key={l.label} className="flex items-center gap-2.5">
+              <span
+                className="h-2 w-2 shrink-0 rounded-full"
+                style={{ background: l.hex }}
+              />
+              <span className="text-[12px] text-text-2">{l.label}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+
       {unlocatedCount > 0 && (
-        <p className="border-b border-border px-6 py-2 text-xs text-faint">
-          {unlocatedCount} bien{unlocatedCount > 1 ? "s" : ""} sans localisation, non affiché
-          {unlocatedCount > 1 ? "s" : ""} ici.
+        <p className="absolute right-4 top-4 rounded-sm border border-hairline-2 bg-[rgb(11_10_9/0.85)] px-3 py-2 text-[12px] text-text-2 backdrop-blur-md">
+          <span className="num">{unlocatedCount}</span> bien
+          {unlocatedCount > 1 ? "s" : ""} sans adresse localisée
         </p>
       )}
-      <div ref={containerRef} className="flex-1" />
     </div>
   );
 }

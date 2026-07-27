@@ -18,11 +18,16 @@ export default async function ProjectBoardPage({
   searchParams,
 }: {
   params: Promise<{ projectId: string }>;
-  searchParams: Promise<{ view?: string }>;
+  searchParams: Promise<{ view?: string; bien?: string }>;
 }) {
   const { projectId } = await params;
-  const { view } = await searchParams;
+  // Les paramètres d'URL sont lus ici, côté serveur, et descendus en prop. Les
+  // composants clients ne doivent pas appeler `useSearchParams()` : sans limite
+  // `<Suspense>`, ce hook empêche la page de s'hydrater (voir le commentaire de
+  // `usePropertyDrawer`).
+  const { view, bien } = await searchParams;
   const active: ViewKey = view === "tableau" || view === "carte" ? view : "pipeline";
+  const urlState = { view, bien };
   const supabase = getDemoClient();
 
   if (active === "carte") {
@@ -51,7 +56,7 @@ export default async function ProjectBoardPage({
     }
 
     return (
-      <div className="flex flex-1 flex-col">
+      <div className="flex min-h-0 flex-1 flex-col">
         <ViewTabs projectId={projectId} active={active} />
         <MapView
           properties={geolocated}
@@ -133,12 +138,20 @@ export default async function ProjectBoardPage({
   });
 
   return (
-    <div className="flex flex-1 flex-col">
+    <div className="flex min-h-0 flex-1 flex-col">
       <ViewTabs projectId={projectId} active={active} />
       {active === "pipeline" ? (
-        <PipelineBoard projectId={projectId} initialProperties={pipelineProperties} />
+        <PipelineBoard
+          projectId={projectId}
+          initialProperties={pipelineProperties}
+          urlState={urlState}
+        />
       ) : (
-        <PropertyTable projectId={projectId} initialProperties={pipelineProperties} />
+        <PropertyTable
+          projectId={projectId}
+          initialProperties={pipelineProperties}
+          urlState={urlState}
+        />
       )}
     </div>
   );

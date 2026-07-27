@@ -1,8 +1,17 @@
+import Link from "next/link";
 import { formatCriteria } from "@/lib/format-criteria";
 import type { Json } from "@/lib/supabase/types";
+import { Button } from "@/components/ui/Button";
+import { IconLayers, IconPlus, IconSearch } from "@/components/ui/Icon";
 
-/** Barre du haut d'un projet : nom + critères, recherche, Comparer, + Ajouter un bien.
- *  Recherche/Comparer/Ajouter sont désactivés dans ce plan (arrivent aux Plans 4/7/8). */
+/**
+ * Barre de projet — l'en-tête de l'instrument.
+ *
+ * Un seul bouton incandescent par écran : « Ajouter un bien ». Tout le reste est
+ * filaire. Les fonctions pas encore câblées ne sont pas des boutons gris tristes :
+ * elles portent une étiquette « bientôt » assumée, en petites capitales, comme un
+ * cadran non encore branché sur un tableau de bord.
+ */
 export function AppTopbar({
   project,
 }: {
@@ -11,37 +20,73 @@ export function AppTopbar({
   const summary = formatCriteria(project.criteria);
 
   return (
-    <header className="flex flex-wrap items-center justify-between gap-4 border-b border-border px-6 py-4">
-      <div>
-        <h1 className="font-sans text-lg font-medium text-text">{project.name}</h1>
-        {summary && <p className="text-sm text-muted">{summary}</p>}
+    <header className="flex h-[var(--topbar)] shrink-0 items-center justify-between gap-6 border-b border-hairline px-5">
+      <div className="flex min-w-0 items-baseline gap-3">
+        {/* Le rail latéral disparaît sous `lg` : la sortie vers les projets doit
+            rester atteignable, sinon l'outil devient une impasse. */}
+        <Link
+          href="/app/projects"
+          aria-label="Tous les projets"
+          className="shrink-0 text-text-3 transition-colors hover:text-text lg:hidden"
+        >
+          <IconLayers size={16} />
+        </Link>
+        <h1 className="truncate text-[15px] font-medium tracking-[-0.015em] text-text">
+          {project.name}
+        </h1>
+        {summary && (
+          <>
+            <span className="h-3 w-px shrink-0 bg-hairline-2" aria-hidden />
+            <p className="num truncate text-[11px] text-text-3">{summary}</p>
+          </>
+        )}
       </div>
 
-      <div className="flex items-center gap-3">
-        <input
-          type="search"
-          placeholder="Rechercher un bien…"
-          disabled
-          title="Recherche — arrive avec la vue Tableau (Plan 4)"
-          className="w-48 rounded-full border border-border bg-bg-alt px-4 py-2 text-sm text-text placeholder:text-faint disabled:cursor-not-allowed disabled:opacity-60"
-        />
-        <button
-          type="button"
-          disabled
-          title="Arrive au Plan 7 (Comparer / Arbitrage)"
-          className="rounded-full border border-border px-4 py-2 text-sm font-medium text-muted disabled:cursor-not-allowed disabled:opacity-60"
-        >
-          Comparer
-        </button>
-        <button
-          type="button"
-          disabled
-          title="Arrive au Plan 8 (Flux Ajouter un bien)"
-          className="rounded-full bg-brand px-4 py-2 text-sm font-medium text-bg disabled:cursor-not-allowed disabled:opacity-60"
-        >
-          + Ajouter un bien
-        </button>
+      <div className="flex shrink-0 items-center gap-2">
+        <div className="relative hidden md:block">
+          <IconSearch
+            size={14}
+            className="pointer-events-none absolute left-2.5 top-1/2 -translate-y-1/2 text-text-4"
+          />
+          <input
+            type="search"
+            placeholder="Rechercher un bien…"
+            disabled
+            title="Recherche — arrive avec la vue Tableau"
+            className="h-8 w-52 rounded-sm border border-hairline-2 bg-sunken pl-8 pr-3 text-[13px] text-text placeholder:text-text-4 outline-none transition-colors hover:border-hairline-3 focus:border-brand disabled:cursor-not-allowed disabled:opacity-45"
+          />
+        </div>
+
+        <Soon label="Comparer" hint="Arbitrage entre finalistes">
+          <IconLayers size={14} />
+        </Soon>
+
+        <Button variant="solid" size="sm" disabled icon={<IconPlus size={14} />} title="Flux de capture — à venir">
+          Ajouter un bien
+        </Button>
       </div>
     </header>
+  );
+}
+
+/** Commande annoncée mais pas encore branchée. Honnête plutôt que grisée. */
+function Soon({
+  label,
+  hint,
+  children,
+}: {
+  label: string;
+  hint: string;
+  children: React.ReactNode;
+}) {
+  return (
+    <span
+      title={`${hint} — à venir`}
+      className="hidden h-8 cursor-not-allowed items-center gap-2 rounded-sm border border-dashed border-hairline-2 px-3 text-[13px] text-text-3 sm:flex"
+    >
+      {children}
+      {label}
+      <span className="text-[11px] text-text-4">bientôt</span>
+    </span>
   );
 }

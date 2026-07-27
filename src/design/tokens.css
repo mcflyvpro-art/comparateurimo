@@ -1,62 +1,192 @@
-/* Estio — design tokens (CSS). REFONTE v0.2 « dark grotesk » (réf. speedy.io / Büro).
-   Deux couches : primitives (couleurs nommées) → sémantiques (rôles).
-   Le fond n'est jamais blanc : noir profond + violet nuit. Titres géants, typo grotesque. */
+/* =============================================================================
+   ESTIO — SYSTÈME « FOCALE » v2
+   =============================================================================
+
+   Concept inchangé : Estio est un instrument optique. Deux cents annonces
+   dérivent dans le noir ; une seule entre dans le plan de netteté.
+
+   ─────────────────────────────────────────────────────────────────────────
+   CE QUI CHANGE EN v2, ET POURQUOI
+   ─────────────────────────────────────────────────────────────────────────
+
+   1. LA COULEUR NE FAIT PLUS DEUX MÉTIERS À LA FOIS.
+      En v1, l'orange était à la fois la couleur de marque (boutons) ET
+      l'échelle de score. Résultat : un bouton et un mauvais score avaient la
+      même teinte, et il fallait apprendre qu'orange vif = bon.
+      → La braise ne dit plus JAMAIS la qualité d'un bien. Elle ne sert qu'aux
+        affordances : bouton d'action, focus, lien, état actif.
+      → Le verdict passe à des feux adoucis. Tout le monde lit un vert et un
+        rouge sans apprentissage. Désaturés pour rester tenus sur l'encre.
+
+   2. LE CONTRASTE DU TEXTE REMONTE.
+      Quatre niveaux de gris trop proches et trop sombres : rien ne ressortait.
+      Chaque niveau gagne en luminance, et l'usage courant se limite à deux.
+
+   3. LES PASTILLES DE PROVENANCE DISPARAISSENT.
+      Cinquante marques colorées sur une fiche, c'était un système à apprendre
+      avant de pouvoir lire. La provenance se dit désormais une fois par
+      section, en toutes lettres. Seul le givre survit, pour marquer un bloc
+      de données publiques.
+   ========================================================================== */
 
 :root {
-  /* ---- Primitives ---- */
-  --noir: #0a0a0b;           /* fond principal */
-  --noir-eleve: #141317;     /* surface légèrement remontée */
-  --violet-nuit: #221f30;    /* cartes / sections alternées */
-  --violet-nuit-2: #262432;  /* surface la plus haute */
-  --ardoise: #353536;        /* bordures fortes, séparateurs */
-  --violet-gris: #545164;    /* accent sourd, éléments secondaires */
+  /* ==========================================================================
+     1. PRIMITIVES
+     ====================================================================== */
 
-  --gris-clair: #f4f4f4;     /* texte principal */
-  --gris: #c1c1c1;           /* texte secondaire */
-  --gris-moyen: #9f9ea0;     /* texte atténué */
-  --gris-sombre: #79797a;    /* texte faible / légendes */
-  --gris-fonce: #525252;     /* texte très faible / désactivé */
-  --blanc: #ffffff;
+  /* --- ENCRE — le fond. Noir chaud, jamais pur, jamais violacé. ---------- */
+  --ink-990: #060505;
+  --ink-950: #080706;
+  --ink-900: #0b0a09; /* fond de scène */
+  --ink-850: #100e0c;
+  --ink-800: #15120f; /* surface */
+  --ink-750: #1b1714;
+  --ink-700: #221d19; /* surface élevée */
+  --ink-650: #282219;
+  --ink-600: #2c2620; /* surface haute, survol */
+  --ink-500: #3a322b; /* séparateur appuyé */
+  --ink-400: #4a4038;
 
-  --lilas: #a79fe0;          /* accent de marque (liens, labels, soulignés) */
-  --lilas-clair: #c4bdf2;    /* accent survol */
+  /* --- OS — le texte. Blanc chaud, jamais #fff. Contrastes relevés. ------ */
+  --bone-050: #fdfaf7;
+  --bone-100: #f0eae3; /* texte principal */
+  --bone-200: #d6cdc3;
+  --bone-300: #b8ada2; /* texte secondaire — usage courant */
+  --bone-400: #8f857b; /* texte atténué */
+  --bone-500: #6b625a; /* texte très faible, désactivé */
 
-  /* Pastels de score (conservés, adaptés au fond sombre) */
-  --sauge: #7fa98c;
-  --ambre: #e0a06a;
-  --rose-poudre: #d8a7a0;
+  /* --- BRAISE — la MARQUE, et uniquement elle.
+         Bouton d'action, anneau de focus, lien, onglet actif, sélection.
+         Ne dit jamais si un bien est bon. -------------------------------- */
+  --ember-050: #1a110c;
+  --ember-100: #2a1d16;
+  --ember-200: #463229;
+  --ember-400: #8c3311;
+  --ember-600: #d9490b;
+  --ember-700: #ff6a1a; /* la marque */
+  --ember-800: #ff8c3d;
+  --ember-900: #ffb25c;
 
-  /* ---- Sémantiques (rôles) ---- */
-  --bg: var(--noir);
-  --bg-elevated: var(--violet-nuit);
-  --bg-alt: var(--violet-nuit-2);
-  --text: var(--gris-clair);
-  --text-muted: var(--gris);
-  --text-faint: var(--gris-sombre);
-  --brand: var(--lilas);
-  --brand-hover: var(--lilas-clair);
-  --accent: var(--ambre);
-  --score-high: var(--sauge);
-  --score-mid: var(--ambre);
-  --score-low: var(--rose-poudre);
-  --border: rgba(244, 244, 244, 0.1);
-  --border-strong: rgba(244, 244, 244, 0.18);
+  /* --- FEUX ADOUCIS — le verdict, et uniquement lui.
+         Désaturés pour tenir sur l'encre sans jamais crier. La brique tire
+         vers le rouge franc (teinte ~4°) pour ne pas se confondre avec la
+         braise de marque (teinte ~20°). ---------------------------------- */
+  --good-500: #84b394; /* bon dossier */
+  --good-300: #5c8069;
+  --good-100: #24332a;
 
-  /* ---- Ombres (profondeur sur fond sombre) ---- */
-  --shadow-sm: 0 2px 8px rgb(0 0 0 / 0.4);
-  --shadow-md: 0 20px 40px rgb(0 0 0 / 0.5);
-  --shadow-screen: 0 30px 60px rgb(0 0 0 / 0.55);
+  --mid-500: #d9b678; /* à creuser */
+  --mid-300: #94794a;
+  --mid-100: #332b1c;
 
-  /* ---- Rayons ---- */
-  --radius-sm: 12px;
-  --radius-md: 16px;
-  --radius-lg: 20px;
-  --radius-xl: 24px;
-  --radius-pill: 9999px;
+  --risk-500: #c4706a; /* peu favorable */
+  --risk-300: #8a4a46;
+  --risk-100: #33201f;
 
-  /* ---- Mouvement ---- */
-  --dur-fast: 0.25s;
-  --dur-default: 0.6s;
-  --ease-standard: cubic-bezier(0.4, 0, 0.2, 1);
-  --ease-expo: cubic-bezier(0.19, 1, 0.22, 1); /* signature Büro/Speedy */
+  --none-500: #8a8078; /* données incomplètes */
+
+  /* --- GIVRE — la donnée publique. Une mention par section, jamais par
+         chiffre. ---------------------------------------------------------- */
+  --frost-500: #8fb4ca;
+  --frost-300: #4a6678;
+  --frost-100: #16232b;
+
+  /* ==========================================================================
+     2. SÉMANTIQUES
+     ====================================================================== */
+
+  --bg: var(--ink-900);
+  --bg-sunken: var(--ink-950);
+  --surface: var(--ink-800);
+  --surface-raised: var(--ink-700);
+  --surface-high: var(--ink-600);
+  --surface-scrim: rgb(6 5 5 / 0.74);
+
+  --text: var(--bone-100);
+  --text-2: var(--bone-300);
+  --text-3: var(--bone-400);
+  --text-4: var(--bone-500);
+  --text-inverse: var(--ink-950);
+
+  --hairline: rgb(240 234 227 / 0.08);
+  --hairline-2: rgb(240 234 227 / 0.14);
+  --hairline-3: rgb(240 234 227 / 0.24);
+  --hairline-ember: rgb(255 106 26 / 0.4);
+
+  /* Marque — actions uniquement */
+  --brand: var(--ember-700);
+  --brand-hot: var(--ember-800);
+  --brand-wash: rgb(255 106 26 / 0.1);
+  --brand-wash-2: rgb(255 106 26 / 0.18);
+  --brand-glow: rgb(255 106 26 / 0.32);
+
+  /* Verdict — données uniquement */
+  --good: var(--good-500);
+  --good-wash: rgb(132 179 148 / 0.12);
+  --mid: var(--mid-500);
+  --mid-wash: rgb(217 182 120 / 0.12);
+  --risk: var(--risk-500);
+  --risk-wash: rgb(196 112 106 / 0.12);
+  --none: var(--none-500);
+
+  --info: var(--frost-500);
+  --info-wash: rgb(143 180 202 / 0.1);
+
+  --danger: var(--risk-500);
+  --danger-wash: rgb(196 112 106 / 0.14);
+
+  /* --- Le pipeline : une progression, pas un jugement.
+         Les étapes ne sont pas « bonnes » ou « mauvaises » — un bien en négo
+         n'est pas meilleur qu'un bien à analyser. On les distingue donc par
+         une montée d'intensité neutre, et la seule couleur signifiante est
+         celle de l'étape finale. ---------------------------------------- */
+  --stage-analyser: #6b625a;
+  --stage-analyse: #8f857b;
+  --stage-visite: #b8ada2;
+  --stage-nego: #d6cdc3;
+  --stage-offre: var(--good-500);
+  --stage-ecarte: #453b34;
+
+  /* ==========================================================================
+     3. FORME
+     ====================================================================== */
+  --r-xs: 2px;
+  --r-sm: 4px;
+  --r-md: 6px;
+  --r-lg: 10px;
+  --r-xl: 14px;
+  --r-2xl: 20px;
+  --r-pill: 999px;
+
+  --lift-1: 0 1px 2px rgb(0 0 0 / 0.4);
+  --lift-2: 0 8px 24px -8px rgb(0 0 0 / 0.7);
+  --lift-3: 0 24px 64px -16px rgb(0 0 0 / 0.85);
+
+  /* ==========================================================================
+     4. MOUVEMENT — deux tempos, un seul geste (le calage focal).
+     ====================================================================== */
+  --t-instant: 90ms;
+  --t-fast: 140ms;
+  --t-base: 220ms;
+  --t-slow: 420ms;
+  --t-cine: 1200ms;
+  --t-cine-long: 1800ms;
+
+  --e-focal: cubic-bezier(0.16, 1, 0.3, 1);
+  --e-snap: cubic-bezier(0.2, 0, 0, 1);
+  --e-swing: cubic-bezier(0.65, 0, 0.35, 1);
+
+  /* ==========================================================================
+     5. GRILLE & MESURE
+     ====================================================================== */
+  --gutter: 5vw;
+  --measure: 68ch;
+  --shell-max: 108rem;
+  --rail: 15rem;
+  --topbar: 3.5rem;
+
+  /* ==========================================================================
+     6. MATIÈRE — grain de film. Empêche le noir d'être plat.
+     ====================================================================== */
+  --grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.82' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)'/%3E%3C/svg%3E");
 }

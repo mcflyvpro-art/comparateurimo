@@ -1,8 +1,26 @@
 "use client";
 
 import { useState, type FormEvent } from "react";
+import { Input, Select, Textarea } from "@/components/ui/Field";
+import { Button } from "@/components/ui/Button";
+import { Panel } from "@/components/ui/Panel";
+import { IconArrowRight, IconCheck } from "@/components/ui/Icon";
 
-/** Formulaire de contact — coquille : validation visuelle, aucun envoi réel. */
+const SUJETS = [
+  "Une question sur le produit",
+  "Un bug ou un chiffre qui cloche",
+  "Usage professionnel (CGP, chasseur)",
+  "Presse",
+  "Autre",
+];
+
+/**
+ * Formulaire de contact — coquille : validation visuelle, aucun envoi réel.
+ *
+ * L'accusé de réception occupe exactement la même surface que le formulaire :
+ * la page ne saute pas, le regard reste au même endroit. Détail invisible,
+ * différence sensible.
+ */
 export function ContactForm() {
   const [envoye, setEnvoye] = useState(false);
 
@@ -13,66 +31,70 @@ export function ContactForm() {
 
   if (envoye) {
     return (
-      <div
-        role="status"
-        className="rounded-xl border border-border bg-bg-elevated p-8 text-center"
-      >
-        <p className="font-sans text-lg font-semibold text-text">
-          Message bien reçu.
+      <Panel className="flex min-h-[26rem] flex-col items-center justify-center text-center">
+        <span className="mb-5 flex h-11 w-11 items-center justify-center rounded-full border border-hairline-ember text-brand">
+          <IconCheck size={20} />
+        </span>
+        <p className="text-[15px] font-medium text-text">Message bien reçu.</p>
+        <p className="mt-2 max-w-xs text-[13px] leading-relaxed text-text-3">
+          Démonstration : l&apos;envoi n&apos;est pas encore branché. Nous répondrons dès
+          que le service sera en ligne.
         </p>
-        <p className="mt-2 text-muted">
-          Démo : l’envoi n’est pas encore connecté. On te répondra dès que le
-          service sera en ligne.
-        </p>
-      </div>
+        <Button
+          variant="quiet"
+          size="sm"
+          className="mt-6"
+          onClick={() => setEnvoye(false)}
+        >
+          Écrire un autre message
+        </Button>
+      </Panel>
     );
   }
 
   return (
-    <form onSubmit={onSubmit} className="flex flex-col gap-5">
-      <div className="flex flex-col gap-2">
-        <label htmlFor="nom" className="text-sm font-medium text-text">
-          Nom
-        </label>
-        <input
-          id="nom"
-          name="nom"
-          required
-          autoComplete="name"
-          className="rounded-lg border border-border bg-bg-elevated px-4 py-3 text-text outline-none focus:border-brand"
-        />
-      </div>
-      <div className="flex flex-col gap-2">
-        <label htmlFor="email" className="text-sm font-medium text-text">
-          Email
-        </label>
-        <input
-          id="email"
-          name="email"
-          type="email"
-          required
-          autoComplete="email"
-          className="rounded-lg border border-border bg-bg-elevated px-4 py-3 text-text outline-none focus:border-brand"
-        />
-      </div>
-      <div className="flex flex-col gap-2">
-        <label htmlFor="message" className="text-sm font-medium text-text">
-          Message
-        </label>
-        <textarea
+    <Panel>
+      <form onSubmit={onSubmit} className="flex min-h-[26rem] flex-col gap-5">
+        <div className="grid gap-5 sm:grid-cols-2">
+          <Input id="nom" name="nom" required autoComplete="name" label="Nom" />
+          <Input
+            id="contact-email"
+            name="email"
+            type="email"
+            required
+            autoComplete="email"
+            label="Adresse e-mail"
+          />
+        </div>
+
+        <Select id="sujet" name="sujet" label="Sujet" defaultValue={SUJETS[0]}>
+          {SUJETS.map((s) => (
+            <option key={s} value={s}>
+              {s}
+            </option>
+          ))}
+        </Select>
+
+        <Textarea
           id="message"
           name="message"
           required
-          rows={5}
-          className="rounded-lg border border-border bg-bg-elevated px-4 py-3 text-text outline-none focus:border-brand"
+          rows={6}
+          label="Message"
+          placeholder="Dites-nous tout — y compris ce qui ne va pas."
+          className="flex-1"
         />
-      </div>
-      <button
-        type="submit"
-        className="cursor-pointer self-start rounded-full bg-brand px-6 py-3 font-medium text-white transition-[transform,background-color] duration-100 hover:bg-brand-hover active:scale-[0.97]"
-      >
-        Envoyer
-      </button>
-    </form>
+
+        <Button
+          type="submit"
+          variant="solid"
+          size="md"
+          className="self-start"
+          trailing={<IconArrowRight size={15} />}
+        >
+          Envoyer
+        </Button>
+      </form>
+    </Panel>
   );
 }

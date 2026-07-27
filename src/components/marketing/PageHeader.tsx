@@ -1,6 +1,12 @@
-import { Reveal } from "@/components/landing/Reveal";
+import { Reveal } from "@/components/ui/Feedback";
 
-/** En-tête réutilisable des pages secondaires : eyebrow + titre + intro. */
+/**
+ * En-tête des pages secondaires.
+ *
+ * Toujours la même composition : surtitre en braise, titre géant, chapô à
+ * mesure de lecture confortable. Un filet incandescent court sous le surtitre —
+ * assez pour signer la page, assez peu pour ne pas concurrencer le titre.
+ */
 export function PageHeader({
   eyebrow,
   title,
@@ -11,15 +17,14 @@ export function PageHeader({
   intro?: string;
 }) {
   return (
-    <div className="mx-auto max-w-[106rem] px-[6vw] pb-14 pt-36 lg:pt-44">
-      <Reveal>
-        <span className="text-sm font-medium uppercase tracking-[0.2em] text-brand">
-          {eyebrow}
-        </span>
-        <h1 className="h-lg mt-6 max-w-4xl text-text">{title}</h1>
-        {intro ? (
-          <p className="p-lead mt-8 max-w-2xl text-muted">{intro}</p>
-        ) : null}
+    <div className="mx-auto max-w-[104rem] px-[var(--gutter)] pb-16 pt-40 lg:pt-48">
+      <Reveal cine>
+        <div className="flex items-center gap-4">
+          <span className="t-label text-brand">{eyebrow}</span>
+          <span className="h-px w-16 bg-brand/40" aria-hidden />
+        </div>
+        <h1 className="t-display mt-7 max-w-4xl text-text">{title}</h1>
+        {intro && <p className="t-lead mt-8 max-w-2xl">{intro}</p>}
       </Reveal>
     </div>
   );

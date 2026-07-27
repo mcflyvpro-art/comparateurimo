@@ -16,15 +16,28 @@ import { FileDropzone } from "@/components/app/fiche/FileDropzone";
 import { PhotoLightbox } from "@/components/app/fiche/PhotoLightbox";
 import { useConfirmDelete } from "@/lib/hooks/use-confirm-delete";
 import { useFileUpload } from "@/lib/hooks/use-file-upload";
-import { ACCEPTED_PHOTO_MIME_TYPES, MAX_PHOTOS_PER_PROPERTY, isAcceptedPhotoType } from "@/lib/file-limits";
+import {
+  ACCEPTED_PHOTO_MIME_TYPES,
+  MAX_PHOTOS_PER_PROPERTY,
+  isAcceptedPhotoType,
+} from "@/lib/file-limits";
 import {
   deletePropertyPhoto,
   reorderPropertyPhoto,
   updatePhotoCaption,
   uploadPropertyPhoto,
 } from "@/app/(app)/app/p/[projectId]/bien/[propertyId]/actions";
+import { IconTrash } from "@/components/ui/Icon";
+import { cx } from "@/lib/cx";
 import type { PropertyDetailPhotoWithUrl } from "@/lib/property-detail-types";
 
+/**
+ * Photos du bien — les seules images en couleur pleine de toute l'application.
+ *
+ * Tout le système est monochrome ; les photos, elles, restent fidèles. C'est
+ * voulu : dans un environnement d'encre et de braise, une photo de cuisine
+ * devient un événement visuel, et c'est exactement ce qu'on veut regarder.
+ */
 export function PhotoGrid({
   propertyId,
   initialPhotos,
@@ -37,7 +50,9 @@ export function PhotoGrid({
   const { pendingId: pendingDeleteId, requestConfirm } = useConfirmDelete();
   const [validationError, setValidationError] = useState<string | null>(null);
   const { status, error, uploadFiles } = useFileUpload();
-  const sensors = useSensors(useSensor(PointerSensor, { activationConstraint: { distance: 8 } }));
+  const sensors = useSensors(
+    useSensor(PointerSensor, { activationConstraint: { distance: 8 } }),
+  );
 
   const atLimit = photos.length >= MAX_PHOTOS_PER_PROPERTY;
 
@@ -86,15 +101,17 @@ export function PhotoGrid({
         .sort((a, b) => a.sort_order - b.sort_order),
     );
     reorderPropertyPhoto(propertyId, photoId, newSortOrder).catch(() => {
-      // Échec réseau isolé — l'ordre local reste tel quel, l'utilisateur
-      // peut simplement recommencer le glisser-déposer.
+      // Échec réseau isolé : l'ordre local reste tel quel, l'utilisateur peut
+      // simplement recommencer le glisser-déposer.
     });
   }
 
   function handleCaptionBlur(photoId: string, value: string) {
     const trimmed = value.trim();
     setPhotos((current) =>
-      current.map((p) => (p.id === photoId ? { ...p, caption: trimmed.length > 0 ? trimmed : null } : p)),
+      current.map((p) =>
+        p.id === photoId ? { ...p, caption: trimmed.length > 0 ? trimmed : null } : p,
+      ),
     );
     updatePhotoCaption(photoId, propertyId, value).catch(() => {});
   }
@@ -102,7 +119,9 @@ export function PhotoGrid({
   function handleDeleteClick(photoId: string, storagePath: string) {
     if (!requestConfirm(photoId)) return;
     setPhotos((current) => current.filter((p) => p.id !== photoId));
-    if (lightboxIndex !== null && photos[lightboxIndex]?.id === photoId) setLightboxIndex(null);
+    if (lightboxIndex !== null && photos[lightboxIndex]?.id === photoId) {
+      setLightboxIndex(null);
+    }
     deletePropertyPhoto(propertyId, photoId, storagePath).catch(() => {});
   }
 
@@ -111,19 +130,25 @@ export function PhotoGrid({
       <FileDropzone
         accept={ACCEPTED_PHOTO_MIME_TYPES.join(",")}
         disabled={atLimit}
-        disabledMessage={`Limite de ${MAX_PHOTOS_PER_PROPERTY} photos atteinte.`}
-        label="Glisse des photos ici ou clique pour en choisir."
+        disabledMessage={`Limite de ${MAX_PHOTOS_PER_PROPERTY} photos atteinte`}
+        label="Déposez des photos, ou cliquez pour les choisir"
         onFilesSelected={handleFilesSelected}
       />
-      {status === "compressing" && <p className="mt-2 text-xs text-faint">Compression…</p>}
-      {status === "uploading" && <p className="mt-2 text-xs text-faint">Envoi…</p>}
-      {validationError && <p className="mt-2 text-xs text-score-mid">{validationError}</p>}
-      {error && <p className="mt-2 text-xs text-score-low">{error}</p>}
+
+      <Status
+        status={status === "compressing" ? "Compression…" : status === "uploading" ? "Envoi…" : null}
+        warning={validationError}
+        error={error}
+      />
 
       {photos.length > 0 && (
-        <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
+        <DndContext
+          sensors={sensors}
+          collisionDetection={closestCenter}
+          onDragEnd={handleDragEnd}
+        >
           <SortableContext items={photos.map((p) => p.id)} strategy={rectSortingStrategy}>
-            <div className="mt-3 grid grid-cols-3 gap-3 sm:grid-cols-4">
+            <div className="mt-3 grid grid-cols-2 gap-2.5 sm:grid-cols-3 lg:grid-cols-4">
               {photos.map((photo, i) => (
                 <PhotoThumbnail
                   key={photo.id}
@@ -139,18 +164,35 @@ export function PhotoGrid({
         </DndContext>
       )}
 
-      {lightboxIndex !== null && (
-        <PhotoLightbox
-          photos={photos}
-          index={lightboxIndex}
-          onClose={() => setLightboxIndex(null)}
-          onNavigate={setLightboxIndex}
-          onDelete={(photoId) => {
-            const photo = photos.find((p) => p.id === photoId);
-            if (photo) handleDeleteClick(photo.id, photo.storage_path);
-          }}
-        />
-      )}
+      <PhotoLightbox
+        photos={photos}
+        index={lightboxIndex}
+        onClose={() => setLightboxIndex(null)}
+        onNavigate={setLightboxIndex}
+        onDelete={(photoId) => {
+          const photo = photos.find((p) => p.id === photoId);
+          if (photo) handleDeleteClick(photo.id, photo.storage_path);
+        }}
+      />
+    </div>
+  );
+}
+
+function Status({
+  status,
+  warning,
+  error,
+}: {
+  status: string | null;
+  warning: string | null;
+  error: string | null;
+}) {
+  if (!status && !warning && !error) return null;
+  return (
+    <div className="mt-2 flex flex-col gap-1">
+      {status && <p className="text-[11px] text-text-4">{status}</p>}
+      {warning && <p className="text-[11px] text-ember-800">{warning}</p>}
+      {error && <p className="text-[11px] text-danger">{error}</p>}
     </div>
   );
 }
@@ -168,41 +210,65 @@ function PhotoThumbnail({
   onCaptionBlur: (value: string) => void;
   onDelete: () => void;
 }) {
-  const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({ id: photo.id });
-  const style = {
-    transform: CSS.Transform.toString(transform),
-    transition,
-    opacity: isDragging ? 0.5 : 1,
-  };
+  const { attributes, listeners, setNodeRef, transform, transition, isDragging } =
+    useSortable({ id: photo.id });
 
   return (
-    <div ref={setNodeRef} style={style} className="flex flex-col gap-1.5">
+    <figure
+      ref={setNodeRef}
+      style={{
+        transform: CSS.Transform.toString(transform),
+        transition,
+        opacity: isDragging ? 0.4 : 1,
+      }}
+      className="group relative"
+    >
       <div
         {...attributes}
         {...listeners}
         onClick={onOpen}
-        className="aspect-square cursor-grab overflow-hidden rounded-xl border border-border bg-bg active:cursor-grabbing"
+        className="relative aspect-[4/3] cursor-grab overflow-hidden rounded-md border border-hairline bg-sunken active:cursor-grabbing"
       >
         {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src={photo.signedUrl} alt={photo.caption ?? "Photo du bien"} className="h-full w-full object-cover" />
+        <img
+          src={photo.signedUrl}
+          alt={photo.caption ?? "Photo du bien"}
+          className="h-full w-full object-cover transition-transform duration-[420ms] ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-[1.03]"
+        />
+        <span
+          aria-hidden
+          className="absolute inset-0 bg-[linear-gradient(to_top,rgb(6_5_5/0.55),transparent_45%)] opacity-0 transition-opacity duration-[220ms] group-hover:opacity-100"
+        />
+
+        <button
+          type="button"
+          onClick={(e) => {
+            e.stopPropagation();
+            onDelete();
+          }}
+          aria-label={isPendingDelete ? "Confirmer la suppression" : "Supprimer la photo"}
+          className={cx(
+            "absolute right-1.5 top-1.5 flex h-6 items-center gap-1 rounded-sm border px-1.5",
+            "text-[10px] backdrop-blur-sm transition-all duration-[140ms]",
+            isPendingDelete
+              ? "border-danger bg-[var(--danger-wash)] text-danger opacity-100"
+              : "border-hairline-2 bg-[rgb(6_5_5/0.6)] text-text-2 opacity-0 group-hover:opacity-100 hover:border-danger hover:text-danger",
+          )}
+        >
+          <IconTrash size={11} />
+          {isPendingDelete && "Confirmer"}
+        </button>
       </div>
-      <input
-        defaultValue={photo.caption ?? ""}
-        onBlur={(e) => onCaptionBlur(e.target.value)}
-        placeholder="Légende…"
-        className="rounded-lg border border-border bg-bg px-2 py-1 text-xs text-text"
-      />
-      <button
-        type="button"
-        onClick={onDelete}
-        className={`rounded-full border px-2 py-0.5 text-[10px] font-medium transition-colors ${
-          isPendingDelete
-            ? "border-score-low bg-score-low/10 text-score-low"
-            : "border-border-strong text-faint hover:border-score-low hover:text-score-low"
-        }`}
-      >
-        {isPendingDelete ? "Confirmer ?" : "Supprimer"}
-      </button>
-    </div>
+
+      <figcaption>
+        <input
+          defaultValue={photo.caption ?? ""}
+          onBlur={(e) => onCaptionBlur(e.target.value)}
+          placeholder="Légende…"
+          aria-label="Légende de la photo"
+          className="mt-1.5 w-full rounded-none border-0 border-b border-transparent bg-transparent px-0 pb-0.5 text-[11px] text-text-3 outline-none transition-colors placeholder:text-text-4 hover:border-hairline-2 focus:border-brand focus:text-text"
+        />
+      </figcaption>
+    </figure>
   );
 }
