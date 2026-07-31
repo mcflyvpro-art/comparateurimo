@@ -1,9 +1,10 @@
-import { formatEUR } from "@/lib/format";
 import { Panel } from "@/components/ui/Panel";
 import { Stat, StatGrid, SourceTag } from "@/components/ui/Stat";
 import { Disclosure } from "@/components/ui/Disclosure";
 import { PhotoGrid } from "@/components/app/fiche/PhotoGrid";
 import { DocumentList } from "@/components/app/fiche/DocumentList";
+import { NoteList } from "@/components/app/NoteList";
+import { PrixMaximum } from "@/components/app/fiche/PrixMaximum";
 import type {
   ContactRow,
   PropertyDetailDocumentWithUrl,
@@ -38,6 +39,7 @@ export function SectionHumain({
   photos,
   documents,
   propertyId,
+  projectId,
 }: {
   property: PropertyRow;
   contact: ContactRow | null;
@@ -45,9 +47,8 @@ export function SectionHumain({
   photos: PropertyDetailPhotoWithUrl[];
   documents: PropertyDetailDocumentWithUrl[];
   propertyId: string;
+  projectId: string;
 }) {
-  const hasContext = property.max_price !== null || contact !== null;
-
   return (
     <Panel>
       <div className="mb-6 flex items-center justify-between gap-4">
@@ -55,21 +56,26 @@ export function SectionHumain({
         <SourceTag kind="vous" />
       </div>
 
-      {hasContext && (
-        <StatGrid cols={3} className="mb-8">
-          {property.max_price !== null && (
-            <Stat label="Votre prix maximum" value={formatEUR(property.max_price)} />
-          )}
-          {contact && (
-            <Stat
-              label="Interlocuteur"
-              value={contact.name}
-              hint={CONTACT_KIND_LABELS[contact.kind]}
-            />
-          )}
-          {contact?.phone && <Stat label="Téléphone" value={contact.phone} />}
-        </StatGrid>
-      )}
+      {/* Le prix maximum s'affichait sans jamais pouvoir être saisi — alors que
+          c'est le chiffre qu'on ajuste le plus souvent en avançant. Il est
+          désormais toujours visible, même vide : un champ absent ne se remplit
+          jamais. */}
+      <StatGrid cols={3} className="mb-8">
+        <PrixMaximum
+          propertyId={propertyId}
+          projectId={projectId}
+          valeur={property.max_price}
+          prixAffiche={property.asking_price}
+        />
+        {contact && (
+          <Stat
+            label="Interlocuteur"
+            value={contact.name}
+            hint={CONTACT_KIND_LABELS[contact.kind]}
+          />
+        )}
+        {contact?.phone && <Stat label="Téléphone" value={contact.phone} />}
+      </StatGrid>
 
       {property.status === "ecarte" && property.discard_reason && (
         <div className="mb-8 rounded-sm bg-raised px-4 py-3.5">
@@ -87,27 +93,10 @@ export function SectionHumain({
         )}
       </div>
 
-      {notes.length === 0 ? (
-        <p className="text-[12.5px] leading-relaxed text-text-4">
-          Aucune note. Elles s&apos;ajoutent depuis le panneau du pipeline, en un clic
-          sur la carte du bien.
-        </p>
-      ) : (
-        <ol className="flex flex-col gap-4">
-          {notes.map((note) => (
-            <li key={note.id}>
-              <p className="text-[13.5px] leading-relaxed text-text-2">{note.body}</p>
-              <span className="num mt-1 block text-[11px] text-text-4">
-                {new Date(note.created_at).toLocaleDateString("fr-FR", {
-                  day: "2-digit",
-                  month: "long",
-                  year: "numeric",
-                })}
-              </span>
-            </li>
-          ))}
-        </ol>
-      )}
+      {/* Les notes s'ajoutaient uniquement depuis le panneau du board, et la
+          fiche se contentait de les afficher. On écrit surtout ses notes ICI,
+          en relisant le dossier : c'est là qu'il faut pouvoir les corriger. */}
+      <NoteList propertyId={propertyId} notes={notes} />
 
       <div className="mt-8">
         <div className="mb-3 flex items-baseline justify-between">

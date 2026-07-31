@@ -103,6 +103,7 @@ export default async function PropertyDetailPage({
           photos={photosWithUrls}
           documents={documentsWithUrls}
           propertyId={propertyId}
+          projectId={projectId}
         />
       }
     />

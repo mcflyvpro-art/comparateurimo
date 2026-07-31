@@ -1,6 +1,5 @@
 "use client";
 
-import { useState, useTransition } from "react";
 import { computeRendementBrutPct } from "@/lib/calc/score";
 import { scoreFromRendement } from "@/lib/verdict";
 import { formatEUR, formatM2, formatPercent, formatPricePerM2 } from "@/lib/format";
@@ -8,10 +7,10 @@ import { Sheet } from "@/components/ui/Overlay";
 import { VerdictBlock } from "@/components/ui/Verdict";
 import { Stat, StatGrid } from "@/components/ui/Stat";
 import { StageRail } from "@/components/app/StageRail";
-import { ButtonLink, IconButton } from "@/components/ui/Button";
-import { Input } from "@/components/ui/Field";
+import { NoteList } from "@/components/app/NoteList";
+import { ButtonLink } from "@/components/ui/Button";
 import { Rule } from "@/components/ui/Panel";
-import { IconArrowRight, IconPlus } from "@/components/ui/Icon";
+import { IconArrowRight } from "@/components/ui/Icon";
 import type { PipelineProperty, PropertyStatus } from "@/lib/pipeline-types";
 
 /**
@@ -34,20 +33,8 @@ export function PropertyDrawer({
   onStatusChange: (status: PropertyStatus) => void;
   onAddNote: (body: string) => Promise<void>;
 }) {
-  const [noteBody, setNoteBody] = useState("");
-  const [isPending, startTransition] = useTransition();
-
   const rendement = property ? computeRendementBrutPct(property) : null;
   const score = scoreFromRendement(rendement);
-
-  function submitNote() {
-    const trimmed = noteBody.trim();
-    if (!trimmed) return;
-    startTransition(async () => {
-      await onAddNote(trimmed);
-      setNoteBody("");
-    });
-  }
 
   return (
     <Sheet
@@ -126,49 +113,11 @@ export function PropertyDrawer({
               )}
             </div>
 
-            {property.notes.length === 0 ? (
-              <p className="text-[12.5px] leading-relaxed text-text-4">
-                Le prix plancher du vendeur, le nom de l&apos;agent, la raison de votre
-                hésitation — c&apos;est ici que ça se garde.
-              </p>
-            ) : (
-              <ul className="flex flex-col gap-2">
-                {property.notes.map((note) => (
-                  <li
-                    key={note.id}
-                    className="rounded-sm bg-raised px-3 py-2.5 text-[12.5px] leading-relaxed text-text-2"
-                  >
-                    {note.body}
-                    <span className="num mt-1.5 block text-[11px] text-text-4">
-                      {new Date(note.created_at).toLocaleDateString("fr-FR", {
-                        day: "2-digit",
-                        month: "short",
-                      })}
-                    </span>
-                  </li>
-                ))}
-              </ul>
-            )}
-
-            <div className="mt-3 flex gap-2">
-              <Input
-                value={noteBody}
-                onChange={(e) => setNoteBody(e.target.value)}
-                onKeyDown={(e) => {
-                  if (e.key === "Enter") submitNote();
-                }}
-                placeholder="Ajouter une note…"
-                className="flex-1"
-              />
-              <IconButton
-                aria-label="Ajouter la note"
-                variant="outline"
-                disabled={isPending || !noteBody.trim()}
-                onClick={submitNote}
-              >
-                <IconPlus size={15} />
-              </IconButton>
-            </div>
+            <NoteList
+              propertyId={property.id}
+              notes={property.notes}
+              onOptimisticAdd={(body) => onAddNote(body)}
+            />
           </div>
         </div>
       )}

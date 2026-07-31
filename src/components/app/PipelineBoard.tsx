@@ -136,6 +136,9 @@ export function PipelineBoard({
                 label={col.label}
                 properties={columns.get(col.key) ?? []}
                 onOpenProperty={openDrawer}
+                onChangeStatus={(id, status) =>
+                  performMove(id, status, (columns.get(status) ?? []).length)
+                }
               />
             ))}
           </div>

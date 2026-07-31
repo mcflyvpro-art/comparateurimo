@@ -1,11 +1,11 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import { getDemoClient, DEMO_USER_ID } from "@/lib/supabase/demo";
 import { formatCriteria } from "@/lib/format-criteria";
 import { CreateProjectForm } from "@/components/app/CreateProjectForm";
-import { STATUS_COLUMNS, type PropertyStatus } from "@/lib/pipeline-types";
+import { ProjectRow } from "@/components/app/ProjectRow";
+import type { PropertyStatus } from "@/lib/pipeline-types";
 import { Empty } from "@/components/ui/Feedback";
-import { IconArchive, IconArrowRight, IconLayers } from "@/components/ui/Icon";
+import { IconArchive, IconLayers } from "@/components/ui/Icon";
 import type { Json } from "@/lib/supabase/types";
 
 export const dynamic = "force-dynamic";
@@ -22,6 +22,7 @@ type ProjectCard = {
   criteria: Json;
   counts: Partial<Record<PropertyStatus, number>>;
   total: number;
+  summary: string;
 };
 
 export default async function ProjectsPage() {
@@ -49,6 +50,9 @@ export default async function ProjectsPage() {
       ...p,
       counts,
       total: Object.values(counts).reduce((a, b) => a + (b ?? 0), 0),
+      // Les critères sont mis en forme côté serveur : le composant de ligne
+      // reste client sans avoir à embarquer le formateur.
+      summary: formatCriteria(p.criteria),
     };
   });
 
@@ -102,7 +106,7 @@ export default async function ProjectsPage() {
                 </div>
                 <ul className="grid gap-3">
                   {archived.map((p) => (
-                    <ProjectRow key={p.id} project={p} muted />
+                    <ProjectRow key={p.id} project={p} />
                   ))}
                 </ul>
               </section>
@@ -116,51 +120,3 @@ export default async function ProjectsPage() {
   );
 }
 
-function ProjectRow({ project, muted = false }: { project: ProjectCard; muted?: boolean }) {
-  const summary = formatCriteria(project.criteria);
-
-  return (
-    <li>
-      <Link
-        href={`/app/p/${project.id}`}
-        className="group relative flex items-center gap-6 overflow-hidden rounded-lg border border-hairline bg-surface px-5 py-4 transition-[border-color,background-color] duration-[140ms] hover:border-hairline-3 hover:bg-raised"
-      >
-        <span
-          aria-hidden
-          className="absolute inset-y-0 left-0 w-[2px] origin-top scale-y-0 bg-brand transition-transform duration-[220ms] ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-y-100"
-        />
-
-        <div className="min-w-0 flex-1">
-          <h3
-            className={`truncate text-[15px] font-medium tracking-[-0.015em] ${muted ? "text-text-2" : "text-text"}`}
-          >
-            {project.name}
-          </h3>
-          <p className="num mt-1 truncate text-[11px] text-text-3">
-            {summary || "Critères non renseignés"}
-          </p>
-
-          {project.total > 0 && (
-            <p className="mt-2 truncate text-[12px] text-text-4">
-              {STATUS_COLUMNS.filter((col) => (project.counts[col.key] ?? 0) > 0)
-                .map((col) => `${project.counts[col.key]} ${col.label.toLowerCase()}`)
-                .join(" · ")}
-            </p>
-          )}
-        </div>
-
-        <div className="shrink-0 text-right">
-          <p className="num text-[20px] leading-none text-text">{project.total}</p>
-          <p className="t-label mt-1.5 !text-[9px]">
-            bien{project.total > 1 ? "s" : ""}
-          </p>
-        </div>
-
-        <IconArrowRight
-          size={16}
-          className="shrink-0 -translate-x-1 text-text-4 opacity-0 transition-all duration-[220ms] ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:translate-x-0 group-hover:opacity-100"
-        />
-      </Link>
-    </li>
-  );
-}

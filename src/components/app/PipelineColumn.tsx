@@ -15,16 +15,29 @@ import { cx } from "@/lib/cx";
  *
  * Il reste un titre, un compteur, et une zone de dépôt qui s'allume.
  */
+/** Ce qu'une colonne vide attend de vous. Un tiret n'oriente vers rien —
+ *  chaque étape a sa propre raison d'être vide, et sa propre sortie. */
+const VIDE: Record<PropertyStatus, string> = {
+  analyser: "Les biens capturés atterrissent ici.",
+  analyse: "Glissez-y un bien dont vous avez lu les chiffres.",
+  visite: "Les biens que vous allez voir sur place.",
+  nego: "Ceux sur lesquels vous discutez le prix.",
+  ecarte: "Ceux que vous avez écartés, avec la raison.",
+  offre: "Le bien sur lequel vous vous engagez.",
+};
+
 export function PipelineColumn({
   status,
   label,
   properties,
   onOpenProperty,
+  onChangeStatus,
 }: {
   status: PropertyStatus;
   label: string;
   properties: PipelineProperty[];
   onOpenProperty: (id: string) => void;
+  onChangeStatus?: (id: string, status: PropertyStatus) => void;
 }) {
   const { setNodeRef, isOver } = useDroppable({ id: status });
 
@@ -48,7 +61,12 @@ export function PipelineColumn({
           strategy={verticalListSortingStrategy}
         >
           {properties.map((property) => (
-            <PropertyCard key={property.id} property={property} onOpen={onOpenProperty} />
+            <PropertyCard
+              key={property.id}
+              property={property}
+              onOpen={onOpenProperty}
+              onChangeStatus={onChangeStatus}
+            />
           ))}
         </SortableContext>
 
@@ -56,11 +74,11 @@ export function PipelineColumn({
           <div
             className={cx(
               "flex flex-1 items-center justify-center rounded-md border border-dashed",
-              "px-3 py-8 text-center text-[12px] transition-colors duration-[140ms]",
+              "px-4 py-8 text-center text-[12px] leading-relaxed transition-colors duration-[140ms]",
               isOver ? "border-hairline-ember text-brand" : "border-hairline text-text-4",
             )}
           >
-            {isOver ? "Déposer ici" : "—"}
+            {isOver ? "Déposer ici" : VIDE[status]}
           </div>
         )}
       </div>

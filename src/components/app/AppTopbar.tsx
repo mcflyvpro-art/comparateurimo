@@ -2,6 +2,7 @@ import Link from "next/link";
 import { formatCriteria } from "@/lib/format-criteria";
 import type { Json } from "@/lib/supabase/types";
 import { Button } from "@/components/ui/Button";
+import { ProjectCriteria } from "@/components/app/ProjectCriteria";
 import { IconLayers, IconPlus, IconSearch } from "@/components/ui/Icon";
 
 /**
@@ -14,10 +15,21 @@ import { IconLayers, IconPlus, IconSearch } from "@/components/ui/Icon";
  */
 export function AppTopbar({
   project,
+  projectId,
 }: {
   project: { name: string; criteria: Json };
+  projectId: string;
 }) {
   const summary = formatCriteria(project.criteria);
+
+  // `criteria` est un `jsonb` libre : on n'en extrait que ce qu'on sait éditer,
+  // le reste est conservé tel quel côté serveur.
+  const criteres =
+    project.criteria && typeof project.criteria === "object" && !Array.isArray(project.criteria)
+      ? (project.criteria as Record<string, unknown>)
+      : {};
+  const budgetMax = typeof criteres.budget_max === "number" ? criteres.budget_max : null;
+  const goal = typeof criteres.goal === "string" ? criteres.goal : null;
 
   return (
     <header className="flex h-[var(--topbar)] shrink-0 items-center justify-between gap-6 border-b border-hairline px-5">
@@ -34,12 +46,13 @@ export function AppTopbar({
         <h1 className="truncate text-[15px] font-medium tracking-[-0.015em] text-text">
           {project.name}
         </h1>
-        {summary && (
-          <>
-            <span className="h-3 w-px shrink-0 bg-hairline-2" aria-hidden />
-            <p className="num truncate text-[11px] text-text-3">{summary}</p>
-          </>
-        )}
+        <span className="h-3 w-px shrink-0 bg-hairline-2" aria-hidden />
+        <ProjectCriteria
+          projectId={projectId}
+          summary={summary}
+          budgetMax={budgetMax}
+          goal={goal}
+        />
       </div>
 
       <div className="flex shrink-0 items-center gap-2">

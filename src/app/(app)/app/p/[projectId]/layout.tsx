@@ -24,7 +24,7 @@ export default async function ProjectLayout({
 
   return (
     <div className="flex min-h-0 flex-1 flex-col">
-      <AppTopbar project={project} />
+      <AppTopbar project={project} projectId={projectId} />
       {children}
     </div>
   );
