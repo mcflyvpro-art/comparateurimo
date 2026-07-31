@@ -1,4 +1,5 @@
 import { AppSidebar, type SidebarProject } from "@/components/app/AppSidebar";
+import { ToastProvider } from "@/components/ui/Toast";
 import { getDemoClient, DEMO_USER_ID } from "@/lib/supabase/demo";
 import type { PropertyStatus } from "@/lib/pipeline-types";
 
@@ -37,9 +38,11 @@ export default async function AppLayout({
   return (
     // Coque plein écran : le rail est fixe, seul le contenu défile. C'est ce qui
     // distingue un outil d'une page web — on ne perd jamais sa navigation.
-    <div className="flex h-screen overflow-hidden bg-bg">
-      <AppSidebar projects={projects} />
-      <div className="flex min-w-0 min-h-0 flex-1 flex-col">{children}</div>
-    </div>
+    <ToastProvider>
+      <div className="flex h-screen overflow-hidden bg-bg">
+        <AppSidebar projects={projects} />
+        <div className="flex min-w-0 min-h-0 flex-1 flex-col">{children}</div>
+      </div>
+    </ToastProvider>
   );
 }

@@ -178,6 +178,44 @@ export type Database = {
         }
         Relationships: []
       }
+      property_facts: {
+        Row: {
+          created_at: string
+          field: string
+          id: string
+          property_id: string
+          source: Database["public"]["Enums"]["fact_source"]
+          user_id: string
+          value: Json | null
+        }
+        Insert: {
+          created_at?: string
+          field: string
+          id?: string
+          property_id: string
+          source?: Database["public"]["Enums"]["fact_source"]
+          user_id: string
+          value?: Json | null
+        }
+        Update: {
+          created_at?: string
+          field?: string
+          id?: string
+          property_id?: string
+          source?: Database["public"]["Enums"]["fact_source"]
+          user_id?: string
+          value?: Json | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "property_facts_property_id_fkey"
+            columns: ["property_id"]
+            isOneToOne: false
+            referencedRelation: "properties"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       properties: {
         Row: {
           add_source: Database["public"]["Enums"]["add_source"]
@@ -207,6 +245,8 @@ export type Database = {
           id: string
           insee_code: string | null
           lat: number | null
+          listed_since_days: number | null
+          lots_count: number | null
           lng: number | null
           max_price: number | null
           monthly_copro_charges: number
@@ -220,6 +260,7 @@ export type Database = {
           surface_carrez: number | null
           updated_at: string
           user_id: string
+          voted_works: number
           works_estimate: number
           year_built: number | null
         }
@@ -251,6 +292,8 @@ export type Database = {
           id?: string
           insee_code?: string | null
           lat?: number | null
+          listed_since_days?: number | null
+          lots_count?: number | null
           lng?: number | null
           max_price?: number | null
           monthly_copro_charges?: number
@@ -264,6 +307,7 @@ export type Database = {
           surface_carrez?: number | null
           updated_at?: string
           user_id: string
+          voted_works?: number
           works_estimate?: number
           year_built?: number | null
         }
@@ -295,6 +339,8 @@ export type Database = {
           id?: string
           insee_code?: string | null
           lat?: number | null
+          listed_since_days?: number | null
+          lots_count?: number | null
           lng?: number | null
           max_price?: number | null
           monthly_copro_charges?: number
@@ -308,6 +354,7 @@ export type Database = {
           surface_carrez?: number | null
           updated_at?: string
           user_id?: string
+          voted_works?: number
           works_estimate?: number
           year_built?: number | null
         }
@@ -628,6 +675,7 @@ export type Database = {
       [_ in never]: never
     }
     Enums: {
+      fact_source: "extrait" | "saisi" | "propose_accepte" | "importe"
       add_source:
         | "capture"
         | "paste"

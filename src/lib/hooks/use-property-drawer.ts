@@ -4,7 +4,12 @@ import { useMemo, useState, useTransition } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import { computeDropPosition } from "@/lib/board-position";
 import { moveProperty, addQuickNote } from "@/app/(app)/app/p/[projectId]/actions";
+import { useToast } from "@/components/ui/Toast";
 import { STATUS_COLUMNS, type PipelineProperty, type PropertyStatus } from "@/lib/pipeline-types";
+
+const LIBELLE_ETAPE = Object.fromEntries(
+  STATUS_COLUMNS.map((c) => [c.key, c.label]),
+) as Record<PropertyStatus, string>;
 
 type PendingDiscard = {
   propertyId: string;
@@ -29,6 +34,7 @@ export function usePropertyDrawer(
 ) {
   const router = useRouter();
   const pathname = usePathname();
+  const { pousser } = useToast();
   const [properties, setProperties] = useState(initialProperties);
   const [pendingDiscard, setPendingDiscard] = useState<PendingDiscard | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -71,7 +77,14 @@ export function usePropertyDrawer(
     toStatus: PropertyStatus,
     newPosition: number,
     discardReason?: string,
+    /** Un retour en arrière ne doit pas reproposer « Annuler » : sinon on
+     *  s'enferme dans une boucle d'annulations qui s'annulent. */
+    estUneAnnulation = false,
   ) {
+    const source = properties.find((p) => p.id === propertyId);
+    const positionInitiale = source?.board_position ?? newPosition;
+    const raisonInitiale = source?.discard_reason ?? undefined;
+
     setProperties((prev) =>
       prev.map((p) =>
         p.id === propertyId
@@ -89,8 +102,25 @@ export function usePropertyDrawer(
     startTransition(async () => {
       try {
         await moveProperty({ projectId, propertyId, fromStatus, toStatus, newPosition, discardReason });
+
+        if (estUneAnnulation) {
+          pousser({ tone: "neutre", message: `Remis dans « ${LIBELLE_ETAPE[toStatus]} ».` });
+          return;
+        }
+
+        // Déplacer une carte était jusqu'ici irréversible. On préfère
+        // « c'est fait, annuler ? » à « êtes-vous sûr ? » : le premier ne
+        // coûte rien quand on a raison.
+        pousser({
+          tone: "succes",
+          message: `Déplacé dans « ${LIBELLE_ETAPE[toStatus]} ».`,
+          actionLabel: "Annuler",
+          onAction: () =>
+            applyMove(propertyId, toStatus, fromStatus, positionInitiale, raisonInitiale, true),
+        });
       } catch {
         setError("Le déplacement n'a pas pu être enregistré. Réessayez.");
+        pousser({ tone: "erreur", message: "Le déplacement n'a pas pu être enregistré." });
         router.refresh();
       }
     });

@@ -1,67 +1,65 @@
+"use client";
+
 import { formatEUR, formatM2 } from "@/lib/format";
 import { Panel } from "@/components/ui/Panel";
-import { Stat, StatGrid, Field, SourceTag } from "@/components/ui/Stat";
+import { StatGrid, SourceTag } from "@/components/ui/Stat";
+import { Editable } from "@/components/ui/Editable";
 import { Disclosure } from "@/components/ui/Disclosure";
 import { toneDpe } from "@/lib/tone";
+import { updatePropertyField, type ChampModifiable } from "@/app/(app)/app/p/[projectId]/bien/[propertyId]/property-actions";
 import type { PropertyRow } from "@/lib/property-detail-types";
 import type { FicheMode } from "@/components/app/fiche/FicheShell";
 
-function yesNo(value: boolean | null): string {
-  if (value === null) return "—";
-  return value ? "Oui" : "Non";
+/** Un booléen se saisit par un choix explicite, jamais par une case à cocher
+ *  à trois états : « Oui / Non / on ne sait pas » doit se lire, pas se deviner. */
+const OUI_NON = [
+  { valeur: "true", libelle: "Oui" },
+  { valeur: "false", libelle: "Non" },
+];
+
+const DPE = ["A", "B", "C", "D", "E", "F", "G"].map((l) => ({ valeur: l, libelle: l }));
+
+const ETATS = ["Refait à neuf", "Bon état", "À rafraîchir", "À rénover"].map((l) => ({
+  valeur: l,
+  libelle: l,
+}));
+
+function libelleBool(v: boolean | null): string {
+  if (v === null) return "—";
+  return v ? "Oui" : "Non";
 }
 
 /**
- * Le bien.
+ * LE BIEN.
  *
- * En mode Simple : six caractéristiques. Celles qui changent une décision de
- * visite — la taille, le nombre de pièces, l'étage, la note énergétique, les
- * charges, les travaux.
+ * Chaque valeur est modifiable là où elle se lit. Il n'y a pas de mode
+ * « édition » à activer : le champ au repos ressemble à une statistique, et
+ * s'ouvre au clic ou au clavier. `Entrée` valide, `Échap` annule, et chaque
+ * enregistrement propose une annulation qui porte l'ancienne valeur.
  *
- * En mode Complet : les vingt-trois champs, rangés en quatre replis nommés,
- * avec un résumé visible sans ouvrir. Une liste de vingt-trois lignes se lit ;
- * une grille de vingt-trois cases, non.
+ * En mode Simple : six caractéristiques, celles qui décident d'une visite.
+ * En mode Complet : tous les champs, rangés en replis nommés à résumé visible.
  */
 export function SectionBien({
   property,
+  projectId,
   mode,
 }: {
   property: PropertyRow;
+  projectId: string;
   mode: FicheMode;
 }) {
-  const essentiels = (
-    <StatGrid cols={3}>
-      <Stat term="surfaceCarrez" value={formatM2(property.surface_carrez)} />
-      <Stat
-        label="Pièces"
-        value={
-          property.rooms
-            ? `${property.rooms}${property.bedrooms ? ` · ${property.bedrooms} ch.` : ""}`
-            : "—"
-        }
-      />
-      <Stat
-        label="Étage"
-        value={
-          property.floor !== null
-            ? `${property.floor} / ${property.floors_total ?? "?"}`
-            : "—"
-        }
-        hint={property.has_elevator === null ? undefined : property.has_elevator ? "ascenseur" : "sans ascenseur"}
-      />
-      <Stat
-        term="dpe"
-        value={property.dpe_letter ?? "—"}
-        tone={toneDpe(property.dpe_letter)}
-      />
-      <Stat
-        label="Charges de copropriété"
-        value={formatEUR(property.monthly_copro_charges)}
-        hint="par mois"
-      />
-      <Stat label="Travaux estimés" value={formatEUR(property.works_estimate)} />
-    </StatGrid>
-  );
+  /** Un seul point d'écriture pour toute la section. */
+  function enregistrer(champ: ChampModifiable) {
+    return (v: string | number | null) =>
+      updatePropertyField(property.id, projectId, champ, v);
+  }
+
+  /** Les booléens transitent en texte dans le `<select>` ; on les reconvertit ici. */
+  function enregistrerBool(champ: ChampModifiable) {
+    return (v: string | number | null) =>
+      updatePropertyField(property.id, projectId, champ, v === null ? null : v === "true");
+  }
 
   return (
     <Panel>
@@ -70,7 +68,70 @@ export function SectionBien({
         <SourceTag kind="vous" />
       </div>
 
-      {essentiels}
+      <StatGrid cols={3}>
+        <Editable
+          term="surfaceCarrez"
+          value={property.surface_carrez}
+          display={formatM2(property.surface_carrez)}
+          kind="nombre"
+          unit="m²"
+          onSave={enregistrer("surface_carrez")}
+        />
+        <Editable
+          label="Pièces"
+          value={property.rooms}
+          display={
+            property.rooms
+              ? `${property.rooms}${property.bedrooms ? ` · ${property.bedrooms} ch.` : ""}`
+              : undefined
+          }
+          kind="nombre"
+          onSave={enregistrer("rooms")}
+        />
+        <Editable
+          label="Étage"
+          value={property.floor}
+          display={
+            property.floor !== null
+              ? `${property.floor} / ${property.floors_total ?? "?"}`
+              : undefined
+          }
+          kind="nombre"
+          hint={
+            property.has_elevator === null
+              ? undefined
+              : property.has_elevator
+                ? "ascenseur"
+                : "sans ascenseur"
+          }
+          onSave={enregistrer("floor")}
+        />
+        <Editable
+          term="dpe"
+          value={property.dpe_letter}
+          kind="choix"
+          options={DPE}
+          tone={toneDpe(property.dpe_letter)}
+          onSave={enregistrer("dpe_letter")}
+        />
+        <Editable
+          label="Charges de copropriété"
+          value={property.monthly_copro_charges}
+          display={formatEUR(property.monthly_copro_charges)}
+          kind="nombre"
+          unit="€"
+          hint="par mois"
+          onSave={enregistrer("monthly_copro_charges")}
+        />
+        <Editable
+          label="Travaux estimés"
+          value={property.works_estimate}
+          display={formatEUR(property.works_estimate)}
+          kind="nombre"
+          unit="€"
+          onSave={enregistrer("works_estimate")}
+        />
+      </StatGrid>
 
       {mode === "complet" && (
         <div className="mt-8">
@@ -79,14 +140,23 @@ export function SectionBien({
             summary={[property.city, property.property_type].filter(Boolean).join(" · ")}
           >
             <dl>
-              <Field label="Adresse" value={property.address ?? "—"} />
-              <Field label="Ville" value={property.city ?? "—"} />
-              <Field label="Code postal" value={property.postal_code ?? "—"} />
-              <Field label="Type de bien" value={property.property_type ?? "—"} />
-              <Field label="Année de construction" value={property.year_built ?? "—"} />
-              <Field label="État général" value={property.condition ?? "—"} />
-              <Field label="Exposition" value={property.exposure ?? "—"} />
-              <Field label="Meublé" value={yesNo(property.furnished)} />
+              <Editable layout="row" label="Adresse" value={property.address} onSave={enregistrer("address")} />
+              <Editable layout="row" label="Complément d'adresse" value={property.address_extra} onSave={enregistrer("address_extra")} />
+              <Editable layout="row" label="Ville" value={property.city} onSave={enregistrer("city")} />
+              <Editable layout="row" label="Code postal" value={property.postal_code} onSave={enregistrer("postal_code")} />
+              <Editable layout="row" label="Type de bien" value={property.property_type} onSave={enregistrer("property_type")} />
+              <Editable layout="row" label="Année de construction" value={property.year_built} kind="nombre" onSave={enregistrer("year_built")} />
+              <Editable layout="row" label="État général" value={property.condition} kind="choix" options={ETATS} onSave={enregistrer("condition")} />
+              <Editable layout="row" label="Exposition" value={property.exposure} onSave={enregistrer("exposure")} />
+              <Editable
+                layout="row"
+                label="Meublé"
+                value={property.furnished === null ? null : String(property.furnished)}
+                display={libelleBool(property.furnished)}
+                kind="choix"
+                options={OUI_NON}
+                onSave={enregistrerBool("furnished")}
+              />
             </dl>
           </Disclosure>
 
@@ -104,15 +174,35 @@ export function SectionBien({
             }
           >
             <dl>
-              <Field label="Balcon" value={yesNo(property.has_balcony)} />
-              <Field label="Terrasse" value={yesNo(property.has_terrace)} />
-              <Field
+              {(
+                [
+                  ["Balcon", "has_balcony", property.has_balcony],
+                  ["Terrasse", "has_terrace", property.has_terrace],
+                  ["Parking", "has_parking", property.has_parking],
+                  ["Cave", "has_cave", property.has_cave],
+                  ["Ascenseur", "has_elevator", property.has_elevator],
+                ] as const
+              ).map(([libelle, champ, valeur]) => (
+                <Editable
+                  key={champ}
+                  layout="row"
+                  label={libelle}
+                  value={valeur === null ? null : String(valeur)}
+                  display={libelleBool(valeur)}
+                  kind="choix"
+                  options={OUI_NON}
+                  onSave={enregistrerBool(champ)}
+                />
+              ))}
+              <Editable
+                layout="row"
                 label="Surface extérieure"
-                value={property.outdoor_area ? formatM2(property.outdoor_area) : "—"}
+                value={property.outdoor_area}
+                display={property.outdoor_area ? formatM2(property.outdoor_area) : undefined}
+                kind="nombre"
+                unit="m²"
+                onSave={enregistrer("outdoor_area")}
               />
-              <Field label="Parking" value={yesNo(property.has_parking)} />
-              <Field label="Cave" value={yesNo(property.has_cave)} />
-              <Field label="Ascenseur" value={yesNo(property.has_elevator)} />
             </dl>
           </Disclosure>
 
@@ -121,24 +211,50 @@ export function SectionBien({
             summary={`${property.dpe_letter ?? "—"} · ${formatEUR(property.property_tax)} / an`}
           >
             <dl>
-              <Field
+              <Editable
+                layout="row"
                 term="dpe"
-                value={
-                  <span style={{ color: toneDpe(property.dpe_letter) }}>
-                    {property.dpe_letter ?? "—"}
-                  </span>
-                }
+                value={property.dpe_letter}
+                kind="choix"
+                options={DPE}
+                tone={toneDpe(property.dpe_letter)}
+                onSave={enregistrer("dpe_letter")}
               />
-              <Field label="Émissions (GES)" value={property.ges_letter ?? "—"} />
-              <Field
+              <Editable
+                layout="row"
+                label="Émissions (GES)"
+                value={property.ges_letter}
+                kind="choix"
+                options={DPE}
+                onSave={enregistrer("ges_letter")}
+              />
+              <Editable
+                layout="row"
                 label="Charges de copropriété"
-                value={`${formatEUR(property.monthly_copro_charges)} / mois`}
+                value={property.monthly_copro_charges}
+                display={`${formatEUR(property.monthly_copro_charges)} / mois`}
+                kind="nombre"
+                unit="€"
+                onSave={enregistrer("monthly_copro_charges")}
               />
-              <Field
+              <Editable
+                layout="row"
                 label="Taxe foncière"
-                value={`${formatEUR(property.property_tax)} / an`}
+                value={property.property_tax}
+                display={`${formatEUR(property.property_tax)} / an`}
+                kind="nombre"
+                unit="€"
+                onSave={enregistrer("property_tax")}
               />
-              <Field label="Travaux estimés" value={formatEUR(property.works_estimate)} />
+              <Editable
+                layout="row"
+                label="Travaux estimés"
+                value={property.works_estimate}
+                display={formatEUR(property.works_estimate)}
+                kind="nombre"
+                unit="€"
+                onSave={enregistrer("works_estimate")}
+              />
             </dl>
           </Disclosure>
         </div>

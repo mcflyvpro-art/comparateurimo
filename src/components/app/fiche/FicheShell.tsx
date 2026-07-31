@@ -8,6 +8,7 @@ import { SectionBien } from "@/components/app/fiche/SectionBien";
 import { SectionMarche } from "@/components/app/fiche/SectionMarche";
 import { SectionArgent } from "@/components/app/fiche/SectionArgent";
 import { SectionScenario } from "@/components/app/fiche/SectionScenario";
+import { FicheActions } from "@/components/app/fiche/FicheActions";
 import { computeInvestmentMetrics } from "@/lib/calc/metrics";
 import { computeScoreSur100 } from "@/lib/calc/scoring";
 import { useDebouncedScenarioSave } from "@/lib/hooks/use-debounced-scenario-save";
@@ -121,6 +122,12 @@ export function FicheShell({
               { key: "complet", label: "Complet" },
             ]}
           />
+
+          <FicheActions
+            propertyId={propertyId}
+            projectId={projectId}
+            adresse={property.address ?? "Ce bien"}
+          />
         </div>
       </div>
 
@@ -128,7 +135,7 @@ export function FicheShell({
         <div className="grid gap-5 xl:grid-cols-[minmax(0,1fr)_21rem]">
           <div className="focal-stagger flex min-w-0 flex-col gap-5">
             <SectionVerdict property={property} scenario={scenario} />
-            <SectionBien property={property} mode={mode} />
+            <SectionBien property={property} projectId={projectId} mode={mode} />
             <SectionMarche property={property} />
             {mode === "complet" && (
               <SectionArgent property={property} scenario={scenario} />

@@ -188,6 +188,31 @@ export const IconTrash = (p: IconProps) => (
   </Svg>
 );
 
+/** Corriger une valeur — la pointe de réglage, pas le crayon d'écolier. */
+export const IconPencil = (p: IconProps) => (
+  <Svg {...p}>
+    <path d="M16.5 4.6l2.9 2.9-10 10-3.9 1 1-3.9 10-10z" />
+    <path d="M14.4 6.7l2.9 2.9" />
+  </Svg>
+);
+
+/** Dupliquer — deux plans identiques, l'un décalé. */
+export const IconCopy = (p: IconProps) => (
+  <Svg {...p}>
+    <rect x="9" y="9" width="11" height="11" rx="2" />
+    <path d="M15 9V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h3" />
+  </Svg>
+);
+
+/** Autres actions — la graduation, dans la grammaire de l'instrument. */
+export const IconMore = (p: IconProps) => (
+  <Svg {...p}>
+    <circle cx="5.5" cy="12" r="1.1" fill="currentColor" stroke="none" />
+    <circle cx="12" cy="12" r="1.1" fill="currentColor" stroke="none" />
+    <circle cx="18.5" cy="12" r="1.1" fill="currentColor" stroke="none" />
+  </Svg>
+);
+
 export const IconDrag = (p: IconProps) => (
   <Svg {...p}>
     <circle cx="9" cy="6" r=".9" fill="currentColor" stroke="none" />
