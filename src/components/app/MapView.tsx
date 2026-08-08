@@ -14,6 +14,11 @@ import type { PropertyRow, PropertyScenarioRow } from "@/lib/property-detail-typ
 
 const STYLE_URL = "https://tiles.openfreemap.org/styles/dark";
 
+/** `public/maplibre-gl-worker.mjs` et `public/maplibre-gl-shared.mjs` sont des
+ *  copies telles quelles de `node_modules/maplibre-gl/dist/` (voir le
+ *  commentaire dans le `useEffect` ci-dessous pour le pourquoi). À recopier
+ *  à chaque mise à jour de `maplibre-gl`. */
+
 export type GeolocatedProperty = PropertyRow & { lat: number; lng: number };
 
 /**
@@ -43,8 +48,26 @@ export function MapView({
 
     let cancelled = false;
 
-    import("maplibre-gl").then(({ Map, LngLatBounds, Marker }) => {
+    import("maplibre-gl").then(({ Map, LngLatBounds, Marker, setWorkerUrl }) => {
       if (cancelled || !containerRef.current) return;
+
+      // maplibre-gl charge son worker de parsing de tuiles via un chemin
+      // relatif interne (`import.meta.url` + nom de fichier reconstruit),
+      // que Turbopack hache et déplace sans réécrire cette référence dans le
+      // bundle → 404 silencieux, le worker ne démarre jamais, aucune tuile
+      // vecteur ne se charge (le style/sprite/attribution, qui ne passent
+      // pas par le worker, chargent très bien — d'où une carte avec juste
+      // l'attribution en bas, jamais de tuiles ni d'épingles).
+      // Un `new URL("maplibre-gl/dist/...", import.meta.url)` posé dans
+      // notre propre code contourne le premier 404, mais le worker importe
+      // LUI-MÊME un second fichier (`maplibre-gl-shared.mjs`) via un chemin
+      // relatif que Turbopack ne réécrit pas non plus une fois le worker
+      // chargé comme module brut — même échec un cran plus loin.
+      // Solution robuste, indépendante du bundler : les deux fichiers sont
+      // copiés tels quels dans `public/` (voir le commentaire au-dessus de
+      // l'import), servis à un chemin fixe où leur import relatif se résout
+      // naturellement. À recopier si `maplibre-gl` est mis à jour.
+      setWorkerUrl("/maplibre-gl-worker.mjs");
 
       const map = new Map({
         container: containerRef.current,
