@@ -6,6 +6,7 @@ export type MapStyleKey = "dark" | "light" | "detailed";
 
 export type MapDisplayPrefs = {
   mapStyle: MapStyleKey;
+  showPrice: boolean;
   showSurface: boolean;
   showStatus: boolean;
 };
@@ -14,6 +15,7 @@ const STORAGE_KEY = "estio:carte:display-prefs";
 
 const DEFAULT_PREFS: MapDisplayPrefs = {
   mapStyle: "dark",
+  showPrice: true,
   showSurface: false,
   showStatus: false,
 };
@@ -30,6 +32,7 @@ function parsePrefs(raw: string | null): MapDisplayPrefs {
       typeof parsed === "object" &&
       parsed !== null &&
       isMapStyleKey((parsed as Record<string, unknown>).mapStyle) &&
+      typeof (parsed as Record<string, unknown>).showPrice === "boolean" &&
       typeof (parsed as Record<string, unknown>).showSurface === "boolean" &&
       typeof (parsed as Record<string, unknown>).showStatus === "boolean"
     ) {
@@ -43,9 +46,9 @@ function parsePrefs(raw: string | null): MapDisplayPrefs {
 
 /**
  * Préférences d'affichage de la vue Carte (style de fond + champs visibles
- * sur les épingles), persistées en `localStorage` — contrairement au scénario
- * partagé (Plan 6a/6b), ce sont des préférences d'affichage personnelles, pas
- * une donnée métier. Même pattern SSR-safe que `useLocalStorageSet`
+ * sur les épingles), persistées en `localStorage` — ce sont des préférences
+ * d'affichage personnelles, pas une donnée métier. Même pattern SSR-safe que
+ * `useLocalStorageSet`
  * (`src/lib/hooks/use-local-storage-set.ts`) : `useSyncExternalStore` avec un
  * snapshot serveur toujours égal aux valeurs par défaut, pour éviter tout
  * mismatch d'hydratation — React re-rend avec la vraie valeur juste après le

@@ -374,11 +374,21 @@ body::after {
   inset: 0;
 }
 
-/* Le filtre désaturé n'a de sens que sur le style Sombre — les styles
-   Clair/Détaillé (widget Paramètres) s'affichent avec leurs couleurs
-   d'origine. `.estio-map--dark` est posé conditionnellement par MapView. */
+/* Le filtre désaturé n'a de sens que sur le style Sombre — le style Clair
+   s'affiche avec ses couleurs d'origine. `.estio-map--dark` est posé
+   conditionnellement par MapView. */
 .estio-map.estio-map--dark .maplibregl-canvas {
   filter: saturate(0.28) sepia(0.22) brightness(0.8) contrast(1.1);
+}
+
+/* OpenFreeMap ne propose pas de variante sombre du style Détaillé (Liberty,
+   nativement clair) — on l'assombrit par inversion CSS plutôt que d'ajouter
+   un fournisseur de tuiles tiers. Rendu approximatif (les teintes ne sont
+   pas fidèles à leur original) mais suffisant pour rester dans l'univers
+   sombre d'Estio. `.estio-map--detailed` est posé conditionnellement par
+   MapView, comme `.estio-map--dark`. */
+.estio-map.estio-map--detailed .maplibregl-canvas {
+  filter: invert(1) hue-rotate(180deg) saturate(0.35) brightness(0.9) contrast(1.05);
 }
 
 .estio-map .maplibregl-ctrl-attrib {
@@ -395,24 +405,31 @@ body::after {
   filter: invert(1) opacity(0.4);
 }
 
+/* `.estio-pin` EST le point — largeur/hauteur fixes, jamais dépendantes de
+   son contenu. MapLibre ancre le marqueur au CENTRE de la boîte de cet
+   élément : si sa taille variait avec l'étiquette (prix/surface/statut
+   activables indépendamment dans le widget Affichage), le point se
+   décalerait de l'adresse réelle du bien à chaque changement de réglage —
+   bug corrigé ici. L'étiquette (`.estio-pin-label`) est donc posée en
+   `position: absolute`, hors du flux, pour ne jamais influencer cette
+   boîte. */
 .estio-pin {
-  display: flex;
-  align-items: center;
-  gap: 5px;
-  height: 22px;
+  position: relative;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
   cursor: pointer;
+  box-shadow: 0 0 0 2px rgb(11 10 9 / 0.9);
   transition: transform var(--t-base) var(--e-focal);
 }
 .estio-pin:hover {
-  transform: scale(1.08);
+  transform: scale(1.2);
 }
-.estio-pin i {
-  display: block;
-  width: 11px;
-  height: 11px;
-  border-radius: 50%;
-  flex-shrink: 0;
-  box-shadow: 0 0 0 2px rgb(11 10 9 / 0.9);
+.estio-pin-label {
+  position: absolute;
+  left: calc(100% + 6px);
+  top: 50%;
+  transform: translateY(-50%);
 }
 
 .estio-map .maplibregl-popup-content {

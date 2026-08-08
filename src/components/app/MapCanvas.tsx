@@ -78,22 +78,29 @@ export function MapCanvas({
       });
       const verdict = verdictFromScore(scoreSur100);
 
+      // `.estio-pin` EST le point (taille fixe, jamais influencée par le
+      // contenu de l'étiquette) — MapLibre ancre le marqueur au centre de la
+      // boîte de cet élément. L'étiquette est un enfant en `position:
+      // absolute` (voir globals.css), donc son contenu variable (prix +
+      // surface + statut activables indépendamment) ne modifie JAMAIS la
+      // taille de `.estio-pin` : le point reste exactement sur les
+      // coordonnées du bien, quels que soient les réglages d'affichage.
       const el = document.createElement("div");
       el.className = "estio-pin";
+      el.style.background = VERDICT_HEX[verdict.level];
 
-      const dot = document.createElement("i");
-      dot.style.background = VERDICT_HEX[verdict.level];
-      el.appendChild(dot);
-
-      const labelParts = [formatCompactEUR(property.asking_price)];
+      const labelParts: string[] = [];
+      if (displayPrefs.showPrice) labelParts.push(formatCompactEUR(property.asking_price));
       if (displayPrefs.showSurface) labelParts.push(formatM2(property.surface_carrez));
       if (displayPrefs.showStatus) labelParts.push(STATUS_LABELS[property.status]);
 
-      const label = document.createElement("span");
-      label.className =
-        "num whitespace-nowrap rounded-sm border border-hairline-2 bg-[rgb(11_10_9/0.85)] px-1.5 py-0.5 text-[11px] text-text backdrop-blur-md";
-      label.textContent = labelParts.join(" · ");
-      el.appendChild(label);
+      if (labelParts.length > 0) {
+        const label = document.createElement("span");
+        label.className =
+          "estio-pin-label num whitespace-nowrap rounded-sm border border-hairline-2 bg-[rgb(11_10_9/0.85)] px-1.5 py-0.5 text-[11px] text-text backdrop-blur-md";
+        label.textContent = labelParts.join(" · ");
+        el.appendChild(label);
+      }
 
       el.addEventListener("click", (event) => {
         event.stopPropagation();
@@ -229,7 +236,7 @@ export function MapCanvas({
     if (!mapReadyRef.current) return; // l'Effet 1 s'en charge dès le "load"
     renderMarkers();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [scenario, properties, displayPrefs.showSurface, displayPrefs.showStatus]);
+  }, [scenario, properties, displayPrefs.showPrice, displayPrefs.showSurface, displayPrefs.showStatus]);
 
   // Effet 3 — change le style de fond sans recréer la carte ni les épingles
   // (indépendantes du style). Cas limite accepté : si le style change avant

@@ -1,6 +1,5 @@
 "use client";
 
-import { useState } from "react";
 import { Empty } from "@/components/ui/Feedback";
 import { ButtonLink } from "@/components/ui/Button";
 import { IconMap, IconTable } from "@/components/ui/Icon";
@@ -14,15 +13,15 @@ import type { PropertyRow, PropertyScenarioRow } from "@/lib/property-detail-typ
 export type GeolocatedProperty = PropertyRow & { lat: number; lng: number };
 
 /**
- * Vue Carte — orchestrateur. Porte le state (scénario partagé éphémère,
- * préférences d'affichage persistées) et branche `MapCanvas` (mécanique
- * MapLibre) + `MapSettingsPanel` (widget). Aucune logique de carte ici : voir
- * `MapCanvas.tsx` pour le pourquoi de la séparation (la carte ne doit jamais
- * être recréée quand ce state change).
+ * Vue Carte — orchestrateur. Porte les préférences d'affichage (persistées)
+ * et branche `MapCanvas` (mécanique MapLibre) + `MapSettingsPanel` (widget).
+ * Le scénario utilisé pour le score des épingles est celui reçu du serveur,
+ * fixe — pas d'édition en direct ici (direction produit future : un
+ * scénario par projet, réglé à l'onboarding, pas depuis la carte).
  */
 export function MapView({
   properties,
-  scenario: initialScenario,
+  scenario,
   unlocatedCount,
   projectId,
 }: {
@@ -31,12 +30,7 @@ export function MapView({
   unlocatedCount: number;
   projectId: string;
 }) {
-  const [scenario, setScenario] = useState(initialScenario);
   const [displayPrefs, updateDisplayPrefs] = useMapDisplayPrefs();
-
-  function handleScenarioChange(patch: Partial<PropertyScenarioRow>) {
-    setScenario((current) => (current ? { ...current, ...patch } : current));
-  }
 
   if (properties.length === 0) {
     return (
@@ -64,6 +58,7 @@ export function MapView({
       className={cx(
         "estio-map relative min-h-0 flex-1",
         displayPrefs.mapStyle === "dark" && "estio-map--dark",
+        displayPrefs.mapStyle === "detailed" && "estio-map--detailed",
       )}
     >
       {scenario && (
@@ -100,12 +95,7 @@ export function MapView({
             {unlocatedCount > 1 ? "s" : ""} sans adresse localisée
           </p>
         )}
-        <MapSettingsPanel
-          scenario={scenario}
-          onScenarioChange={handleScenarioChange}
-          displayPrefs={displayPrefs}
-          onDisplayPrefsChange={updateDisplayPrefs}
-        />
+        <MapSettingsPanel displayPrefs={displayPrefs} onDisplayPrefsChange={updateDisplayPrefs} />
       </div>
     </div>
   );
