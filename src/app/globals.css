@@ -362,6 +362,18 @@ body::after {
    CARTE — ramener une tuile extérieure dans le monde d'Estio.
    ========================================================================== */
 
+/* maplibre-gl.css impose `position: relative` sur son propre conteneur
+   (`.maplibregl-map`, ajoutée par la lib elle-même) — même spécificité que
+   l'utilitaire Tailwind `.absolute` posé sur ce même <div>, l'ordre du bundle
+   CSS tranche en faveur de maplibre-gl et le conteneur perd son `absolute
+   inset-0`, s'effondre à hauteur 0, et la carte ne peut plus rien dessiner
+   (aucune tuile, aucune épingle). Règle plus spécifique pour trancher dans
+   l'autre sens, sans dépendre de l'ordre d'import des feuilles de style. */
+.estio-map .maplibregl-map {
+  position: absolute !important;
+  inset: 0;
+}
+
 .estio-map .maplibregl-canvas {
   filter: saturate(0.28) sepia(0.22) brightness(0.8) contrast(1.1);
 }
