@@ -2,69 +2,157 @@
 @import "../design/tokens.css";
 
 /* =============================================================================
+   ALIAS DE VARIABLES BRUTES — À SUPPRIMER EN R2.
+   Les composants qui écrivent `var(--brand-wash)` ou `var(--lift-3)` en dur
+   continuent de fonctionner pendant la migration.
+
+   ⚠ LES TROIS SÉLECTEURS SONT INDISPENSABLES. Une propriété personnalisée qui
+   en référence une autre est substituée là où elle est DÉCLARÉE, puis héritée
+   comme valeur calculée. Déclarés sur `:root` seul, ces alias figeraient donc
+   les valeurs CLAIRES et les transmettraient tels quels à l'intérieur de la
+   vitrine sombre — qui deviendrait un fond noir avec des filets clairs. En
+   listant aussi les deux sélecteurs de thème, chaque conteneur qui porte un
+   thème redéclare ses alias à partir de son propre `--accent`.
+   ========================================================================== */
+:root,
+[data-theme="light"],
+[data-theme="dark"] {
+  --bg: var(--canvas);
+  --bg-sunken: var(--sunken);
+  --surface-raised: var(--surface-hover);
+  --surface-high: var(--surface-active);
+  --surface-scrim: var(--scrim);
+
+  --hairline: var(--line-soft);
+  --hairline-2: var(--line);
+  --hairline-3: var(--line-strong);
+  --hairline-ember: var(--accent-line);
+
+  --brand: var(--accent);
+  --brand-hot: var(--accent);
+  --brand-wash: var(--accent-soft);
+  --brand-wash-2: var(--accent-line);
+  --brand-glow: var(--accent-line);
+  --ember-700: var(--accent);
+
+  --good-wash: var(--good-soft);
+  --mid-wash: var(--mid-soft);
+  --risk-wash: var(--risk-soft);
+  --info-wash: var(--info-soft);
+  --danger-wash: var(--danger-soft);
+
+  --lift-1: var(--shadow-1);
+  --lift-2: var(--shadow-2);
+  --lift-3: var(--shadow-3);
+
+  --ink-950: var(--ink-fg);
+  --ink-600: var(--surface-active);
+  --ink-500: var(--line-strong);
+  --ink-400: var(--text-4);
+  --bone-100: var(--text);
+  --bone-400: var(--text-3);
+
+  --r-xs: var(--r-sm);
+  --r-2xl: var(--r-xl);
+
+  --topbar: var(--bar-h);
+  --rail: var(--rail-w);
+}
+
+/* =============================================================================
    ESTIO — SYSTÈME « FOCALE » v2 · couche applicative
    ========================================================================== */
 
 @theme inline {
-  /* --- Surfaces --------------------------------------------------------- */
-  --color-bg: var(--bg);
-  --color-sunken: var(--bg-sunken);
+  /* --- Surfaces ---------------------------------------------------------- */
+  --color-canvas: var(--canvas);
+  --color-sunken: var(--sunken);
   --color-surface: var(--surface);
-  --color-raised: var(--surface-raised);
-  --color-high: var(--surface-high);
+  --color-surface-hover: var(--surface-hover);
+  --color-surface-active: var(--surface-active);
 
-  /* --- Texte ------------------------------------------------------------ */
+  /* --- Filets ------------------------------------------------------------ */
+  --color-line: var(--line);
+  --color-line-soft: var(--line-soft);
+  --color-line-strong: var(--line-strong);
+
+  /* --- Texte ------------------------------------------------------------- */
   --color-text: var(--text);
   --color-text-2: var(--text-2);
   --color-text-3: var(--text-3);
   --color-text-4: var(--text-4);
-  --color-inverse: var(--text-inverse);
 
-  /* --- Filets ----------------------------------------------------------- */
-  --color-hairline: var(--hairline);
-  --color-hairline-2: var(--hairline-2);
-  --color-hairline-3: var(--hairline-3);
+  /* --- Action ------------------------------------------------------------ */
+  --color-ink: var(--ink);
+  --color-ink-fg: var(--ink-fg);
+  --color-accent: var(--accent);
+  --color-accent-fg: var(--accent-fg);
 
-  /* --- Marque : actions uniquement -------------------------------------- */
-  --color-brand: var(--brand);
-  --color-brand-hot: var(--brand-hot);
-  --color-ember-100: var(--ember-100);
-  --color-ember-200: var(--ember-200);
-  --color-ember-700: var(--ember-700);
-  --color-ember-900: var(--ember-900);
-
-  /* --- Verdict : données uniquement ------------------------------------- */
+  /* --- Verdict ----------------------------------------------------------- */
   --color-good: var(--good);
-  --color-good-300: var(--good-300);
-  --color-good-100: var(--good-100);
   --color-mid: var(--mid);
-  --color-mid-300: var(--mid-300);
-  --color-mid-100: var(--mid-100);
   --color-risk: var(--risk);
-  --color-risk-300: var(--risk-300);
-  --color-risk-100: var(--risk-100);
   --color-none: var(--none);
-
   --color-info: var(--info);
   --color-danger: var(--danger);
 
-  --color-ink-700: var(--ink-700);
-  --color-ink-600: var(--ink-600);
-  --color-ink-500: var(--ink-500);
-  --color-bone-300: var(--bone-300);
-  --color-bone-400: var(--bone-400);
+  /* --- Étapes du pipeline ------------------------------------------------ */
+  --color-stage-analyser: var(--stage-analyser);
+  --color-stage-analyse: var(--stage-analyse);
+  --color-stage-visite: var(--stage-visite);
+  --color-stage-nego: var(--stage-nego);
+  --color-stage-offre: var(--stage-offre);
+  --color-stage-ecarte: var(--stage-ecarte);
 
-  /* --- Forme ------------------------------------------------------------ */
-  --radius-xs: var(--r-xs);
+  /* --- Forme ------------------------------------------------------------- */
   --radius-sm: var(--r-sm);
   --radius-md: var(--r-md);
   --radius-lg: var(--r-lg);
   --radius-xl: var(--r-xl);
-  --radius-2xl: var(--r-2xl);
 
-  /* --- Typographie ------------------------------------------------------ */
+  /* --- Typographie ------------------------------------------------------- */
   --font-sans: var(--font-grotesk), "Helvetica Neue", Arial, sans-serif;
   --font-mono: var(--font-mono-jb), ui-monospace, "SF Mono", monospace;
+
+  /* =========================================================================
+     ALIAS DE COMPATIBILITÉ — À SUPPRIMER EN R2.
+     `hairline` apparaît 212 fois dans le code, `brand` 111 fois. Tailwind v4
+     n'échoue PAS sur un utilitaire inconnu : il ne génère simplement pas la
+     règle, et l'élément devient transparent sans que rien ne le signale. On
+     garde donc les anciens noms vivants le temps de la migration, puis on
+     supprime ce bloc et on vérifie par `grep`, pas par un build vert.
+     ====================================================================== */
+  --color-bg: var(--canvas);
+  --color-raised: var(--surface-hover);
+  --color-high: var(--surface);
+  --color-inverse: var(--ink-fg);
+
+  --color-hairline: var(--line-soft);
+  --color-hairline-2: var(--line);
+  --color-hairline-3: var(--line-strong);
+
+  --color-brand: var(--accent);
+  --color-brand-hot: var(--accent);
+  --color-ember-100: var(--accent-soft);
+  --color-ember-200: var(--accent-line);
+  --color-ember-700: var(--accent);
+  --color-ember-900: var(--accent);
+
+  --color-good-300: var(--good);
+  --color-good-100: var(--good-soft);
+  --color-mid-300: var(--mid);
+  --color-mid-100: var(--mid-soft);
+  --color-risk-300: var(--risk);
+  --color-risk-100: var(--risk-soft);
+
+  --color-ink-700: var(--surface);
+  --color-ink-600: var(--surface-active);
+  --color-ink-500: var(--line-strong);
+  --color-bone-300: var(--text-2);
+  --color-bone-400: var(--text-3);
+
+  --radius-xs: var(--r-sm);
+  --radius-2xl: var(--r-xl);
 }
 
 /* =============================================================================
@@ -72,12 +160,11 @@
    ========================================================================== */
 
 html {
-  background: var(--bg);
-  color-scheme: dark;
+  background: var(--canvas);
 }
 
 body {
-  background: var(--bg);
+  background: var(--canvas);
   color: var(--text);
   font-family: var(--font-grotesk), "Helvetica Neue", Arial, sans-serif;
   font-feature-settings: "ss01" 1, "ss03" 1;
@@ -100,19 +187,19 @@ body::after {
 }
 
 ::selection {
-  background: var(--ember-700);
-  color: var(--ink-950);
+  background: var(--accent);
+  color: var(--accent-fg);
 }
 
 :focus-visible {
-  outline: 2px solid var(--ember-700);
+  outline: 2px solid var(--accent);
   outline-offset: 2px;
-  border-radius: var(--r-xs);
+  border-radius: var(--r-sm);
 }
 
 * {
   scrollbar-width: thin;
-  scrollbar-color: var(--ink-500) transparent;
+  scrollbar-color: var(--line-strong) transparent;
 }
 *::-webkit-scrollbar {
   width: 9px;
@@ -122,13 +209,13 @@ body::after {
   background: transparent;
 }
 *::-webkit-scrollbar-thumb {
-  background: var(--ink-500);
+  background: var(--line-strong);
   border-radius: var(--r-pill);
   border: 2px solid transparent;
   background-clip: content-box;
 }
 *::-webkit-scrollbar-thumb:hover {
-  background: var(--ink-400);
+  background: var(--text-4);
   background-clip: content-box;
 }
 
