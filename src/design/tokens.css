@@ -1,192 +1,222 @@
 /* =============================================================================
-   ESTIO — SYSTÈME « FOCALE » v2
+   ESTIO — SYSTÈME BI-THÈME
    =============================================================================
 
-   Concept inchangé : Estio est un instrument optique. Deux cents annonces
-   dérivent dans le noir ; une seule entre dans le plan de netteté.
+   Trois blocs, dans cet ordre :
 
-   ─────────────────────────────────────────────────────────────────────────
-   CE QUI CHANGE EN v2, ET POURQUOI
-   ─────────────────────────────────────────────────────────────────────────
+     1. LES PRIMITIVES HORS THÈME — forme, espacement, mesures, mouvement.
+        Elles ne changent jamais d'un thème à l'autre.
+     2. LE THÈME CLAIR — le défaut de l'outil.
+     3. LE THÈME SOMBRE — la surcharge.
 
-   1. LA COULEUR NE FAIT PLUS DEUX MÉTIERS À LA FOIS.
-      En v1, l'orange était à la fois la couleur de marque (boutons) ET
-      l'échelle de score. Résultat : un bouton et un mauvais score avaient la
-      même teinte, et il fallait apprendre qu'orange vif = bon.
-      → La braise ne dit plus JAMAIS la qualité d'un bien. Elle ne sert qu'aux
-        affordances : bouton d'action, focus, lien, état actif.
-      → Le verdict passe à des feux adoucis. Tout le monde lit un vert et un
-        rouge sans apprentissage. Désaturés pour rester tenus sur l'encre.
+   Trois systèmes chromatiques ÉTANCHES, et c'est la règle qui compte :
 
-   2. LE CONTRASTE DU TEXTE REMONTE.
-      Quatre niveaux de gris trop proches et trop sombres : rien ne ressortait.
-      Chaque niveau gagne en luminance, et l'usage courant se limite à deux.
+     — L'ACTION   : l'encre (bouton primaire) et la braise (état actif, focus,
+                    lien, sélection). Ne dit jamais si un bien est bon.
+     — L'ÉTAPE    : un dégradé froid, ardoise → magenta. Ne dit jamais si un
+                    bien est bon non plus : une étape est une position, pas un
+                    jugement. Aucune teinte verte, ambrée ou rouge ici.
+     — LE VERDICT : vert, ambre, rouge. Ces trois familles n'appartiennent qu'à
+                    lui.
 
-   3. LES PASTILLES DE PROVENANCE DISPARAISSENT.
-      Cinquante marques colorées sur une fiche, c'était un système à apprendre
-      avant de pouvoir lire. La provenance se dit désormais une fois par
-      section, en toutes lettres. Seul le givre survit, pour marquer un bloc
-      de données publiques.
+   C'est la correction d'un défaut logique de la v2, où « Offre » était vert et
+   « bon dossier » aussi.
+
+   ⚠ Le sélecteur du thème sombre est un ATTRIBUT NU, `[data-theme="dark"]`, et
+   non `:root[data-theme="dark"]` : la vitrine doit pouvoir rester sombre en
+   posant l'attribut sur un simple conteneur pendant que <html> reste clair.
+   ========================================================================== */
+
+/* =============================================================================
+   1. PRIMITIVES HORS THÈME
    ========================================================================== */
 
 :root {
-  /* ==========================================================================
-     1. PRIMITIVES
-     ====================================================================== */
-
-  /* --- ENCRE — le fond. Noir chaud, jamais pur, jamais violacé. ---------- */
-  --ink-990: #060505;
-  --ink-950: #080706;
-  --ink-900: #0b0a09; /* fond de scène */
-  --ink-850: #100e0c;
-  --ink-800: #15120f; /* surface */
-  --ink-750: #1b1714;
-  --ink-700: #221d19; /* surface élevée */
-  --ink-650: #282219;
-  --ink-600: #2c2620; /* surface haute, survol */
-  --ink-500: #3a322b; /* séparateur appuyé */
-  --ink-400: #4a4038;
-
-  /* --- OS — le texte. Blanc chaud, jamais #fff. Contrastes relevés. ------ */
-  --bone-050: #fdfaf7;
-  --bone-100: #f0eae3; /* texte principal */
-  --bone-200: #d6cdc3;
-  --bone-300: #b8ada2; /* texte secondaire — usage courant */
-  --bone-400: #8f857b; /* texte atténué */
-  --bone-500: #6b625a; /* texte très faible, désactivé */
-
-  /* --- BRAISE — la MARQUE, et uniquement elle.
-         Bouton d'action, anneau de focus, lien, onglet actif, sélection.
-         Ne dit jamais si un bien est bon. -------------------------------- */
-  --ember-050: #1a110c;
-  --ember-100: #2a1d16;
-  --ember-200: #463229;
-  --ember-400: #8c3311;
-  --ember-600: #d9490b;
-  --ember-700: #ff6a1a; /* la marque */
-  --ember-800: #ff8c3d;
-  --ember-900: #ffb25c;
-
-  /* --- FEUX ADOUCIS — le verdict, et uniquement lui.
-         Désaturés pour tenir sur l'encre sans jamais crier. La brique tire
-         vers le rouge franc (teinte ~4°) pour ne pas se confondre avec la
-         braise de marque (teinte ~20°). ---------------------------------- */
-  --good-500: #84b394; /* bon dossier */
-  --good-300: #5c8069;
-  --good-100: #24332a;
-
-  --mid-500: #d9b678; /* à creuser */
-  --mid-300: #94794a;
-  --mid-100: #332b1c;
-
-  --risk-500: #c4706a; /* peu favorable */
-  --risk-300: #8a4a46;
-  --risk-100: #33201f;
-
-  --none-500: #8a8078; /* données incomplètes */
-
-  /* --- GIVRE — la donnée publique. Une mention par section, jamais par
-         chiffre. ---------------------------------------------------------- */
-  --frost-500: #8fb4ca;
-  --frost-300: #4a6678;
-  --frost-100: #16232b;
-
-  /* ==========================================================================
-     2. SÉMANTIQUES
-     ====================================================================== */
-
-  --bg: var(--ink-900);
-  --bg-sunken: var(--ink-950);
-  --surface: var(--ink-800);
-  --surface-raised: var(--ink-700);
-  --surface-high: var(--ink-600);
-  --surface-scrim: rgb(6 5 5 / 0.74);
-
-  --text: var(--bone-100);
-  --text-2: var(--bone-300);
-  --text-3: var(--bone-400);
-  --text-4: var(--bone-500);
-  --text-inverse: var(--ink-950);
-
-  --hairline: rgb(240 234 227 / 0.08);
-  --hairline-2: rgb(240 234 227 / 0.14);
-  --hairline-3: rgb(240 234 227 / 0.24);
-  --hairline-ember: rgb(255 106 26 / 0.4);
-
-  /* Marque — actions uniquement */
-  --brand: var(--ember-700);
-  --brand-hot: var(--ember-800);
-  --brand-wash: rgb(255 106 26 / 0.1);
-  --brand-wash-2: rgb(255 106 26 / 0.18);
-  --brand-glow: rgb(255 106 26 / 0.32);
-
-  /* Verdict — données uniquement */
-  --good: var(--good-500);
-  --good-wash: rgb(132 179 148 / 0.12);
-  --mid: var(--mid-500);
-  --mid-wash: rgb(217 182 120 / 0.12);
-  --risk: var(--risk-500);
-  --risk-wash: rgb(196 112 106 / 0.12);
-  --none: var(--none-500);
-
-  --info: var(--frost-500);
-  --info-wash: rgb(143 180 202 / 0.1);
-
-  --danger: var(--risk-500);
-  --danger-wash: rgb(196 112 106 / 0.14);
-
-  /* --- Le pipeline : une progression, pas un jugement.
-         Les étapes ne sont pas « bonnes » ou « mauvaises » — un bien en négo
-         n'est pas meilleur qu'un bien à analyser. On les distingue donc par
-         une montée d'intensité neutre, et la seule couleur signifiante est
-         celle de l'étape finale. ---------------------------------------- */
-  --stage-analyser: #6b625a;
-  --stage-analyse: #8f857b;
-  --stage-visite: #b8ada2;
-  --stage-nego: #d6cdc3;
-  --stage-offre: var(--good-500);
-  --stage-ecarte: #453b34;
-
-  /* ==========================================================================
-     3. FORME
-     ====================================================================== */
-  --r-xs: 2px;
-  --r-sm: 4px;
-  --r-md: 6px;
-  --r-lg: 10px;
-  --r-xl: 14px;
-  --r-2xl: 20px;
+  /* --- FORME. Le rayon de 2 px de la v2 disparaît : il donnait des arêtes
+         rigides sans rien apporter. ------------------------------------- */
+  --r-sm: 6px;   /* contrôles, pastilles, champs */
+  --r-md: 10px;  /* cartes */
+  --r-lg: 14px;  /* panneaux, colonnes de board */
+  --r-xl: 18px;  /* modales */
   --r-pill: 999px;
 
-  --lift-1: 0 1px 2px rgb(0 0 0 / 0.4);
-  --lift-2: 0 8px 24px -8px rgb(0 0 0 / 0.7);
-  --lift-3: 0 24px 64px -16px rgb(0 0 0 / 0.85);
+  /* --- ESPACEMENT. Échelle 4 px stricte. ---------------------------------- */
+  --sp-1: 4px;
+  --sp-2: 8px;
+  --sp-3: 12px;
+  --sp-4: 16px;
+  --sp-5: 20px;
+  --sp-6: 24px;
+  --sp-8: 32px;
+  --sp-10: 40px;
+  --sp-14: 56px;
+  --sp-18: 72px;
 
-  /* ==========================================================================
-     4. MOUVEMENT — deux tempos, un seul geste (le calage focal).
-     ====================================================================== */
-  --t-instant: 90ms;
-  --t-fast: 140ms;
-  --t-base: 220ms;
-  --t-slow: 420ms;
+  /* --- MESURES DE LA COQUE.
+         Une seule gouttière d'écran : c'est elle qui fait que le rail, la barre
+         et le contenu s'alignent enfin verticalement. --bar-h vaut AUSSI pour
+         l'en-tête du rail — la coexistence de deux hauteurs proches était la
+         cause du décalage entre le logo et le nom du projet. --------------- */
+  --pad-x: 20px;
+  --bar-h: 52px;
+  --rail-w: 248px;
+  --rail-w-min: 56px;
+  --row-h: 44px;
+
+  /* --- MOUVEMENT.
+         L'outil se règle en dessous de 300 ms. --e-focal et --t-cine ne
+         servent plus qu'à la vitrine. ------------------------------------- */
+  --t-fast: 120ms;
+  --t-base: 180ms;
+  --t-slow: 280ms;
   --t-cine: 1200ms;
   --t-cine-long: 1800ms;
 
+  --e-out: cubic-bezier(0.2, 0, 0, 1);
   --e-focal: cubic-bezier(0.16, 1, 0.3, 1);
-  --e-snap: cubic-bezier(0.2, 0, 0, 1);
   --e-swing: cubic-bezier(0.65, 0, 0.35, 1);
 
-  /* ==========================================================================
-     5. GRILLE & MESURE
-     ====================================================================== */
+  /* --- GRILLE & MESURE — vitrine. ---------------------------------------- */
   --gutter: 5vw;
   --measure: 68ch;
   --shell-max: 108rem;
-  --rail: 15rem;
-  --topbar: 3.5rem;
 
-  /* ==========================================================================
-     6. MATIÈRE — grain de film. Empêche le noir d'être plat.
-     ====================================================================== */
+  /* --- MATIÈRE — grain de film. Vitrine uniquement depuis R1. ------------- */
   --grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.82' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* La densité compacte ne touche qu'une mesure : la hauteur de rangée. */
+[data-density="compact"] {
+  --row-h: 36px;
+}
+
+/* =============================================================================
+   2. THÈME CLAIR — le défaut de l'outil.
+   ========================================================================== */
+
+:root,
+[data-theme="light"] {
+  color-scheme: light;
+
+  /* --- SURFACES. Cinq niveaux réellement écartés. En clair, « enfoncé » est
+         plus SOMBRE que le fond de scène, et la carte est blanche. -------- */
+  --sunken: #efedea;          /* rail, colonne de board, en-tête de tableau */
+  --canvas: #f7f6f4;          /* fond de scène */
+  --surface: #ffffff;         /* carte, panneau, popover, ligne de tableau */
+  --surface-hover: #f5f3f0;
+  --surface-active: #ebe8e3;
+
+  /* --- FILETS. Trois rôles, trois tokens, jamais interchangeables. -------- */
+  --line: #e3dfd9;            /* structurel — sépare deux zones */
+  --line-soft: #efece8;       /* interne — lignes d'un tableau */
+  --line-strong: #cfc9c1;     /* contour de champ, bordure au survol */
+
+  /* --- TEXTE. Encre chaude, jamais noir pur. ----------------------------- */
+  --text: #1c1917;
+  --text-2: #57534e;
+  --text-3: #8a827a;
+  --text-4: #a8a29b;
+
+  /* --- ACTION.
+         Le bouton primaire descend de la braise vers l'encre, ce qui libère la
+         braise pour ce qu'elle fait le mieux : dire où l'on se trouve. ----- */
+  --ink: #1c1917;
+  --ink-fg: #ffffff;
+
+  --accent: #e8590c;
+  --accent-fg: #ffffff;
+  --accent-soft: rgb(232 89 12 / 0.09);
+  --accent-line: rgb(232 89 12 / 0.34);
+
+  /* --- VERDICT. Vert, ambre, rouge — et rien d'autre ne les emprunte. ----- */
+  --good: #2f8f5b;
+  --good-soft: rgb(47 143 91 / 0.12);
+  --mid: #c08328;
+  --mid-soft: rgb(192 131 40 / 0.12);
+  --risk: #c4453c;
+  --risk-soft: rgb(196 69 60 / 0.12);
+  --none: #a8a29b;
+  --none-soft: rgb(168 162 155 / 0.12);
+
+  --info: #2b6f8f;
+  --info-soft: rgb(43 111 143 / 0.1);
+  --danger: #c4453c;
+  --danger-soft: rgb(196 69 60 / 0.12);
+
+  /* --- ÉLÉVATION. En clair, l'ombre est douce et large. ------------------- */
+  --shadow-1: 0 1px 2px rgb(28 25 23 / 0.06), 0 1px 1px rgb(28 25 23 / 0.04);
+  --shadow-2: 0 8px 24px -6px rgb(28 25 23 / 0.14), 0 2px 6px rgb(28 25 23 / 0.06);
+  --shadow-3: 0 24px 64px -12px rgb(28 25 23 / 0.22);
+  --shadow-4: 0 32px 80px -16px rgb(28 25 23 / 0.3);
+
+  --scrim: rgb(28 25 23 / 0.4);
+}
+
+/* --- ÉTAPES DU PIPELINE.
+       Identiques dans les deux thèmes : elles sont posées ici, hors de la
+       surcharge sombre, et en héritent donc partout. Seule l'opacité des fonds
+       doux change d'un thème à l'autre. ------------------------------------ */
+:root {
+  --stage-analyser: #8fa3b8;  /* ardoise */
+  --stage-analyse: #5b8def;   /* bleu */
+  --stage-visite: #6d6bef;    /* indigo */
+  --stage-nego: #9457e8;      /* violet */
+  --stage-offre: #c94ec9;     /* magenta */
+  --stage-ecarte: #a8a29b;    /* gris chaud */
+  --stage-soft-alpha: 0.12;
+}
+
+/* =============================================================================
+   3. THÈME SOMBRE
+   ========================================================================== */
+
+[data-theme="dark"] {
+  color-scheme: dark;
+
+  --sunken: #0b0a09;
+  --canvas: #121110;
+  --surface: #1a1917;
+  --surface-hover: #221f1d;
+  --surface-active: #2a2724;
+
+  --line: #2e2b28;
+  --line-soft: #232120;
+  --line-strong: #423d38;
+
+  --text: #f5f2ef;
+  --text-2: #b5aca3;
+  --text-3: #857d75;
+  --text-4: #635c55;
+
+  --ink: #f5f2ef;
+  --ink-fg: #121110;
+
+  --accent: #ff6a1a;
+  --accent-fg: #121110;
+  --accent-soft: rgb(255 106 26 / 0.14);
+  --accent-line: rgb(255 106 26 / 0.4);
+
+  --good: #84b394;
+  --good-soft: rgb(132 179 148 / 0.16);
+  --mid: #d9b678;
+  --mid-soft: rgb(217 182 120 / 0.16);
+  --risk: #c4706a;
+  --risk-soft: rgb(196 112 106 / 0.16);
+  --none: #8a8078;
+  --none-soft: rgb(138 128 120 / 0.16);
+
+  --info: #8fb4ca;
+  --info-soft: rgb(143 180 202 / 0.14);
+  --danger: #c4706a;
+  --danger-soft: rgb(196 112 106 / 0.16);
+
+  --stage-soft-alpha: 0.18;
+
+  /* Dans le noir, l'ombre est plus dense et plus courte. */
+  --shadow-1: 0 1px 2px rgb(0 0 0 / 0.5);
+  --shadow-2: 0 8px 24px -6px rgb(0 0 0 / 0.6), 0 2px 6px rgb(0 0 0 / 0.4);
+  --shadow-3: 0 24px 64px -12px rgb(0 0 0 / 0.75);
+  --shadow-4: 0 32px 80px -16px rgb(0 0 0 / 0.85);
+
+  --scrim: rgb(6 5 5 / 0.74);
 }
