@@ -58,7 +58,11 @@ l'interface plutôt que de les masquer.
 `src/design/tokens.css` est réécrit :
 
 - `:root` porte **le thème clair** (défaut de l'outil).
-- `:root[data-theme="dark"]` porte les surcharges sombres.
+- `[data-theme="dark"]` porte les surcharges sombres. Sélecteur d'attribut nu,
+  **pas** `:root[data-theme="dark"]` : la vitrine doit pouvoir rester sombre en
+  posant l'attribut sur un simple conteneur, pendant que `<html>` reste clair.
+- Symétriquement, `[data-theme="light"]` réexpose les valeurs claires, pour
+  qu'un îlot clair reste possible à l'intérieur d'une page sombre.
 - Les primitives (échelles brutes) restent définies une fois, hors thème :
   formes, durées, courbes, espacement, typo.
 - Seules les **couleurs** changent d'un thème à l'autre.
@@ -353,10 +357,20 @@ Chaque plan est poussé sur `main`, validé par l'utilisateur sur Vercel, puis c
 
 ## 7. Risques
 
-1. **R2 touche presque tous les fichiers.** Le risque n'est pas la casse mais
-   l'oubli : une classe manquée reste sur un token supprimé et devient
-   transparente. Mitigation : supprimer les anciens noms de la couche `@theme`
-   dès R1, de sorte qu'une classe oubliée devient une erreur de build visible.
+1. **R2 touche presque tous les fichiers** — `hairline` apparaît 212 fois,
+   `brand` 111 fois. Le risque n'est pas la casse mais l'oubli : une classe
+   manquée reste sur un token supprimé et l'élément devient transparent.
+
+   ⚠ Tailwind v4 **n'échoue pas** sur un utilitaire inconnu : il ne génère
+   simplement pas la règle. On ne peut donc pas compter sur une erreur de build
+   pour détecter les oublis. Stratégie retenue :
+
+   - **R1** ajoute les nouveaux tokens **et conserve les anciens noms en alias**
+     pointant vers les nouvelles valeurs. Rien ne casse, et l'application prend
+     déjà ses nouvelles couleurs dès le premier plan.
+   - **R2** migre les classes fichier par fichier, puis **supprime les alias**.
+   - La vérification est un `grep` qui doit retourner zéro occurrence, pas un
+     build vert.
 2. **Le thème clair change tous les rapports de contraste.** Les couleurs de
    verdict et d'étape doivent être vérifiées sur `--surface` et sur `--sunken`,
    pas seulement sur le fond de scène.
