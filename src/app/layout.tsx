@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Space_Grotesk, JetBrains_Mono } from "next/font/google";
+import { ThemeScript } from "@/components/providers/ThemeScript";
 import "./globals.css";
 
 /**
@@ -36,8 +37,10 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#0b0a09",
-  colorScheme: "dark",
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#f7f6f4" },
+    { media: "(prefers-color-scheme: dark)", color: "#121110" },
+  ],
 };
 
 export default function RootLayout({
@@ -46,11 +49,21 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
+    // `suppressHydrationWarning` : le script inline modifie `data-theme` sur
+    // <html> avant l'hydratation, donc le serveur et le client diffèrent
+    // nécessairement sur cet attribut. C'est le cas d'usage exact prévu par
+    // React pour cette échappatoire.
     <html
       lang="fr"
+      data-theme="light"
+      data-density="confortable"
+      suppressHydrationWarning
       className={`h-full antialiased ${grotesk.variable} ${mono.variable}`}
     >
-      <body className="min-h-full flex flex-col bg-bg text-text">{children}</body>
+      <head>
+        <ThemeScript />
+      </head>
+      <body className="flex min-h-full flex-col bg-canvas text-text">{children}</body>
     </html>
   );
 }
