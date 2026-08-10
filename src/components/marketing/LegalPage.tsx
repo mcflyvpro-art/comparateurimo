@@ -72,10 +72,10 @@ export function LegalPage({
               <article
                 key={s.heading}
                 id={slug(s.heading)}
-                className="scroll-mt-28 border-t border-hairline py-9 first:border-t-0 first:pt-0"
+                className="scroll-mt-28 border-t border-line-soft py-9 first:border-t-0 first:pt-0"
               >
                 <div className="flex items-baseline gap-3">
-                  <span className="num text-[11px] text-brand">
+                  <span className="num text-[11px] text-accent">
                     {String(i + 1).padStart(2, "0")}
                   </span>
                   <h2 className="t-head text-text">{s.heading}</h2>

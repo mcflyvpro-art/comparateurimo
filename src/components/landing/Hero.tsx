@@ -61,7 +61,7 @@ export function Hero() {
   return (
     <header
       data-header-theme="dark"
-      className="relative flex min-h-[100svh] w-full flex-col overflow-hidden bg-bg"
+      className="relative flex min-h-[100svh] w-full flex-col overflow-hidden bg-canvas"
     >
       {/* Le champ d'annonces, en profondeur */}
       <div className="pointer-events-none absolute inset-0 z-0">
@@ -93,7 +93,7 @@ export function Hero() {
           <motion.span
             {...settle(3)}
             className="block"
-            style={{ color: "var(--ember-700)" }}
+            style={{ color: "var(--accent)" }}
           >
             Une décision.
           </motion.span>
@@ -133,7 +133,7 @@ export function Hero() {
             width="16"
             height="25"
             rx="8"
-            stroke="var(--bone-500)"
+            stroke="var(--text-4)"
             strokeWidth="1.2"
           />
           <line
@@ -141,7 +141,7 @@ export function Hero() {
             y1="7"
             x2="9"
             y2="11"
-            stroke="var(--ember-700)"
+            stroke="var(--accent)"
             strokeWidth="1.6"
             strokeLinecap="round"
             className="animate-scan"

@@ -52,8 +52,8 @@ export function MagneticButton({
 
   const skin =
     variant === "solid"
-      ? "bg-brand text-inverse shadow-[inset_0_1px_0_rgb(255_255_255/0.2)] hover:bg-brand-hot"
-      : "border border-hairline-2 text-text hover:border-hairline-3 hover:bg-raised";
+      ? "bg-accent text-ink-fg shadow-[inset_0_1px_0_rgb(255_255_255/0.2)] hover:bg-accent-hot"
+      : "border border-line text-text hover:border-line-strong hover:bg-surface-hover";
 
   return (
     <MotionLink

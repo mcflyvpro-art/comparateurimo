@@ -66,11 +66,11 @@ export function FaqAccordion() {
   const reduce = useReducedMotion();
 
   return (
-    <div className="border-t border-hairline">
+    <div className="border-t border-line-soft">
       {FAQ.map((item, i) => {
         const isOpen = open === i;
         return (
-          <div key={item.q} className="border-b border-hairline">
+          <div key={item.q} className="border-b border-line-soft">
             <button
               onClick={() => setOpen(isOpen ? null : i)}
               aria-expanded={isOpen}
@@ -79,7 +79,7 @@ export function FaqAccordion() {
               <span
                 className={cx(
                   "num mt-1 shrink-0 text-[11px] transition-colors duration-[220ms]",
-                  isOpen ? "text-brand" : "text-text-4 group-hover:text-text-3",
+                  isOpen ? "text-accent" : "text-text-4 group-hover:text-text-3",
                 )}
               >
                 {String(i + 1).padStart(2, "0")}
@@ -99,13 +99,13 @@ export function FaqAccordion() {
                 <span
                   className={cx(
                     "absolute left-0 top-1/2 h-px w-full -translate-y-1/2 transition-colors duration-[220ms]",
-                    isOpen ? "bg-brand" : "bg-text-3",
+                    isOpen ? "bg-accent" : "bg-text-3",
                   )}
                 />
                 <span
                   className={cx(
                     "absolute left-1/2 top-0 h-full w-px -translate-x-1/2 transition-[transform,background-color] duration-[420ms] ease-[cubic-bezier(0.16,1,0.3,1)]",
-                    isOpen ? "scale-y-0 bg-brand" : "scale-y-100 bg-text-3",
+                    isOpen ? "scale-y-0 bg-accent" : "scale-y-100 bg-text-3",
                   )}
                 />
               </span>

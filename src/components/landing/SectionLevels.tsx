@@ -33,7 +33,7 @@ const LEVELS = [
     name: "Vos hypothèses",
     lede: "Ce qui rend le verdict vôtre.",
     body: "Apport, taux, durée, fiscalité. C'est ce qui fait que deux personnes n'ont pas le même verdict sur la même annonce.",
-    color: "var(--brand)",
+    color: "var(--accent)",
   },
 ];
 
@@ -42,7 +42,7 @@ export function SectionLevels() {
     <section
       id="niveaux"
       data-header-theme="dark"
-      className="border-t border-hairline py-28 lg:py-36"
+      className="border-t border-line-soft py-28 lg:py-36"
     >
       <div className="mx-auto max-w-[104rem] px-[var(--gutter)]">
         <Reveal cine>
@@ -61,7 +61,7 @@ export function SectionLevels() {
         <div className="mt-14 grid gap-4 lg:grid-cols-3">
           {LEVELS.map((lvl, i) => (
             <Reveal key={lvl.n} cine delay={0.07 * i}>
-              <article className="h-full overflow-hidden rounded-lg border border-hairline bg-surface">
+              <article className="h-full overflow-hidden rounded-lg border border-line-soft bg-surface">
                 <span
                   className="block h-[3px] w-full"
                   style={{ background: lvl.color }}

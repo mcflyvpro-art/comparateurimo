@@ -36,8 +36,8 @@ export function AuthPanel({
           </Link>
 
           <div className="mt-12 flex items-center gap-4">
-            <span className="t-label text-brand">{eyebrow}</span>
-            <span className="h-px w-12 bg-brand/40" aria-hidden />
+            <span className="t-label text-accent">{eyebrow}</span>
+            <span className="h-px w-12 bg-accent/40" aria-hidden />
           </div>
 
           <h1 className="t-title mt-5 text-text">{title}</h1>
@@ -45,14 +45,14 @@ export function AuthPanel({
 
           <div className="mt-10">{children}</div>
 
-          <div className="mt-8 border-t border-hairline pt-6 text-[13px] text-text-3">
+          <div className="mt-8 border-t border-line-soft pt-6 text-[13px] text-text-3">
             {footer}
           </div>
         </div>
       </div>
 
       {/* Le champ focal, en sourdine */}
-      <div className="relative hidden overflow-hidden border-l border-hairline bg-sunken lg:block">
+      <div className="relative hidden overflow-hidden border-l border-line-soft bg-sunken lg:block">
         <div className="absolute inset-0 opacity-70">
           <FocalField count={280} />
         </div>
@@ -66,7 +66,7 @@ export function AuthPanel({
         />
 
         <div className="absolute inset-x-0 bottom-0 p-12">
-          <span className="block h-px w-16 bg-brand" aria-hidden />
+          <span className="block h-px w-16 bg-accent" aria-hidden />
           <blockquote className="mt-7 max-w-md">
             <p className="text-[20px] leading-snug tracking-[-0.02em] text-text">
               {claim.quote}

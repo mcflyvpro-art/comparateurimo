@@ -20,8 +20,8 @@ export function PageHeader({
     <div className="mx-auto max-w-[104rem] px-[var(--gutter)] pb-16 pt-40 lg:pt-48">
       <Reveal cine>
         <div className="flex items-center gap-4">
-          <span className="t-label text-brand">{eyebrow}</span>
-          <span className="h-px w-16 bg-brand/40" aria-hidden />
+          <span className="t-label text-accent">{eyebrow}</span>
+          <span className="h-px w-16 bg-accent/40" aria-hidden />
         </div>
         <h1 className="t-display mt-7 max-w-4xl text-text">{title}</h1>
         {intro && <p className="t-lead mt-8 max-w-2xl">{intro}</p>}

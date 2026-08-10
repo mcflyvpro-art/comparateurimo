@@ -37,9 +37,9 @@ export function SignupForm() {
       </Button>
 
       <div className="flex items-center gap-4">
-        <span className="h-px flex-1 bg-hairline" aria-hidden />
+        <span className="h-px flex-1 bg-line-soft" aria-hidden />
         <span className="t-caps">ou</span>
-        <span className="h-px flex-1 bg-hairline" aria-hidden />
+        <span className="h-px flex-1 bg-line-soft" aria-hidden />
       </div>
 
       <Input
@@ -69,13 +69,13 @@ export function SignupForm() {
         label={
           <span className="text-[12px] leading-snug">
             J&apos;accepte les{" "}
-            <Link href="/cgu" className="text-brand underline-offset-2 hover:underline">
+            <Link href="/cgu" className="text-accent underline-offset-2 hover:underline">
               conditions d&apos;utilisation
             </Link>{" "}
             et la{" "}
             <Link
               href="/confidentialite"
-              className="text-brand underline-offset-2 hover:underline"
+              className="text-accent underline-offset-2 hover:underline"
             >
               politique de confidentialité
             </Link>

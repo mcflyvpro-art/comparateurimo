@@ -15,7 +15,7 @@ import { IconArrowRight } from "@/components/ui/Icon";
  */
 export function FinalCta() {
   return (
-    <section data-header-theme="dark" className="border-t border-hairline">
+    <section data-header-theme="dark" className="border-t border-line-soft">
       <div className="mx-auto max-w-[104rem] px-[var(--gutter)] py-28 lg:py-36">
         <Reveal cine>
           <div className="flex flex-col gap-10 lg:flex-row lg:items-end lg:justify-between">
@@ -36,7 +36,7 @@ export function FinalCta() {
           </div>
         </Reveal>
 
-        <div className="mt-24 border-t border-hairline pt-10">
+        <div className="mt-24 border-t border-line-soft pt-10">
           <p className="mb-6 text-[13px] text-text-3">
             Toutes les données viennent de sources publiques officielles.
           </p>

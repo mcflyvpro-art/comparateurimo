@@ -32,7 +32,7 @@ export function ContactForm() {
   if (envoye) {
     return (
       <Panel className="flex min-h-[26rem] flex-col items-center justify-center text-center">
-        <span className="mb-5 flex h-11 w-11 items-center justify-center rounded-full border border-hairline-ember text-brand">
+        <span className="mb-5 flex h-11 w-11 items-center justify-center rounded-full border border-accent-line text-accent">
           <IconCheck size={20} />
         </span>
         <p className="text-[15px] font-medium text-text">Message bien reçu.</p>

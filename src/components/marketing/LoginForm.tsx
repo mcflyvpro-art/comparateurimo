@@ -35,9 +35,9 @@ export function LoginForm() {
       </Button>
 
       <div className="flex items-center gap-4">
-        <span className="h-px flex-1 bg-hairline" aria-hidden />
+        <span className="h-px flex-1 bg-line-soft" aria-hidden />
         <span className="t-caps">ou</span>
-        <span className="h-px flex-1 bg-hairline" aria-hidden />
+        <span className="h-px flex-1 bg-line-soft" aria-hidden />
       </div>
 
       <Input

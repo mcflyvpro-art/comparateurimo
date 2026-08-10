@@ -156,7 +156,7 @@ export function PipelineForms() {
                       }
                 }
               >
-                <span className="t-label text-brand">{b.kicker}</span>
+                <span className="t-label text-accent">{b.kicker}</span>
                 <h2 className="t-title mt-4 max-w-lg text-text">{b.title}</h2>
                 <p className="t-lead mt-5 max-w-md">{b.body}</p>
               </div>
@@ -171,7 +171,7 @@ export function PipelineForms() {
                   <span className="block truncate text-[11px] text-text-3">
                     {col.label}
                   </span>
-                  <span className="mt-1.5 block h-px w-full bg-hairline-2" />
+                  <span className="mt-1.5 block h-px w-full bg-line" />
                 </div>
 
                 <div className="flex flex-col gap-1.5">
@@ -209,13 +209,13 @@ function MiniCard({ column, row }: { column: number; row: number }) {
   const teinte = VERDICT_HEX[niveau];
 
   return (
-    <div className="pf-card rounded-sm border border-hairline bg-surface p-2">
+    <div className="pf-card rounded-sm border border-line-soft bg-surface p-2">
       <span
-        className="block h-[3px] rounded-full bg-bone-400/40"
+        className="block h-[3px] rounded-full bg-text-3/40"
         style={{ width: pct(58 + seed * 34) }}
       />
       <span
-        className="mt-1.5 block h-[3px] rounded-full bg-bone-400/18"
+        className="mt-1.5 block h-[3px] rounded-full bg-text-3/18"
         style={{ width: pct(34 + seed * 24) }}
       />
       <span className="mt-2 flex items-center gap-1.5">

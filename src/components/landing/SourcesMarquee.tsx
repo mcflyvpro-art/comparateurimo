@@ -23,7 +23,7 @@ function Item({ code, label }: { code: string; label: string }) {
     <span className="flex shrink-0 items-baseline gap-3 whitespace-nowrap px-8">
       <span className="num text-[15px] tracking-[0.06em] text-text-2">{code}</span>
       <span className="text-[12px] text-text-4">{label}</span>
-      <span className="ml-5 h-1 w-1 rounded-full bg-ember-300" aria-hidden />
+      <span className="ml-5 h-1 w-1 rounded-full bg-accent" aria-hidden />
     </span>
   );
 }

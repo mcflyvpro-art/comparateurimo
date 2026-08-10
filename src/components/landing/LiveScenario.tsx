@@ -88,7 +88,7 @@ export function LiveScenario() {
     <section
       id="scenario"
       data-header-theme="dark"
-      className="border-t border-hairline py-28 lg:py-40"
+      className="border-t border-line-soft py-28 lg:py-40"
     >
       <div className="mx-auto max-w-[104rem] px-[var(--gutter)]">
         <Reveal cine>
@@ -180,7 +180,7 @@ export function LiveScenario() {
                 />
               </StatGrid>
 
-              <p className="mt-8 border-t border-hairline pt-5 text-[12.5px] text-text-4">
+              <p className="mt-8 border-t border-line-soft pt-5 text-[12.5px] text-text-4">
                 Simulation d&apos;illustration. Dans l&apos;outil, la fiscalité réelle et
                 la rentabilité totale sont calculées en plus.
               </p>

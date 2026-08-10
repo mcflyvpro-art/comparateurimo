@@ -28,7 +28,7 @@ export function SectionCapture() {
     <section
       id="capture"
       data-header-theme="dark"
-      className="border-t border-hairline py-28 lg:py-36"
+      className="border-t border-line-soft py-28 lg:py-36"
     >
       <div className="mx-auto max-w-[104rem] px-[var(--gutter)]">
         <Reveal cine>
@@ -50,7 +50,7 @@ export function SectionCapture() {
               {SOURCES.map((s) => (
                 <li
                   key={s.label}
-                  className="flex items-center gap-3 rounded-md border border-hairline bg-surface px-4 py-3.5 transition-[filter,transform,border-color] duration-[520ms] ease-[cubic-bezier(0.16,1,0.3,1)] hover:!rotate-0 hover:border-hairline-3 hover:!blur-0"
+                  className="flex items-center gap-3 rounded-md border border-line-soft bg-surface px-4 py-3.5 transition-[filter,transform,border-color] duration-[520ms] ease-[cubic-bezier(0.16,1,0.3,1)] hover:!rotate-0 hover:border-line-strong hover:!blur-0"
                   style={{ transform: `rotate(${s.rot}deg)`, filter: `blur(${s.blur}px)` }}
                 >
                   <span className="text-text-4">{s.icon}</span>
@@ -60,11 +60,11 @@ export function SectionCapture() {
             </ul>
 
             <div className="flex items-center justify-center gap-3 lg:flex-col">
-              <span className="h-px w-10 bg-hairline-2 lg:h-14 lg:w-px" aria-hidden />
-              <span className="flex h-11 w-11 items-center justify-center rounded-full border border-hairline-ember text-brand">
+              <span className="h-px w-10 bg-line lg:h-14 lg:w-px" aria-hidden />
+              <span className="flex h-11 w-11 items-center justify-center rounded-full border border-accent-line text-accent">
                 <IconAperture size={20} />
               </span>
-              <span className="h-px w-10 bg-hairline-2 lg:h-14 lg:w-px" aria-hidden />
+              <span className="h-px w-10 bg-line lg:h-14 lg:w-px" aria-hidden />
             </div>
 
             <Panel>
@@ -78,7 +78,7 @@ export function SectionCapture() {
                 <Stat term="prixM2Notarie" value="3 480 €" />
               </StatGrid>
 
-              <div className="mt-7 border-t border-hairline pt-6">
+              <div className="mt-7 border-t border-line-soft pt-6">
                 <VerdictBlock score={71} compact />
               </div>
             </Panel>

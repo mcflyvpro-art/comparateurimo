@@ -47,7 +47,7 @@ const FIGURES = [
     label: "offre",
     sub: "et tout se joue là",
     width: 4,
-    color: "var(--brand)",
+    color: "var(--accent)",
   },
 ];
 
@@ -72,7 +72,7 @@ function Counter({ to }: { to: number }) {
 
 export function KeyFigures() {
   return (
-    <section data-header-theme="dark" className="border-t border-hairline py-24 lg:py-32">
+    <section data-header-theme="dark" className="border-t border-line-soft py-24 lg:py-32">
       <div className="mx-auto max-w-[104rem] px-[var(--gutter)]">
         <Reveal cine>
           <h2 className="t-title max-w-2xl text-text">
@@ -91,7 +91,7 @@ export function KeyFigures() {
                 <p className="mt-3 text-[15px] font-medium text-text">{f.label}</p>
                 <p className="mt-1 text-[13px] leading-relaxed text-text-3">{f.sub}</p>
 
-                <div className="mt-5 h-1 w-full overflow-hidden rounded-full bg-ink-600">
+                <div className="mt-5 h-1 w-full overflow-hidden rounded-full bg-surface-active">
                   <motion.div
                     className="h-full rounded-full"
                     style={{ background: f.color }}

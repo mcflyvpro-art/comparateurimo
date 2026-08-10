@@ -98,7 +98,7 @@ export function SectionArbitrage() {
     <section
       id="arbitrage"
       data-header-theme="dark"
-      className="border-t border-hairline py-28 lg:py-40"
+      className="border-t border-line-soft py-28 lg:py-40"
     >
       <div className="mx-auto max-w-[104rem] px-[var(--gutter)]">
         <Reveal cine>
@@ -131,9 +131,9 @@ export function SectionArbitrage() {
             {CRITERES.map((c) => (
               <span key={c.key} className="flex items-center gap-2.5">
                 <span className="text-[11px] text-text-3">{c.label}</span>
-                <span className="h-1 w-20 overflow-hidden rounded-full bg-ink-600">
+                <span className="h-1 w-20 overflow-hidden rounded-full bg-surface-active">
                   <span
-                    className="block h-full rounded-full bg-brand transition-[width] duration-[520ms] ease-[cubic-bezier(0.16,1,0.3,1)]"
+                    className="block h-full rounded-full bg-accent transition-[width] duration-[520ms] ease-[cubic-bezier(0.16,1,0.3,1)]"
                     style={{ width: `${profil.weights[c.key]}%` }}
                   />
                 </span>
@@ -152,11 +152,11 @@ export function SectionArbitrage() {
                   key={b.id}
                   className={cx(
                     "relative rounded-lg border bg-surface p-6 transition-all duration-[520ms] ease-[cubic-bezier(0.16,1,0.3,1)]",
-                    isWinner ? "border-hairline-ember" : "border-hairline",
+                    isWinner ? "border-accent-line" : "border-line-soft",
                   )}
                   style={
                     isWinner
-                      ? { boxShadow: "0 0 60px -22px var(--brand-glow)" }
+                      ? { boxShadow: "0 0 60px -22px var(--accent-glow)" }
                       : { opacity: 0.72 }
                   }
                 >
@@ -169,7 +169,7 @@ export function SectionArbitrage() {
                       className={cx(
                         "rounded-[2px] border px-2 py-0.5 text-[9px] uppercase tracking-[0.12em] transition-opacity duration-[420ms]",
                         isWinner
-                          ? "border-hairline-ember text-brand opacity-100"
+                          ? "border-accent-line text-accent opacity-100"
                           : "border-transparent opacity-0",
                       )}
                     >
@@ -181,7 +181,7 @@ export function SectionArbitrage() {
                     <VerdictBlock score={b.total} compact />
                   </div>
 
-                  <ul className="mt-6 flex flex-col gap-3 border-t border-hairline pt-5">
+                  <ul className="mt-6 flex flex-col gap-3 border-t border-line-soft pt-5">
                     {CRITERES.map((c) => {
                       const raw = b.scores[c.key];
                       const contrib = (raw * profil.weights[c.key]) / 100;
@@ -190,7 +190,7 @@ export function SectionArbitrage() {
                           <span className="w-20 shrink-0 text-[12px] text-text-3">
                             {c.label}
                           </span>
-                          <span className="h-1.5 flex-1 overflow-hidden rounded-full bg-ink-600">
+                          <span className="h-1.5 flex-1 overflow-hidden rounded-full bg-surface-active">
                             <span
                               className="block h-full rounded-full transition-[width,background-color] duration-[520ms] ease-[cubic-bezier(0.16,1,0.3,1)]"
                               style={{
@@ -216,7 +216,7 @@ export function SectionArbitrage() {
             })}
           </div>
 
-          <div className="mt-4 rounded-lg border border-hairline bg-surface px-7 py-6">
+          <div className="mt-4 rounded-lg border border-line-soft bg-surface px-7 py-6">
             <p className="max-w-3xl text-[15px] leading-relaxed text-text">
               {profil.verdict(winner.name, loser.name)}
             </p>

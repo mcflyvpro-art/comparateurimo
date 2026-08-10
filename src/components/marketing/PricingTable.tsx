@@ -138,7 +138,7 @@ export function PricingTable() {
         />
         <span className="text-[12px] text-text-3">
           Annuel :{" "}
-          <span className="text-brand">deux mois offerts</span>
+          <span className="text-accent">deux mois offerts</span>
         </span>
       </div>
 
@@ -149,16 +149,16 @@ export function PricingTable() {
             <article
               className={cx(
                 "relative flex h-full flex-col rounded-lg border bg-surface p-7",
-                p.populaire ? "border-hairline-ember" : "border-hairline",
+                p.populaire ? "border-accent-line" : "border-line-soft",
               )}
               style={
                 p.populaire
-                  ? { boxShadow: "0 0 70px -28px var(--brand-glow)" }
+                  ? { boxShadow: "0 0 70px -28px var(--accent-glow)" }
                   : undefined
               }
             >
               {p.populaire && (
-                <span className="absolute -top-2.5 left-7 rounded-[2px] bg-brand px-2 py-0.5 text-[9px] font-medium uppercase tracking-[0.14em] text-inverse">
+                <span className="absolute -top-2.5 left-7 rounded-[2px] bg-accent px-2 py-0.5 text-[9px] font-medium uppercase tracking-[0.14em] text-ink-fg">
                   Le plus choisi
                 </span>
               )}
@@ -184,13 +184,13 @@ export function PricingTable() {
 
               <p className="mt-5 text-[13px] leading-relaxed text-text-3">{p.pitch}</p>
 
-              <ul className="mt-7 flex flex-1 flex-col gap-3 border-t border-hairline pt-6">
+              <ul className="mt-7 flex flex-1 flex-col gap-3 border-t border-line-soft pt-6">
                 {p.points.map((pt) => (
                   <li key={pt.label} className="flex items-start gap-2.5">
                     <span
                       className={cx(
                         "mt-px shrink-0",
-                        pt.inclus ? "text-brand" : "text-text-4",
+                        pt.inclus ? "text-accent" : "text-text-4",
                       )}
                     >
                       {pt.inclus ? <IconCheck size={14} /> : <IconLock size={13} />}
@@ -226,10 +226,10 @@ export function PricingTable() {
       <Reveal cine delay={0.1}>
         <div className="mt-20">
           <h2 className="t-head text-text">Le détail, ligne par ligne</h2>
-          <div className="mt-6 overflow-x-auto rounded-lg border border-hairline">
+          <div className="mt-6 overflow-x-auto rounded-lg border border-line-soft">
             <table className="w-full min-w-[42rem] border-collapse">
               <thead>
-                <tr className="border-b border-hairline-2 bg-sunken">
+                <tr className="border-b border-line bg-sunken">
                   <th className="px-4 py-3 text-left">
                     <span className="t-label">Fonctionnalité</span>
                   </th>
@@ -238,7 +238,7 @@ export function PricingTable() {
                       <span
                         className={cx(
                           "t-label",
-                          p.populaire && "!text-brand",
+                          p.populaire && "!text-accent",
                         )}
                       >
                         {p.nom}
@@ -260,7 +260,7 @@ export function PricingTable() {
                     {group.rows.map((row) => (
                       <tr
                         key={row.label}
-                        className="border-b border-hairline transition-colors last:border-0 hover:bg-raised"
+                        className="border-b border-line-soft transition-colors last:border-0 hover:bg-surface-hover"
                       >
                         <td className="px-4 py-2.5 text-[13px] text-text-2">
                           {row.label}
@@ -286,7 +286,7 @@ export function PricingTable() {
 function MatrixCell({ value }: { value: Cell }) {
   if (value === true) {
     return (
-      <span className="inline-flex text-brand" title="Inclus">
+      <span className="inline-flex text-accent" title="Inclus">
         <IconCheck size={15} />
       </span>
     );

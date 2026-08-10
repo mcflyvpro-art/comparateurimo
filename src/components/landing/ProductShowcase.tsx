@@ -39,18 +39,18 @@ function BrowserFrame({
   return (
     <div
       className={cx(
-        "overflow-hidden rounded-xl border border-hairline-2 bg-sunken",
+        "overflow-hidden rounded-xl border border-line bg-sunken",
         "shadow-[0_60px_140px_-40px_rgb(0_0_0/0.9)]",
         className,
       )}
     >
-      <div className="flex items-center gap-3 border-b border-hairline px-4 py-3">
+      <div className="flex items-center gap-3 border-b border-line-soft px-4 py-3">
         <span className="flex gap-1.5" aria-hidden>
-          <span className="h-2.5 w-2.5 rounded-full bg-ink-500" />
-          <span className="h-2.5 w-2.5 rounded-full bg-ink-500" />
-          <span className="h-2.5 w-2.5 rounded-full bg-ink-500" />
+          <span className="h-2.5 w-2.5 rounded-full bg-line-strong" />
+          <span className="h-2.5 w-2.5 rounded-full bg-line-strong" />
+          <span className="h-2.5 w-2.5 rounded-full bg-line-strong" />
         </span>
-        <span className="num mx-auto rounded-sm bg-bg px-3 py-1 text-[11px] text-text-4">
+        <span className="num mx-auto rounded-sm bg-canvas px-3 py-1 text-[11px] text-text-4">
           {url}
         </span>
       </div>
@@ -124,22 +124,22 @@ const BOARD = [
 
 function BoardMiniature() {
   return (
-    <div className="flex h-[27rem] bg-bg">
+    <div className="flex h-[27rem] bg-canvas">
       {/* Rail latéral */}
-      <div className="hidden w-40 shrink-0 flex-col border-r border-hairline bg-sunken p-3 sm:flex">
-        <div className="mb-5 h-4 w-14 rounded-sm bg-ink-600" />
-        <div className="mb-4 h-7 rounded-sm border border-hairline-2" />
+      <div className="hidden w-40 shrink-0 flex-col border-r border-line-soft bg-sunken p-3 sm:flex">
+        <div className="mb-5 h-4 w-14 rounded-sm bg-surface-active" />
+        <div className="mb-4 h-7 rounded-sm border border-line" />
         <p className="mb-2 px-1 text-[10px] text-text-4">Projets</p>
         {["T2/T3 Lyon locatif", "Studio étudiant", "Immeuble Villeurbanne"].map((p, i) => (
           <div
             key={p}
             className={cx(
               "relative mb-0.5 flex items-center justify-between rounded-sm px-2 py-1.5",
-              i === 0 && "bg-raised",
+              i === 0 && "bg-surface-hover",
             )}
           >
             {i === 0 && (
-              <span className="absolute inset-y-1 left-0 w-[2px] rounded-full bg-brand" />
+              <span className="absolute inset-y-1 left-0 w-[2px] rounded-full bg-accent" />
             )}
             <span
               className={cx(
@@ -156,17 +156,17 @@ function BoardMiniature() {
 
       <div className="flex min-w-0 flex-1 flex-col">
         {/* Barre de projet */}
-        <div className="flex items-center gap-3 border-b border-hairline px-4 py-2.5">
+        <div className="flex items-center gap-3 border-b border-line-soft px-4 py-2.5">
           <span className="text-[12px] font-medium text-text">T2/T3 Lyon locatif</span>
-          <span className="h-3 w-px bg-hairline-2" />
+          <span className="h-3 w-px bg-line" />
           <span className="num text-[10px] text-text-3">≤ 250 000 € · cash-flow ≥ 0</span>
-          <span className="ml-auto rounded-sm bg-brand px-2.5 py-1 text-[10.5px] font-medium text-inverse">
+          <span className="ml-auto rounded-sm bg-accent px-2.5 py-1 text-[10.5px] font-medium text-ink-fg">
             + Ajouter un bien
           </span>
         </div>
 
         {/* Onglets */}
-        <div className="flex items-center gap-1 border-b border-hairline px-4">
+        <div className="flex items-center gap-1 border-b border-line-soft px-4">
           {[
             { l: "Pipeline", i: <IconBoard size={11} /> },
             { l: "Tableau", i: <IconTable size={11} /> },
@@ -182,7 +182,7 @@ function BoardMiniature() {
               {t.i}
               {t.l}
               {i === 0 && (
-                <span className="absolute inset-x-2 -bottom-px h-px bg-brand" />
+                <span className="absolute inset-x-2 -bottom-px h-px bg-accent" />
               )}
             </span>
           ))}
@@ -200,7 +200,7 @@ function BoardMiniature() {
                 {col.cards.map((c) => (
                   <div
                     key={c.addr}
-                    className="rounded-md border border-hairline bg-surface p-2.5"
+                    className="rounded-md border border-line-soft bg-surface p-2.5"
                   >
                     <p className="truncate text-[10.5px] font-medium text-text">
                       {c.addr}
@@ -234,10 +234,10 @@ function FicheMiniature() {
   const v = verdictFromScore(82);
 
   return (
-    <div className="grid gap-4 bg-bg p-5 lg:grid-cols-[minmax(0,1fr)_15rem]">
+    <div className="grid gap-4 bg-canvas p-5 lg:grid-cols-[minmax(0,1fr)_15rem]">
       <div className="flex flex-col gap-4">
         {/* Verdict */}
-        <div className="rounded-lg border border-hairline bg-surface p-5">
+        <div className="rounded-lg border border-line-soft bg-surface p-5">
           <div className="flex items-baseline justify-between">
             <span className="text-[19px] font-medium tracking-[-0.02em]" style={{ color: v.color }}>
               {v.label}
@@ -249,7 +249,7 @@ function FicheMiniature() {
           <VerdictBar score={82} height={5} className="mt-3" />
           <p className="mt-3.5 text-[12px] leading-relaxed text-text-2">{v.advice}</p>
 
-          <div className="mt-5 grid grid-cols-4 gap-4 border-t border-hairline pt-5">
+          <div className="mt-5 grid grid-cols-4 gap-4 border-t border-line-soft pt-5">
             {FICHE_STATS.map((s) => (
               <div key={s.label}>
                 <p className="truncate text-[10px] text-text-3">{s.label}</p>
@@ -262,7 +262,7 @@ function FicheMiniature() {
         </div>
 
         {/* Le marché */}
-        <div className="rounded-lg border border-hairline bg-surface p-5">
+        <div className="rounded-lg border border-line-soft bg-surface p-5">
           <div className="flex items-center justify-between">
             <span className="text-[13px] font-medium text-text">Le marché autour</span>
             <span className="flex items-center gap-1.5 text-[10px]" style={{ color: "var(--info)" }}>
@@ -298,7 +298,7 @@ function FicheMiniature() {
       </div>
 
       {/* Rail d'hypothèses */}
-      <div className="rounded-lg border border-hairline bg-surface p-5">
+      <div className="rounded-lg border border-line-soft bg-surface p-5">
         <p className="text-[13px] font-medium text-text">Vos hypothèses</p>
         <p className="mt-1.5 text-[11px] leading-relaxed text-text-3">
           Bougez un curseur : tout se recalcule.
@@ -314,20 +314,20 @@ function FicheMiniature() {
                 <span className="text-[11px] text-text-2">{s.l}</span>
                 <span className="num text-[11.5px] font-medium text-text">{s.v}</span>
               </div>
-              <div className="relative mt-2 h-1 rounded-full bg-ink-600">
+              <div className="relative mt-2 h-1 rounded-full bg-surface-active">
                 <div
-                  className="h-full rounded-full bg-brand"
+                  className="h-full rounded-full bg-accent"
                   style={{ width: `${s.fill}%` }}
                 />
                 <span
-                  className="absolute top-1/2 h-3 w-3 -translate-y-1/2 rounded-full bg-[var(--bone-100)]"
+                  className="absolute top-1/2 h-3 w-3 -translate-y-1/2 rounded-full bg-[var(--text)]"
                   style={{ left: `calc(${s.fill}% - 6px)` }}
                 />
               </div>
             </div>
           ))}
         </div>
-        <div className="mt-6 flex items-center gap-2 border-t border-hairline pt-4">
+        <div className="mt-6 flex items-center gap-2 border-t border-line-soft pt-4">
           <span className="text-[11px] text-text-3">Réglages avancés</span>
           <span className="num ml-auto text-[10px] text-text-4">16</span>
         </div>
@@ -343,7 +343,7 @@ export function ProductShowcase() {
     <section
       id="outil"
       data-header-theme="dark"
-      className="border-t border-hairline py-28 lg:py-36"
+      className="border-t border-line-soft py-28 lg:py-36"
     >
       <div className="mx-auto max-w-[104rem] px-[var(--gutter)]">
         <Reveal cine>
@@ -407,7 +407,7 @@ export function ProductShowcase() {
 function Caption({ title, body }: { title: string; body: string }) {
   return (
     <div className="max-w-[16rem]">
-      <div className="mb-2 h-px w-8 bg-brand" />
+      <div className="mb-2 h-px w-8 bg-accent" />
       <p className="text-[13.5px] font-medium text-text">{title}</p>
       <p className="mt-1 text-[12.5px] leading-relaxed text-text-3">{body}</p>
     </div>
