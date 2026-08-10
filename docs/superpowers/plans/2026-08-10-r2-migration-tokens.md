@@ -86,6 +86,15 @@ C'est le cœur du plan. Elle est reprise à l'identique dans chaque tâche.
 `bg-sunken` et `text-sunken` sont **conservés tels quels** : le nom survit, seule
 sa valeur a changé en R1.
 
+⚠ **La table se lit par le suffixe de couleur, pas par la classe entière.** Tailwind
+accepte des préfixes directionnels et des variantes que la table n'énumère pas :
+`border-l-hairline-3`, `border-t-hairline`, `divide-hairline`, `ring-brand`,
+`hover:bg-raised`, `group-hover:text-brand`… Le remplacement porte sur le
+**jeton** (`hairline-3` → `line-strong`, `brand` → `accent`, `raised` →
+`surface-hover`), quel que soit ce qui le précède. Une occurrence rencontrée sous
+une forme absente de la table se traite donc par la même règle, sans demander
+d'arbitrage.
+
 ### Variables lues directement en `var(--…)`
 
 | Ancien | Nouveau | Occurrences |
@@ -256,7 +265,7 @@ git commit -m "feat(design): tokens d'accent au survol et expositions Tailwind m
 token. Les localiser ainsi :
 
 ```bash
-grep -rlE "hairline|bg-bg|bg-raised|bg-high|surface-high|brand|ember-|lift-|bone-|ink-[0-9]|text-inverse|--n[123]" src/components/ui
+grep -rlE "hairline|bg-bg|bg-raised|bg-high|surface-high|brand|ember-|lift-|bone-|-ink-[0-9]|text-inverse|--n[123]" src/components/ui
 ```
 
 **Interfaces :**
@@ -290,7 +299,7 @@ border-[color-mix(in_srgb,var(--mid)_35%,transparent)] bg-mid-soft text-mid
 - [ ] **Étape 3 : vérifier qu'aucun ancien nom ne subsiste dans la zone**
 
 ```bash
-grep -rnE "hairline|bg-bg\b|bg-raised|bg-high\b|surface-high|brand|ember-|lift-|bone-[0-9]|ink-[0-9]|text-inverse|--n[123]" src/components/ui
+grep -rnE "hairline|bg-bg\b|bg-raised|bg-high\b|surface-high|brand|ember-|lift-|bone-[0-9]|-ink-[0-9]|text-inverse|--n[123]" src/components/ui
 ```
 
 Attendu : **aucune sortie**.
@@ -310,15 +319,25 @@ Serveur via `preview_start` (`estio-dev`), sur `http://localhost:3000/` :
 ```js
 (() => {
   // Toutes les classes utilitaires réellement générées par Tailwind.
+  // ⚠ Tailwind v4 range TOUTES ses règles dans des blocs `@layer`. Sans
+  // récursion dans `r.cssRules`, ce relevé revient vide et signale la totalité
+  // des classes comme muettes — un faux positif intégral.
   const generees = new Set();
+  const parcourir = (regles) => {
+    for (const r of regles) {
+      if (r.selectorText) {
+        for (const m of r.selectorText.matchAll(/\.([a-zA-Z0-9_:\\/-]+)/g)) {
+          generees.add(m[1].replace(/\\/g, ''));
+        }
+      }
+      if (r.cssRules) parcourir(r.cssRules);
+    }
+  };
   for (const f of document.styleSheets) {
     let regles; try { regles = f.cssRules; } catch { continue; }
-    for (const r of regles) if (r.selectorText) {
-      for (const m of r.selectorText.matchAll(/\.([a-zA-Z0-9_:\\-]+)/g)) {
-        generees.add(m[1].replace(/\\/g, ''));
-      }
-    }
+    parcourir(regles);
   }
+  if (generees.size < 100) return { erreur: 'relevé vide — la récursion @layer a échoué' };
   const attendues = ['bg-canvas','bg-surface','bg-surface-hover','bg-surface-active',
     'bg-sunken','border-line','border-line-soft','border-line-strong',
     'bg-accent','text-accent','border-accent','bg-accent-soft','text-accent-hot',
@@ -344,7 +363,7 @@ git commit -m "refactor(ui): primitives migrées vers les tokens bi-thème"
 token. Les localiser ainsi :
 
 ```bash
-grep -rlE "hairline|bg-bg|bg-raised|bg-high|surface-high|brand|ember-|lift-|bone-|ink-[0-9]|text-inverse|--n[123]" src/components/app
+grep -rlE "hairline|bg-bg|bg-raised|bg-high|surface-high|brand|ember-|lift-|bone-|-ink-[0-9]|text-inverse|--n[123]" src/components/app
 ```
 
 **Interfaces :**
@@ -372,7 +391,7 @@ Toutes deux portent `text-ember-800`, qui ne produit aucune règle aujourd'hui :
 - [ ] **Étape 3 : vérifier qu'aucun ancien nom ne subsiste dans la zone**
 
 ```bash
-grep -rnE "hairline|bg-bg\b|bg-raised|bg-high\b|surface-high|brand|ember-|lift-|bone-[0-9]|ink-[0-9]|text-inverse|--n[123]" src/components/app
+grep -rnE "hairline|bg-bg\b|bg-raised|bg-high\b|surface-high|brand|ember-|lift-|bone-[0-9]|-ink-[0-9]|text-inverse|--n[123]" src/components/app
 ```
 
 Attendu : **aucune sortie**.
@@ -417,7 +436,7 @@ git commit -m "refactor(app): composants de l'outil migrés vers les tokens bi-t
 référencent un ancien token. Les localiser ainsi :
 
 ```bash
-grep -rlE "hairline|bg-bg|bg-raised|bg-high|surface-high|brand|ember-|lift-|bone-|ink-[0-9]|text-inverse|--n[123]" src/app src/components/layout --include=*.tsx --include=*.ts
+grep -rlE "hairline|bg-bg|bg-raised|bg-high|surface-high|brand|ember-|lift-|bone-|-ink-[0-9]|text-inverse|--n[123]" src/app src/components/layout --include=*.tsx --include=*.ts
 ```
 
 ⚠ **Ne pas toucher `src/app/globals.css` ni `src/design/tokens.css`** : ils sont
@@ -451,7 +470,7 @@ aujourd'hui — différence délibérée, à signaler dans le rapport.
 - [ ] **Étape 3 : vérifier qu'aucun ancien nom ne subsiste dans la zone**
 
 ```bash
-grep -rnE "hairline|bg-bg\b|bg-raised|bg-high\b|surface-high|brand|ember-|lift-|bone-[0-9]|ink-[0-9]|text-inverse|--n[123]|var\(--topbar\)|var\(--rail\)" src/app src/components/layout --include=*.tsx --include=*.ts
+grep -rnE "hairline|bg-bg\b|bg-raised|bg-high\b|surface-high|brand|ember-|lift-|bone-[0-9]|-ink-[0-9]|text-inverse|--n[123]|var\(--topbar\)|var\(--rail\)" src/app src/components/layout --include=*.tsx --include=*.ts
 ```
 
 Attendu : **aucune sortie**.
@@ -507,7 +526,7 @@ l'est pas aujourd'hui — différence délibérée, à signaler dans le rapport.
 - [ ] **Étape 3 : vérifier qu'aucun ancien nom ne subsiste dans la zone**
 
 ```bash
-grep -rnE "hairline|bg-bg\b|bg-raised|bg-high\b|surface-high|brand|ember-|lift-|bone-[0-9]|ink-[0-9]|text-inverse|--n[123]" src/components/landing src/components/marketing
+grep -rnE "hairline|bg-bg\b|bg-raised|bg-high\b|surface-high|brand|ember-|lift-|bone-[0-9]|-ink-[0-9]|text-inverse|--n[123]" src/components/landing src/components/marketing
 ```
 
 Attendu : **aucune sortie**.
@@ -565,7 +584,7 @@ vocabulaires coexistent et rien n'empêche d'écrire à nouveau l'ancien.
 - [ ] **Étape 1 : vérifier qu'aucun consommateur ne subsiste, dans tout `src`**
 
 ```bash
-grep -rnE "hairline|bg-bg\b|bg-raised|bg-high\b|surface-high|brand-wash|brand-glow|brand-hot|bg-brand|text-brand|border-brand|outline-brand|ember-[0-9]|lift-[0-9]|bone-[0-9]|ink-[0-9]|text-inverse|--n[123]|var\(--topbar\)|var\(--rail\)|--r-xs|--r-2xl" src
+grep -rnE "hairline|bg-bg\b|bg-raised|bg-high\b|surface-high|brand-wash|brand-glow|brand-hot|bg-brand|text-brand|border-brand|outline-brand|ember-[0-9]|lift-[0-9]|bone-[0-9]|-ink-[0-9]|text-inverse|--n[123]|var\(--topbar\)|var\(--rail\)|--r-xs|--r-2xl" src
 ```
 
 Attendu : **aucune sortie**. S'il en reste, les traiter avant de continuer —
