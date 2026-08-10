@@ -80,8 +80,8 @@ export function DiscardReasonModal({
               className={cx(
                 "rounded-sm border px-2 py-1 text-[11px] transition-colors duration-[140ms]",
                 active
-                  ? "border-hairline-ember bg-[var(--brand-wash)] text-brand-hot"
-                  : "border-hairline-2 text-text-3 hover:border-hairline-3 hover:text-text",
+                  ? "border-accent-line bg-[var(--accent-soft)] text-accent-hot"
+                  : "border-line text-text-3 hover:border-line-strong hover:text-text",
               )}
             >
               {r}

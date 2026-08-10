@@ -138,25 +138,25 @@ export function FicheActions({
             role="menu"
             className={cx(
               "absolute right-0 top-full z-40 mt-1.5 w-52 overflow-hidden rounded-md",
-              "border border-hairline-2 bg-surface-high shadow-[var(--lift-3)]",
+              "border border-line bg-surface-active shadow-[var(--shadow-3)]",
             )}
           >
             <button
               role="menuitem"
               onClick={dupliquer}
               disabled={enCours}
-              className="flex w-full items-center gap-2.5 px-3 py-2.5 text-left text-[13px] text-text-2 transition-colors hover:bg-raised hover:text-text disabled:opacity-40"
+              className="flex w-full items-center gap-2.5 px-3 py-2.5 text-left text-[13px] text-text-2 transition-colors hover:bg-surface-hover hover:text-text disabled:opacity-40"
             >
               <IconCopy size={14} />
               Dupliquer ce bien
             </button>
             {/* Une action destructive se sépare visuellement des autres. */}
-            <div className="h-px bg-hairline" />
+            <div className="h-px bg-line-soft" />
             <button
               role="menuitem"
               onClick={ouvrirConfirmation}
               disabled={enCours}
-              className="flex w-full items-center gap-2.5 px-3 py-2.5 text-left text-[13px] text-risk transition-colors hover:bg-[var(--risk-wash)] disabled:opacity-40"
+              className="flex w-full items-center gap-2.5 px-3 py-2.5 text-left text-[13px] text-risk transition-colors hover:bg-[var(--risk-soft)] disabled:opacity-40"
             >
               <IconTrash size={14} />
               Supprimer ce bien
@@ -184,7 +184,7 @@ export function FicheActions({
         {deps === null ? (
           <p className="text-[12.5px] text-text-4">Vérification de ce qui sera supprimé…</p>
         ) : total > 0 ? (
-          <p className="rounded-sm border border-hairline-2 bg-sunken px-3 py-2.5 text-[12.5px] leading-relaxed text-text-2">
+          <p className="rounded-sm border border-line bg-sunken px-3 py-2.5 text-[12.5px] leading-relaxed text-text-2">
             Seront supprimés avec : <span className="text-text">{inventaire}</span>.
           </p>
         ) : (

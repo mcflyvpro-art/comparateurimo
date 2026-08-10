@@ -26,7 +26,7 @@ export function ViewTabs({
   active: ViewKey;
 }) {
   return (
-    <div className="border-b border-hairline px-5">
+    <div className="border-b border-line-soft px-5">
       <Segmented
         layoutKey="project-views"
         active={active}

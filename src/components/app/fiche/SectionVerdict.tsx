@@ -52,7 +52,7 @@ export function SectionVerdict({
 
       <VerdictBlock score={scoreSur100} />
 
-      <div className="mt-8 border-t border-hairline pt-7">
+      <div className="mt-8 border-t border-line-soft pt-7">
         <StatGrid cols={4}>
           <Stat label="Prix affiché" value={formatEUR(property.asking_price)} size="lg" />
           <Stat

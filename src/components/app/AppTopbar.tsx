@@ -32,7 +32,7 @@ export function AppTopbar({
   const goal = typeof criteres.goal === "string" ? criteres.goal : null;
 
   return (
-    <header className="flex h-[var(--topbar)] shrink-0 items-center justify-between gap-6 border-b border-hairline px-5">
+    <header className="flex h-[var(--bar-h)] shrink-0 items-center justify-between gap-6 border-b border-line-soft px-5">
       <div className="flex min-w-0 items-baseline gap-3">
         {/* Le rail latéral disparaît sous `lg` : la sortie vers les projets doit
             rester atteignable, sinon l'outil devient une impasse. */}
@@ -46,7 +46,7 @@ export function AppTopbar({
         <h1 className="truncate text-[15px] font-medium tracking-[-0.015em] text-text">
           {project.name}
         </h1>
-        <span className="h-3 w-px shrink-0 bg-hairline-2" aria-hidden />
+        <span className="h-3 w-px shrink-0 bg-line" aria-hidden />
         <ProjectCriteria
           projectId={projectId}
           summary={summary}
@@ -66,7 +66,7 @@ export function AppTopbar({
             placeholder="Rechercher un bien…"
             disabled
             title="Recherche — arrive avec la vue Tableau"
-            className="h-8 w-52 rounded-sm border border-hairline-2 bg-sunken pl-8 pr-3 text-[13px] text-text placeholder:text-text-4 outline-none transition-colors hover:border-hairline-3 focus:border-brand disabled:cursor-not-allowed disabled:opacity-45"
+            className="h-8 w-52 rounded-sm border border-line bg-sunken pl-8 pr-3 text-[13px] text-text placeholder:text-text-4 outline-none transition-colors hover:border-line-strong focus:border-accent disabled:cursor-not-allowed disabled:opacity-45"
           />
         </div>
 
@@ -95,7 +95,7 @@ function Soon({
   return (
     <span
       title={`${hint} — à venir`}
-      className="hidden h-8 cursor-not-allowed items-center gap-2 rounded-sm border border-dashed border-hairline-2 px-3 text-[13px] text-text-3 sm:flex"
+      className="hidden h-8 cursor-not-allowed items-center gap-2 rounded-sm border border-dashed border-line px-3 text-[13px] text-text-3 sm:flex"
     >
       {children}
       {label}

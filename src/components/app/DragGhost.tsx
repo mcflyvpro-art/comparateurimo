@@ -19,10 +19,10 @@ export function DragGhost({ property }: { property: PipelineProperty }) {
 
   return (
     <div
-      className="w-[17.5rem] cursor-grabbing rounded-md border border-hairline-3 bg-high p-3.5"
+      className="w-[17.5rem] cursor-grabbing rounded-md border border-line-strong bg-surface p-3.5"
       style={{
         transform: "rotate(-0.8deg) scale(1.02)",
-        boxShadow: "var(--lift-3)",
+        boxShadow: "var(--shadow-3)",
       }}
     >
       <h3 className="truncate text-[13.5px] font-medium leading-snug text-text">

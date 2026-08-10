@@ -97,7 +97,7 @@ export function MapCanvas({
       if (labelParts.length > 0) {
         const label = document.createElement("span");
         label.className =
-          "estio-pin-label num whitespace-nowrap rounded-sm border border-hairline-2 bg-[rgb(11_10_9/0.85)] px-1.5 py-0.5 text-[11px] text-text backdrop-blur-md";
+          "estio-pin-label num whitespace-nowrap rounded-sm border border-line bg-[rgb(11_10_9/0.85)] px-1.5 py-0.5 text-[11px] text-text backdrop-blur-md";
         label.textContent = labelParts.join(" · ");
         el.appendChild(label);
       }
@@ -166,7 +166,7 @@ export function MapCanvas({
     const link = document.createElement("a");
     link.href = `/app/p/${projectId}/bien/${property.id}`;
     link.className =
-      "mt-3 inline-flex items-center gap-1 text-[12px] font-medium text-brand hover:text-brand-hot";
+      "mt-3 inline-flex items-center gap-1 text-[12px] font-medium text-accent hover:text-accent-hot";
     link.textContent = "Analyse complète →";
     el.appendChild(link);
 

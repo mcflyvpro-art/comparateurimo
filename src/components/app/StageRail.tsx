@@ -40,12 +40,12 @@ export function StageRail({
       <div className="relative flex items-start justify-between">
         <span
           aria-hidden
-          className="absolute left-[7px] right-[7px] top-[7px] h-px bg-hairline-2"
+          className="absolute left-[7px] right-[7px] top-[7px] h-px bg-line"
         />
         {currentIndex > 0 && (
           <span
             aria-hidden
-            className="absolute left-[7px] top-[7px] h-px bg-brand/60 transition-[width] duration-[420ms] ease-[cubic-bezier(0.16,1,0.3,1)]"
+            className="absolute left-[7px] top-[7px] h-px bg-accent/60 transition-[width] duration-[420ms] ease-[cubic-bezier(0.16,1,0.3,1)]"
             style={{
               width: `calc((100% - 14px) * ${(currentIndex / (PROGRESSION.length - 1)).toFixed(4)})`,
               opacity: isDiscarded ? 0.25 : 1,
@@ -70,13 +70,13 @@ export function StageRail({
                 className={cx(
                   "flex h-3.5 w-3.5 items-center justify-center rounded-full border transition-all duration-[220ms]",
                   isCurrent
-                    ? "scale-110 border-transparent bg-brand shadow-[0_0_0_3px_var(--brand-wash-2)]"
+                    ? "scale-110 border-transparent bg-accent shadow-[0_0_0_3px_var(--accent-line)]"
                     : isPast
-                      ? "border-transparent bg-brand/45"
-                      : "border-hairline-3 bg-bg group-hover:border-text-3",
+                      ? "border-transparent bg-accent/45"
+                      : "border-line-strong bg-canvas group-hover:border-text-3",
                 )}
               >
-                {isCurrent && <span className="h-1 w-1 rounded-full bg-[var(--ink-950)]" />}
+                {isCurrent && <span className="h-1 w-1 rounded-full bg-[var(--ink-fg)]" />}
               </span>
               <span
                 className={cx(
@@ -92,7 +92,7 @@ export function StageRail({
       </div>
 
       {isDiscarded && (
-        <p className="mt-4 rounded-sm border border-hairline-2 px-3 py-2 text-[12px] leading-relaxed text-text-3">
+        <p className="mt-4 rounded-sm border border-line px-3 py-2 text-[12px] leading-relaxed text-text-3">
           Ce bien est écarté. Cliquez une étape pour le réintégrer au parcours.
         </p>
       )}

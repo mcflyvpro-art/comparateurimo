@@ -101,8 +101,8 @@ export function NoteList({
               className={cx(
                 "rounded-pill border px-2.5 py-1 text-[12px] transition-colors",
                 typeSaisie === t.key
-                  ? "border-transparent bg-brand-wash-2 text-brand-hot"
-                  : "border-hairline-2 text-text-3 hover:border-hairline-3 hover:text-text",
+                  ? "border-transparent bg-accent-soft text-accent-hot"
+                  : "border-line text-text-3 hover:border-line-strong hover:text-text",
               )}
             >
               {t.label}
@@ -237,7 +237,7 @@ function NoteItem({ note }: { note: PipelineNote }) {
   return (
     <li
       className={cx(
-        "group relative rounded-sm bg-raised px-3 py-2.5 transition-opacity",
+        "group relative rounded-sm bg-surface-hover px-3 py-2.5 transition-opacity",
         enCours && "opacity-50",
       )}
     >
@@ -296,18 +296,18 @@ function NoteItem({ note }: { note: PipelineNote }) {
         {menuOuvert && (
           <div
             role="menu"
-            className="absolute right-0 top-full z-30 mt-1 w-44 overflow-hidden rounded-md border border-hairline-2 bg-surface-high shadow-[var(--lift-3)]"
+            className="absolute right-0 top-full z-30 mt-1 w-44 overflow-hidden rounded-md border border-line bg-surface-active shadow-[var(--shadow-3)]"
           >
             <button
               role="menuitem"
               onClick={ouvrirEdition}
-              className="flex w-full items-center gap-2.5 px-3 py-2 text-left text-[13px] text-text-2 transition-colors hover:bg-raised hover:text-text"
+              className="flex w-full items-center gap-2.5 px-3 py-2 text-left text-[13px] text-text-2 transition-colors hover:bg-surface-hover hover:text-text"
             >
               <IconPencil size={13} />
               Modifier
             </button>
 
-            <div className="h-px bg-hairline" />
+            <div className="h-px bg-line-soft" />
             <p className="px-3 pb-1 pt-2 text-[11px] text-text-4">Type</p>
             {TYPES.map((t) => (
               <button
@@ -315,19 +315,19 @@ function NoteItem({ note }: { note: PipelineNote }) {
                 role="menuitem"
                 onClick={() => changerType(t.key)}
                 className={cx(
-                  "block w-full px-3 py-1.5 text-left text-[13px] transition-colors hover:bg-raised",
-                  note.kind === t.key ? "text-brand-hot" : "text-text-2 hover:text-text",
+                  "block w-full px-3 py-1.5 text-left text-[13px] transition-colors hover:bg-surface-hover",
+                  note.kind === t.key ? "text-accent-hot" : "text-text-2 hover:text-text",
                 )}
               >
                 {t.label}
               </button>
             ))}
 
-            <div className="h-px bg-hairline" />
+            <div className="h-px bg-line-soft" />
             <button
               role="menuitem"
               onClick={supprimer}
-              className="flex w-full items-center gap-2.5 px-3 py-2 text-left text-[13px] text-risk transition-colors hover:bg-[var(--risk-wash)]"
+              className="flex w-full items-center gap-2.5 px-3 py-2 text-left text-[13px] text-risk transition-colors hover:bg-[var(--risk-soft)]"
             >
               <IconTrash size={13} />
               Supprimer

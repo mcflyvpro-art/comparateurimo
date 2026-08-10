@@ -31,8 +31,8 @@ export function AppSidebar({ projects }: { projects: SidebarProject[] }) {
   const archived = projects.filter((p) => p.archived);
 
   return (
-    <aside className="hidden h-screen w-[var(--rail)] shrink-0 flex-col border-r border-hairline bg-sunken lg:flex">
-      <div className="border-b border-hairline px-4 py-5">
+    <aside className="hidden h-screen w-[var(--rail-w)] shrink-0 flex-col border-r border-line-soft bg-sunken lg:flex">
+      <div className="border-b border-line-soft px-4 py-5">
         <Link href="/app" aria-label="Estio — accueil" className="inline-block">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src="/estio-wordmark.svg" alt="Estio" className="h-6 w-auto" />
@@ -42,7 +42,7 @@ export function AppSidebar({ projects }: { projects: SidebarProject[] }) {
       <nav className="min-h-0 flex-1 overflow-y-auto px-3 py-4">
         <Link
           href="/app/projects"
-          className="mb-6 flex h-9 items-center justify-center gap-2 rounded-sm border border-hairline-2 text-[13px] font-medium text-text transition-[border-color,background-color] duration-[140ms] hover:border-hairline-3 hover:bg-surface"
+          className="mb-6 flex h-9 items-center justify-center gap-2 rounded-sm border border-line text-[13px] font-medium text-text transition-[border-color,background-color] duration-[140ms] hover:border-line-strong hover:bg-surface"
         >
           <IconPlus size={14} />
           Nouveau projet
@@ -67,7 +67,7 @@ export function AppSidebar({ projects }: { projects: SidebarProject[] }) {
         )}
       </nav>
 
-      <div className="border-t border-hairline px-3 py-3">
+      <div className="border-t border-line-soft px-3 py-3">
         <SidebarLink href="/app/projects" icon={<IconLayers size={14} />}>
           Tous les projets
         </SidebarLink>
@@ -116,12 +116,12 @@ function ProjectRow({
         aria-current={isActive ? "page" : undefined}
         className={cx(
           "group relative flex items-center justify-between gap-2 rounded-sm px-2 py-2 transition-colors duration-[140ms]",
-          isActive ? "bg-raised" : "hover:bg-surface",
+          isActive ? "bg-surface-hover" : "hover:bg-surface",
         )}
       >
         {isActive && (
           <span
-            className="absolute inset-y-1.5 left-0 w-[2px] rounded-full bg-brand"
+            className="absolute inset-y-1.5 left-0 w-[2px] rounded-full bg-accent"
             aria-hidden
           />
         )}

@@ -43,17 +43,17 @@ export function PipelineColumn({
 
   return (
     <section className="flex w-[17.5rem] shrink-0 flex-col" aria-label={label}>
-      <header className="sticky top-0 z-10 flex items-center gap-2 bg-bg px-0.5 pb-3">
+      <header className="sticky top-0 z-10 flex items-center gap-2 bg-canvas px-0.5 pb-3">
         <h3 className="text-[13px] font-medium text-text-2">{label}</h3>
         <span className="num text-[11px] text-text-4">{properties.length}</span>
-        <span className="ml-auto h-px w-full max-w-8 bg-hairline" aria-hidden />
+        <span className="ml-auto h-px w-full max-w-8 bg-line-soft" aria-hidden />
       </header>
 
       <div
         ref={setNodeRef}
         className={cx(
           "flex min-h-32 flex-1 flex-col gap-2 rounded-md border p-1.5 transition-colors duration-[140ms]",
-          isOver ? "border-hairline-ember bg-[var(--brand-wash)]" : "border-transparent",
+          isOver ? "border-accent-line bg-[var(--accent-soft)]" : "border-transparent",
         )}
       >
         <SortableContext
@@ -75,7 +75,7 @@ export function PipelineColumn({
             className={cx(
               "flex flex-1 items-center justify-center rounded-md border border-dashed",
               "px-4 py-8 text-center text-[12px] leading-relaxed transition-colors duration-[140ms]",
-              isOver ? "border-hairline-ember text-brand" : "border-hairline text-text-4",
+              isOver ? "border-accent-line text-accent" : "border-line-soft text-text-4",
             )}
           >
             {isOver ? "Déposer ici" : VIDE[status]}

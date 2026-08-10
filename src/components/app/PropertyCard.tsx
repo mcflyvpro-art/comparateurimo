@@ -74,11 +74,11 @@ export function PropertyCard({
         opacity: isDragging ? 0.35 : 1,
       }}
       className={cx(
-        "group relative rounded-md border border-hairline bg-surface",
+        "group relative rounded-md border border-line-soft bg-surface",
         "transition-[border-color,background-color] duration-[140ms] ease-[cubic-bezier(0.2,0,0,1)]",
-        "hover:border-hairline-3 hover:bg-raised",
-        "focus-within:border-hairline-3",
-        isDragging && "shadow-[var(--lift-3)]",
+        "hover:border-line-strong hover:bg-surface-hover",
+        "focus-within:border-line-strong",
+        isDragging && "shadow-[var(--shadow-3)]",
       )}
     >
       {/* La poignée : la SEULE zone qui déclenche un glisser. Elle porte les
@@ -103,7 +103,7 @@ export function PropertyCard({
         onClick={() => onOpen(property.id)}
         className={cx(
           "block w-full select-none rounded-md p-3.5 pl-7 text-left",
-          "focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-brand",
+          "focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-accent",
         )}
       >
         <h3 className="truncate pr-6 text-[13.5px] font-medium leading-snug text-text">
@@ -169,7 +169,7 @@ export function PropertyCard({
           {menuOuvert && (
             <div
               role="menu"
-              className="absolute right-0 top-full z-30 mt-1 w-44 overflow-hidden rounded-md border border-hairline-2 bg-surface-high shadow-[var(--lift-3)]"
+              className="absolute right-0 top-full z-30 mt-1 w-44 overflow-hidden rounded-md border border-line bg-surface-active shadow-[var(--shadow-3)]"
             >
               <p className="px-3 pb-1 pt-2 text-[11px] text-text-4">Déplacer vers</p>
               {STATUS_COLUMNS.filter((c) => c.key !== property.status).map((col) => (
@@ -183,8 +183,8 @@ export function PropertyCard({
                   className={cx(
                     "block w-full px-3 py-2 text-left text-[13px] transition-colors",
                     col.key === "ecarte"
-                      ? "text-risk hover:bg-[var(--risk-wash)]"
-                      : "text-text-2 hover:bg-raised hover:text-text",
+                      ? "text-risk hover:bg-[var(--risk-soft)]"
+                      : "text-text-2 hover:bg-surface-hover hover:text-text",
                   )}
                 >
                   {col.label}

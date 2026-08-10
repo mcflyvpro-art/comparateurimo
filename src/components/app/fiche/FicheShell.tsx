@@ -94,7 +94,7 @@ export function FicheShell({
   return (
     <div className="min-h-0 flex-1 overflow-y-auto">
       {/* Rail de repérage */}
-      <div className="sticky top-0 z-20 border-b border-hairline bg-bg/90 backdrop-blur-md">
+      <div className="sticky top-0 z-20 border-b border-line-soft bg-canvas/90 backdrop-blur-md">
         <div className="mx-auto flex max-w-[92rem] items-center gap-4 px-6 py-3">
           <Link
             href={`/app/p/${projectId}`}
@@ -104,7 +104,7 @@ export function FicheShell({
             <span className="hidden sm:inline">Pipeline</span>
           </Link>
 
-          <span className="h-3.5 w-px shrink-0 bg-hairline-2" aria-hidden />
+          <span className="h-3.5 w-px shrink-0 bg-line" aria-hidden />
 
           <span className="min-w-0 flex-1 truncate text-[13.5px] font-medium text-text">
             {property.address ?? "Adresse non renseignée"}

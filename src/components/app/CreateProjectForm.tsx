@@ -63,14 +63,14 @@ export function CreateProjectForm() {
                     "group flex items-baseline justify-between gap-3 rounded-sm border px-3 py-2 text-left",
                     "transition-[border-color,background-color] duration-[140ms]",
                     active
-                      ? "border-hairline-ember bg-[var(--brand-wash)]"
-                      : "border-hairline-2 hover:border-hairline-3",
+                      ? "border-accent-line bg-[var(--accent-soft)]"
+                      : "border-line hover:border-line-strong",
                   )}
                 >
                   <span
                     className={cx(
                       "text-[13px] font-medium",
-                      active ? "text-brand-hot" : "text-text-2",
+                      active ? "text-accent-hot" : "text-text-2",
                     )}
                   >
                     {g.label}

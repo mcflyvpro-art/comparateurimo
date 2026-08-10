@@ -287,7 +287,7 @@ function Group({ legend, children }: { legend: string; children: React.ReactNode
     <fieldset className="min-w-0">
       <legend className="mb-4 flex w-full items-center gap-3">
         <span className="text-[12px] font-medium text-text-3">{legend}</span>
-        <span className="h-px flex-1 bg-hairline" aria-hidden />
+        <span className="h-px flex-1 bg-line-soft" aria-hidden />
       </legend>
       <div className="flex flex-col gap-4">{children}</div>
     </fieldset>

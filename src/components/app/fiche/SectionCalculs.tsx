@@ -111,7 +111,7 @@ export function BlocCalculs({
               />
             </StatGrid>
 
-            <div className="mt-7 border-t border-hairline pt-6">
+            <div className="mt-7 border-t border-line-soft pt-6">
               <h4 className="mb-4 flex items-center gap-1.5 text-[13px] font-medium text-text-2">
                 Comment le verdict est calculé
                 <InfoTip
@@ -132,7 +132,7 @@ export function BlocCalculs({
                         {axis.weight} %
                       </span>
                     </span>
-                    <span className="h-1.5 flex-1 overflow-hidden rounded-full bg-ink-600">
+                    <span className="h-1.5 flex-1 overflow-hidden rounded-full bg-surface-active">
                       <span
                         className="block h-full rounded-full transition-[width] duration-[420ms] ease-[cubic-bezier(0.16,1,0.3,1)]"
                         style={{

@@ -35,13 +35,13 @@ export function MapSettingsPanel({
         aria-label={open ? "Fermer les paramètres de la carte" : "Paramètres de la carte"}
         variant="quiet"
         onClick={() => setOpen((v) => !v)}
-        className="border border-hairline-2 bg-[rgb(11_10_9/0.85)] backdrop-blur-md"
+        className="border border-line bg-[rgb(11_10_9/0.85)] backdrop-blur-md"
       >
         <IconSliders size={16} />
       </IconButton>
 
       {open && (
-        <div className="absolute right-0 top-[calc(100%+0.5rem)] z-20 max-h-[70vh] w-[20rem] overflow-y-auto rounded-lg border border-hairline bg-surface p-5 shadow-[0_20px_60px_-15px_rgb(0_0_0/0.6)]">
+        <div className="absolute right-0 top-[calc(100%+0.5rem)] z-20 max-h-[70vh] w-[20rem] overflow-y-auto rounded-lg border border-line-soft bg-surface p-5 shadow-[0_20px_60px_-15px_rgb(0_0_0/0.6)]">
           <div className="mb-5 flex items-center justify-between gap-3">
             <h2 className="t-head text-text">Affichage</h2>
             <IconButton aria-label="Fermer" size="sm" onClick={() => setOpen(false)}>
@@ -62,7 +62,7 @@ export function MapSettingsPanel({
                       name="map-style"
                       checked={displayPrefs.mapStyle === opt.value}
                       onChange={() => onDisplayPrefsChange({ mapStyle: opt.value })}
-                      className="h-3.5 w-3.5 accent-brand"
+                      className="h-3.5 w-3.5 accent-accent"
                     />
                     {opt.label}
                   </label>

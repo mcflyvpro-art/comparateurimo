@@ -70,7 +70,7 @@ export function MapView({
         />
       )}
 
-      <div className="pointer-events-none absolute bottom-4 left-4 rounded-md border border-hairline-2 bg-[rgb(11_10_9/0.85)] px-3.5 py-3 backdrop-blur-md">
+      <div className="pointer-events-none absolute bottom-4 left-4 rounded-md border border-line bg-[rgb(11_10_9/0.85)] px-3.5 py-3 backdrop-blur-md">
         <ul className="flex flex-col gap-2">
           {[
             { hex: VERDICT_HEX.good, label: "Bon dossier" },
@@ -90,7 +90,7 @@ export function MapView({
 
       <div className="absolute right-4 top-4 z-10 flex items-start gap-2">
         {unlocatedCount > 0 && (
-          <p className="rounded-sm border border-hairline-2 bg-[rgb(11_10_9/0.85)] px-3 py-2 text-[12px] text-text-2 backdrop-blur-md">
+          <p className="rounded-sm border border-line bg-[rgb(11_10_9/0.85)] px-3 py-2 text-[12px] text-text-2 backdrop-blur-md">
             <span className="num">{unlocatedCount}</span> bien
             {unlocatedCount > 1 ? "s" : ""} sans adresse localisée
           </p>

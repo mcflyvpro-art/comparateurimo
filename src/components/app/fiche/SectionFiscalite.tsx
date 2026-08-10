@@ -63,10 +63,10 @@ export function BlocFiscalite({
         </p>
       )}
 
-      <div className="overflow-hidden rounded-md border border-hairline">
+      <div className="overflow-hidden rounded-md border border-line-soft">
         <table className="w-full border-collapse">
           <thead>
-            <tr className="border-b border-hairline-2 bg-sunken">
+            <tr className="border-b border-line bg-sunken">
               <th className="px-3 py-2.5 text-left text-[12px] font-normal text-text-3">
                 Régime
               </th>
@@ -86,8 +86,8 @@ export function BlocFiscalite({
                 <tr
                   key={r.regime}
                   className={cx(
-                    "border-b border-hairline last:border-0",
-                    isCurrent && "bg-raised",
+                    "border-b border-line-soft last:border-0",
+                    isCurrent && "bg-surface-hover",
                   )}
                 >
                   <td className="px-3 py-2.5">
@@ -96,13 +96,13 @@ export function BlocFiscalite({
                       {isBest && (
                         <span
                           className="rounded-[2px] px-1.5 py-0.5 text-[11px]"
-                          style={{ background: "var(--good-wash)", color: "var(--good)" }}
+                          style={{ background: "var(--good-soft)", color: "var(--good)" }}
                         >
                           le plus avantageux
                         </span>
                       )}
                       {isCurrent && !isBest && (
-                        <span className="rounded-[2px] bg-[var(--brand-wash)] px-1.5 py-0.5 text-[11px] text-brand">
+                        <span className="rounded-[2px] bg-[var(--accent-soft)] px-1.5 py-0.5 text-[11px] text-accent">
                           votre choix
                         </span>
                       )}

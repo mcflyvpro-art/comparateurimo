@@ -54,10 +54,10 @@ export function FileDropzone({
         "group flex w-full items-center justify-center gap-2.5 rounded-md border px-4 py-5",
         "text-[12px] transition-[border-color,background-color,color] duration-[140ms]",
         disabled
-          ? "cursor-not-allowed border-dashed border-hairline text-text-4"
+          ? "cursor-not-allowed border-dashed border-line-soft text-text-4"
           : isDraggingOver
-            ? "border-solid border-hairline-ember bg-[var(--brand-wash)] text-brand-hot"
-            : "cursor-pointer border-dashed border-hairline-2 text-text-3 hover:border-hairline-3 hover:text-text-2",
+            ? "border-solid border-accent-line bg-[var(--accent-soft)] text-accent-hot"
+            : "cursor-pointer border-dashed border-line text-text-3 hover:border-line-strong hover:text-text-2",
       )}
     >
       <IconUpload

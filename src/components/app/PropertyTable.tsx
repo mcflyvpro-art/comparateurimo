@@ -156,7 +156,7 @@ export function PropertyTable({
         </Notice>
       )}
 
-      <div className="flex flex-wrap items-center gap-1.5 border-b border-hairline px-5 py-3">
+      <div className="flex flex-wrap items-center gap-1.5 border-b border-line-soft px-5 py-3">
         {STATUS_COLUMNS.map((s) => {
           const n = countByStatus.get(s.key) ?? 0;
           if (n === 0 && !statusFilter.has(s.key)) return null;
@@ -198,7 +198,7 @@ export function PropertyTable({
           {columnsMenuOpen && (
             <>
               <div className="fixed inset-0 z-20" onClick={() => setColumnsMenuOpen(false)} />
-              <div className="absolute right-0 top-full z-30 mt-2 w-64 rounded-md border border-hairline-2 bg-high p-4 shadow-[var(--lift-3)]">
+              <div className="absolute right-0 top-full z-30 mt-2 w-64 rounded-md border border-line bg-surface p-4 shadow-[var(--shadow-3)]">
                 <p className="mb-3.5 text-[12px] font-medium text-text-2">
                   Colonnes affichées
                 </p>
@@ -240,7 +240,7 @@ export function PropertyTable({
       ) : (
         <div className="min-h-0 flex-1 overflow-auto">
           <table className="w-full border-collapse">
-            <thead className="sticky top-0 z-10 bg-bg">
+            <thead className="sticky top-0 z-10 bg-canvas">
               <tr>
                 {visibleColumns.map((c) => {
                   const isSorted = sort.id === c.id;
@@ -249,7 +249,7 @@ export function PropertyTable({
                       key={c.id}
                       style={{ width: c.width }}
                       className={cx(
-                        "border-b border-hairline-2 px-3 py-3 font-normal",
+                        "border-b border-line px-3 py-3 font-normal",
                         c.align === "right" ? "text-right" : "text-left",
                       )}
                     >
@@ -282,7 +282,7 @@ export function PropertyTable({
                 <tr
                   key={row.property.id}
                   onClick={() => openDrawer(row.property.id)}
-                  className="group cursor-pointer border-b border-hairline transition-colors duration-[140ms] hover:bg-raised"
+                  className="group cursor-pointer border-b border-line-soft transition-colors duration-[140ms] hover:bg-surface-hover"
                 >
                   {visibleColumns.map((c, i) => (
                     <td
@@ -296,7 +296,7 @@ export function PropertyTable({
                       {i === 0 && (
                         <span
                           aria-hidden
-                          className="absolute inset-y-0 left-0 w-[2px] origin-top scale-y-0 bg-brand transition-transform duration-[180ms] ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-y-100"
+                          className="absolute inset-y-0 left-0 w-[2px] origin-top scale-y-0 bg-accent transition-transform duration-[180ms] ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-y-100"
                         />
                       )}
                       <span

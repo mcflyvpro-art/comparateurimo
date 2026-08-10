@@ -78,7 +78,7 @@ export function SectionHumain({
       </StatGrid>
 
       {property.status === "ecarte" && property.discard_reason && (
-        <div className="mb-8 rounded-sm bg-raised px-4 py-3.5">
+        <div className="mb-8 rounded-sm bg-surface-hover px-4 py-3.5">
           <p className="mb-1.5 text-[12px] text-text-4">Raison de l&apos;écart</p>
           <p className="text-[13.5px] leading-relaxed text-text-2">
             {property.discard_reason}

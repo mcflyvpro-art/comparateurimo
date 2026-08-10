@@ -110,7 +110,7 @@ export function BlocFinancement({
             />
           </h4>
           <span className="flex items-center gap-4">
-            <Legend color="var(--risk-300)" label="Intérêts versés" />
+            <Legend color="var(--risk)" label="Intérêts versés" />
             <Legend color="var(--good)" label="Capital constitué" />
           </span>
         </div>
@@ -144,10 +144,10 @@ export function BlocFinancement({
               ))}
             </div>
 
-            <div className="max-h-80 overflow-auto rounded-md border border-hairline">
+            <div className="max-h-80 overflow-auto rounded-md border border-line-soft">
               <table className="w-full border-collapse">
                 <thead className="sticky top-0 bg-surface">
-                  <tr className="border-b border-hairline-2">
+                  <tr className="border-b border-line">
                     {[
                       granularity === "annuel" ? "Année" : "Mois",
                       "Échéance",
@@ -168,7 +168,7 @@ export function BlocFinancement({
                   {rows.map((row) => (
                     <tr
                       key={"year" in row ? row.year : row.month}
-                      className="border-b border-hairline last:border-0"
+                      className="border-b border-line-soft last:border-0"
                     >
                       <td className="num px-3 py-1.5 text-left text-[12px] text-text-3">
                         {"year" in row ? row.year : row.month}
@@ -215,7 +215,7 @@ function AmortizationProfile({
   const max = Math.max(...rows.map((r) => r.payment)) || 1;
 
   return (
-    <div className="flex h-24 items-end gap-[3px] rounded-md border border-hairline bg-sunken p-2.5">
+    <div className="flex h-24 items-end gap-[3px] rounded-md border border-line-soft bg-sunken p-2.5">
       {rows.map((row) => {
         const h = ((row.payment / max) * 100).toFixed(2);
         const interestShare = row.payment > 0 ? (row.interest / row.payment) * 100 : 0;
@@ -230,7 +230,7 @@ function AmortizationProfile({
               style={{ height: `${h}%` }}
             >
               <span
-                style={{ height: `${interestShare.toFixed(2)}%`, background: "var(--risk-300)" }}
+                style={{ height: `${interestShare.toFixed(2)}%`, background: "var(--risk)" }}
               />
               <span
                 style={{

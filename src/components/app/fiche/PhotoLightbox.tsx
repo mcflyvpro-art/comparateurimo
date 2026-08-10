@@ -65,7 +65,7 @@ export function PhotoLightbox({
             >
               <IconArrowRight size={15} />
             </IconButton>
-            <span className="mx-1 h-5 w-px bg-hairline-2" aria-hidden />
+            <span className="mx-1 h-5 w-px bg-line" aria-hidden />
             <Button
               variant="danger"
               size="sm"
@@ -87,7 +87,7 @@ export function PhotoLightbox({
           <img
             src={photo.signedUrl}
             alt={photo.caption ?? "Photo du bien"}
-            className="max-h-[72vh] max-w-full rounded-md border border-hairline-2 object-contain"
+            className="max-h-[72vh] max-w-full rounded-md border border-line object-contain"
           />
           {photo.caption && (
             <figcaption className="text-[12px] text-text-2">{photo.caption}</figcaption>

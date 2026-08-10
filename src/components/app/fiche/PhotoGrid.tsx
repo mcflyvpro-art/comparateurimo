@@ -191,7 +191,7 @@ function Status({
   return (
     <div className="mt-2 flex flex-col gap-1">
       {status && <p className="text-[11px] text-text-4">{status}</p>}
-      {warning && <p className="text-[11px] text-ember-800">{warning}</p>}
+      {warning && <p className="text-[11px] text-mid">{warning}</p>}
       {error && <p className="text-[11px] text-danger">{error}</p>}
     </div>
   );
@@ -227,7 +227,7 @@ function PhotoThumbnail({
         {...attributes}
         {...listeners}
         onClick={onOpen}
-        className="relative aspect-[4/3] cursor-grab overflow-hidden rounded-md border border-hairline bg-sunken active:cursor-grabbing"
+        className="relative aspect-[4/3] cursor-grab overflow-hidden rounded-md border border-line-soft bg-sunken active:cursor-grabbing"
       >
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
@@ -251,8 +251,8 @@ function PhotoThumbnail({
             "absolute right-1.5 top-1.5 flex h-6 items-center gap-1 rounded-sm border px-1.5",
             "text-[10px] backdrop-blur-sm transition-all duration-[140ms]",
             isPendingDelete
-              ? "border-danger bg-[var(--danger-wash)] text-danger opacity-100"
-              : "border-hairline-2 bg-[rgb(6_5_5/0.6)] text-text-2 opacity-0 group-hover:opacity-100 hover:border-danger hover:text-danger",
+              ? "border-danger bg-[var(--danger-soft)] text-danger opacity-100"
+              : "border-line bg-[rgb(6_5_5/0.6)] text-text-2 opacity-0 group-hover:opacity-100 hover:border-danger hover:text-danger",
           )}
         >
           <IconTrash size={11} />
@@ -266,7 +266,7 @@ function PhotoThumbnail({
           onBlur={(e) => onCaptionBlur(e.target.value)}
           placeholder="Légende…"
           aria-label="Légende de la photo"
-          className="mt-1.5 w-full rounded-none border-0 border-b border-transparent bg-transparent px-0 pb-0.5 text-[11px] text-text-3 outline-none transition-colors placeholder:text-text-4 hover:border-hairline-2 focus:border-brand focus:text-text"
+          className="mt-1.5 w-full rounded-none border-0 border-b border-transparent bg-transparent px-0 pb-0.5 text-[11px] text-text-3 outline-none transition-colors placeholder:text-text-4 hover:border-line focus:border-accent focus:text-text"
         />
       </figcaption>
     </figure>

@@ -68,7 +68,7 @@ export function ProjectCriteria({
         type="button"
         onClick={ouvrir}
         title="Modifier les critères du projet"
-        className="num truncate rounded-sm px-1.5 py-0.5 text-[11px] text-text-3 transition-colors hover:bg-raised hover:text-text focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-brand"
+        className="num truncate rounded-sm px-1.5 py-0.5 text-[11px] text-text-3 transition-colors hover:bg-surface-hover hover:text-text focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-accent"
       >
         {summary || "Définir les critères"}
       </button>

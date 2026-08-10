@@ -171,16 +171,16 @@ export function ProjectRow({ project }: { project: ProjectRowData }) {
     <li className="relative">
       <div
         className={cx(
-          "group relative flex items-center gap-4 overflow-hidden rounded-lg border border-hairline bg-surface px-5 py-4",
+          "group relative flex items-center gap-4 overflow-hidden rounded-lg border border-line-soft bg-surface px-5 py-4",
           "transition-[border-color,background-color] duration-[140ms]",
-          "hover:border-hairline-3 hover:bg-raised",
+          "hover:border-line-strong hover:bg-surface-hover",
           muted && "opacity-70",
           enCours && "opacity-50",
         )}
       >
         <span
           aria-hidden
-          className="absolute inset-y-0 left-0 w-[2px] origin-top scale-y-0 bg-brand transition-transform duration-[220ms] ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-y-100"
+          className="absolute inset-y-0 left-0 w-[2px] origin-top scale-y-0 bg-accent transition-transform duration-[220ms] ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-y-100"
         />
 
         <div className="min-w-0 flex-1">
@@ -195,14 +195,14 @@ export function ProjectRow({ project }: { project: ProjectRowData }) {
                 if (e.key === "Escape") { e.preventDefault(); setRenomme(false); }
               }}
               aria-label="Nom du projet"
-              className="w-full rounded-sm border border-brand bg-surface px-2 py-1 text-[15px] font-medium tracking-[-0.015em] text-text outline-none"
+              className="w-full rounded-sm border border-accent bg-surface px-2 py-1 text-[15px] font-medium tracking-[-0.015em] text-text outline-none"
             />
           ) : (
             // Le lien ne couvre QUE le titre et les compteurs : le menu reste
             // atteignable à la souris comme au clavier.
             <Link
               href={`/app/p/${project.id}`}
-              className="block rounded-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand"
+              className="block rounded-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
             >
               <h3
                 className={cx(
@@ -246,7 +246,7 @@ export function ProjectRow({ project }: { project: ProjectRowData }) {
           {menuOuvert && (
             <div
               role="menu"
-              className="absolute right-0 top-full z-40 mt-1.5 w-56 overflow-hidden rounded-md border border-hairline-2 bg-surface-high shadow-[var(--lift-3)]"
+              className="absolute right-0 top-full z-40 mt-1.5 w-56 overflow-hidden rounded-md border border-line bg-surface-active shadow-[var(--shadow-3)]"
             >
               <MenuItem icon={<IconPencil size={14} />} onClick={ouvrirRenommage}>
                 Renommer
@@ -257,7 +257,7 @@ export function ProjectRow({ project }: { project: ProjectRowData }) {
               >
                 {project.archived ? "Réactiver" : "Archiver"}
               </MenuItem>
-              <div className="h-px bg-hairline" />
+              <div className="h-px bg-line-soft" />
               <MenuItem icon={<IconTrash size={14} />} onClick={ouvrirSuppression} danger>
                 Supprimer
               </MenuItem>
@@ -297,7 +297,7 @@ export function ProjectRow({ project }: { project: ProjectRowData }) {
           {contenu === null ? (
             <p className="text-[12.5px] text-text-4">Vérification de ce qui sera supprimé…</p>
           ) : contenu.biens > 0 ? (
-            <p className="rounded-sm border border-hairline-2 bg-sunken px-3 py-2.5 text-[12.5px] leading-relaxed text-text-2">
+            <p className="rounded-sm border border-line bg-sunken px-3 py-2.5 text-[12.5px] leading-relaxed text-text-2">
               Seront supprimés avec :{" "}
               <span className="text-text">
                 {contenu.biens} bien{contenu.biens > 1 ? "s" : ""}
@@ -351,8 +351,8 @@ function MenuItem({
       className={cx(
         "flex w-full items-center gap-2.5 px-3 py-2.5 text-left text-[13px] transition-colors",
         danger
-          ? "text-risk hover:bg-[var(--risk-wash)]"
-          : "text-text-2 hover:bg-raised hover:text-text",
+          ? "text-risk hover:bg-[var(--risk-soft)]"
+          : "text-text-2 hover:bg-surface-hover hover:text-text",
       )}
     >
       {icon}

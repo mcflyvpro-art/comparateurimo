@@ -98,17 +98,17 @@ export function DocumentList({
       {(status === "uploading" || validationError || error) && (
         <div className="mt-2 flex flex-col gap-1">
           {status === "uploading" && <p className="text-[11px] text-text-4">Envoi…</p>}
-          {validationError && <p className="text-[11px] text-ember-800">{validationError}</p>}
+          {validationError && <p className="text-[11px] text-danger">{validationError}</p>}
           {error && <p className="text-[11px] text-danger">{error}</p>}
         </div>
       )}
 
       {documents.length > 0 && (
-        <ul className="mt-3 overflow-hidden rounded-md border border-hairline">
+        <ul className="mt-3 overflow-hidden rounded-md border border-line-soft">
           {documents.map((doc) => (
             <li
               key={doc.id}
-              className="group flex items-center gap-3 border-b border-hairline px-3 py-2.5 transition-colors last:border-0 hover:bg-raised"
+              className="group flex items-center gap-3 border-b border-line-soft px-3 py-2.5 transition-colors last:border-0 hover:bg-surface-hover"
             >
               <span className="shrink-0 text-text-3">
                 {DOC_TYPE_ICON[doc.doc_type] ?? DOC_TYPE_ICON.autre}
@@ -122,7 +122,7 @@ export function DocumentList({
                 value={doc.doc_type}
                 onChange={(e) => handleTypeChange(doc.id, e.target.value as DocType)}
                 aria-label="Type de document"
-                className="shrink-0 cursor-pointer rounded-sm border border-hairline-2 bg-sunken px-2 py-1 text-[11px] text-text-2 outline-none transition-colors hover:border-hairline-3 focus:border-brand"
+                className="shrink-0 cursor-pointer rounded-sm border border-line bg-sunken px-2 py-1 text-[11px] text-text-2 outline-none transition-colors hover:border-line-strong focus:border-accent"
               >
                 {DOC_TYPE_OPTIONS.map((opt) => (
                   <option key={opt.value} value={opt.value}>
@@ -152,7 +152,7 @@ export function DocumentList({
                 className={cx(
                   "flex shrink-0 items-center gap-1 rounded-sm px-1.5 py-1 text-[10px] transition-all duration-[140ms]",
                   pendingDeleteId === doc.id
-                    ? "bg-[var(--danger-wash)] text-danger opacity-100"
+                    ? "bg-[var(--danger-soft)] text-danger opacity-100"
                     : "text-text-4 opacity-0 hover:text-danger group-hover:opacity-100 focus-visible:opacity-100",
                 )}
               >
