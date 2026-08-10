@@ -42,9 +42,9 @@ export function Chip({
         "transition-[background-color,border-color,color] duration-[140ms] ease-[cubic-bezier(0.2,0,0,1)]",
         onClick && "cursor-pointer",
         active
-          ? "border-hairline-ember bg-[var(--brand-wash)] text-brand-hot"
-          : "border-hairline-2 text-text-2",
-        onClick && !active && "hover:border-hairline-3 hover:text-text",
+          ? "border-accent-line bg-[var(--accent-soft)] text-accent-hot"
+          : "border-line text-text-2",
+        onClick && !active && "hover:border-line-strong hover:text-text",
         className,
       )}
     >
@@ -97,7 +97,7 @@ export function Segmented({
               <motion.span
                 layoutId={layoutKey}
                 transition={spring.ui}
-                className="absolute inset-x-2 -bottom-px h-px bg-brand"
+                className="absolute inset-x-2 -bottom-px h-px bg-accent"
               />
             )}
           </>
@@ -155,7 +155,7 @@ export function Toggle({
   return (
     <div
       className={cx(
-        "inline-flex rounded-sm border border-hairline-2 bg-sunken p-0.5",
+        "inline-flex rounded-sm border border-line bg-sunken p-0.5",
         className,
       )}
     >
@@ -169,14 +169,14 @@ export function Toggle({
             aria-pressed={isActive}
             className={cx(
               "relative rounded-[3px] px-3 py-1 text-xs font-medium transition-colors duration-[140ms]",
-              isActive ? "text-inverse" : "text-text-3 hover:text-text",
+              isActive ? "text-ink-fg" : "text-text-3 hover:text-text",
             )}
           >
             {isActive && (
               <motion.span
                 layoutId={layoutKey}
                 transition={spring.ui}
-                className="absolute inset-0 rounded-[3px] bg-brand"
+                className="absolute inset-0 rounded-[3px] bg-accent"
               />
             )}
             <span className="relative">{item.label}</span>

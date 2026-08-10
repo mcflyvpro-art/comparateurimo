@@ -62,8 +62,8 @@ export function Locked({
             "inline-flex items-center gap-1.5 rounded-sm border px-2 py-1",
             "backdrop-blur-sm transition-[border-color,color,background-color] duration-[220ms]",
             hover
-              ? "border-hairline-ember bg-[var(--brand-wash-2)] text-brand-hot"
-              : "border-hairline-2 bg-[rgb(11_10_9/0.6)] text-text-3",
+              ? "border-accent-line bg-[var(--accent-line)] text-accent-hot"
+              : "border-line bg-[rgb(11_10_9/0.6)] text-text-3",
           )}
         >
           <IconLock size={12} />
@@ -96,7 +96,7 @@ export function LockedValue({
       </span>
       <IconLock
         size={11}
-        className="shrink-0 text-text-4 transition-colors group-hover:text-brand"
+        className="shrink-0 text-text-4 transition-colors group-hover:text-accent"
       />
     </Link>
   );

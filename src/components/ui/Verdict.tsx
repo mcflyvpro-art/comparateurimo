@@ -77,7 +77,7 @@ export function VerdictBar({
 
   return (
     <div
-      className={cx("w-full overflow-hidden rounded-full bg-ink-600", className)}
+      className={cx("w-full overflow-hidden rounded-full bg-surface-active", className)}
       style={{ height }}
       role="meter"
       aria-valuenow={score ?? undefined}

@@ -37,7 +37,7 @@ export function Disclosure({
   const id = useId();
 
   return (
-    <div className={cx("border-t border-hairline", className)}>
+    <div className={cx("border-t border-line-soft", className)}>
       <button
         type="button"
         onClick={() => setOpen((v) => !v)}
@@ -61,7 +61,7 @@ export function Disclosure({
         >
           {title}
         </span>
-        <span className="h-px flex-1 bg-hairline" aria-hidden />
+        <span className="h-px flex-1 bg-line-soft" aria-hidden />
         {summary && !open && (
           <span className="num shrink-0 text-[12px] text-text-3">{summary}</span>
         )}

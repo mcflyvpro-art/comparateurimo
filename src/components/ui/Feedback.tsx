@@ -74,7 +74,7 @@ export function Empty({
       )}
     >
       {icon && (
-        <span className="mb-5 flex h-11 w-11 items-center justify-center rounded-md border border-hairline-2 text-text-3">
+        <span className="mb-5 flex h-11 w-11 items-center justify-center rounded-md border border-line text-text-3">
           {icon}
         </span>
       )}
@@ -100,10 +100,10 @@ export function Notice({
   className?: string;
 }) {
   const tones = {
-    info: "border-hairline-2 bg-raised text-text-2",
-    warn: "border-[color-mix(in_srgb,var(--ember-800)_35%,transparent)] bg-[var(--n3-wash)] text-ember-900",
+    info: "border-line bg-surface-hover text-text-2",
+    warn: "border-[color-mix(in_srgb,var(--mid)_35%,transparent)] bg-mid-soft text-mid",
     danger:
-      "border-[color-mix(in_srgb,var(--danger)_35%,transparent)] bg-[var(--danger-wash)] text-danger",
+      "border-[color-mix(in_srgb,var(--danger)_35%,transparent)] bg-[var(--danger-soft)] text-danger",
   } as const;
 
   return (
@@ -127,7 +127,7 @@ export function Skeleton({ className }: { className?: string }) {
   return (
     <span
       aria-hidden
-      className={cx("block animate-breathe rounded-sm bg-raised", className)}
+      className={cx("block animate-breathe rounded-sm bg-surface-hover", className)}
     />
   );
 }

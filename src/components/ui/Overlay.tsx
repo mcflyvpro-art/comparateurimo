@@ -39,7 +39,7 @@ function Scrim({ onClose }: { onClose: () => void }) {
       exit={{ opacity: 0 }}
       transition={{ duration: 0.22, ease: EASE_FOCAL }}
       onClick={onClose}
-      className="absolute inset-0 bg-[var(--surface-scrim)] backdrop-blur-[5px]"
+      className="absolute inset-0 bg-[var(--scrim)] backdrop-blur-[5px]"
     />
   );
 }
@@ -76,9 +76,9 @@ export function Sheet({
             exit={reduce ? { opacity: 0 } : { x: "100%" }}
             transition={spring.sheet}
             style={{ width: `min(100vw, ${width})` }}
-            className="relative flex h-full flex-col border-l border-hairline-2 bg-surface"
+            className="relative flex h-full flex-col border-l border-line bg-surface"
           >
-            <header className="flex items-start justify-between gap-4 border-b border-hairline px-5 py-4">
+            <header className="flex items-start justify-between gap-4 border-b border-line-soft px-5 py-4">
               <div className="min-w-0">
                 <h2 className="truncate text-[15px] font-medium leading-snug text-text">{title}</h2>
                 {subtitle && <p className="mt-0.5 truncate text-xs text-text-3">{subtitle}</p>}
@@ -91,7 +91,7 @@ export function Sheet({
             <div className="min-h-0 flex-1 overflow-y-auto px-5 py-5">{children}</div>
 
             {footer && (
-              <footer className="border-t border-hairline px-5 py-4">{footer}</footer>
+              <footer className="border-t border-line-soft px-5 py-4">{footer}</footer>
             )}
           </motion.aside>
         </div>
@@ -136,7 +136,7 @@ export function Modal({
             exit={reduce ? { opacity: 0 } : { opacity: 0, y: 8, filter: "blur(6px)" }}
             transition={{ duration: 0.26, ease: EASE_FOCAL }}
             style={{ width: `min(100%, ${width})` }}
-            className="relative rounded-lg border border-hairline-2 bg-surface shadow-[var(--lift-3)]"
+            className="relative rounded-lg border border-line bg-surface shadow-[var(--shadow-3)]"
           >
             <div className="px-5 pb-4 pt-5">
               <h2 className="text-[15px] font-medium text-text">{title}</h2>
@@ -146,7 +146,7 @@ export function Modal({
               {children && <div className="mt-4">{children}</div>}
             </div>
             {footer && (
-              <div className="flex justify-end gap-2 border-t border-hairline px-5 py-3.5">
+              <div className="flex justify-end gap-2 border-t border-line-soft px-5 py-3.5">
                 {footer}
               </div>
             )}
@@ -184,7 +184,7 @@ export function Lightbox({
           onClick={onClose}
           className={cx(
             "fixed inset-0 z-50 flex flex-col items-center justify-center gap-5 p-6",
-            "bg-[var(--surface-scrim)] backdrop-blur-[10px]",
+            "bg-[var(--scrim)] backdrop-blur-[10px]",
           )}
         >
           {children}

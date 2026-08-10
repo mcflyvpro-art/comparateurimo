@@ -107,7 +107,7 @@ export function Field({
 }) {
   const entry = term ? GLOSSARY[term] : null;
   return (
-    <div className="flex items-baseline justify-between gap-4 border-b border-hairline py-2 last:border-0">
+    <div className="flex items-baseline justify-between gap-4 border-b border-line-soft py-2 last:border-0">
       <dt className="flex items-center gap-1.5 text-[13px] text-text-3">
         {label ?? entry?.label}
         {entry && <InfoTip text={entry.def} title={entry.label} />}

@@ -104,7 +104,7 @@ function Banniere({ toast, onFermer }: { toast: Toast; onFermer: () => void }) {
       ? "border-l-[var(--good)]"
       : toast.tone === "erreur"
         ? "border-l-[var(--risk)]"
-        : "border-l-hairline-3";
+        : "border-l-line-strong";
 
   return (
     <motion.div
@@ -115,8 +115,8 @@ function Banniere({ toast, onFermer }: { toast: Toast; onFermer: () => void }) {
       transition={{ duration: 0.22, ease: EASE_FOCAL }}
       className={cx(
         "pointer-events-auto flex max-w-[min(30rem,calc(100vw-2rem))] items-center gap-4",
-        "rounded-md border border-hairline-2 border-l-2 bg-surface-high px-4 py-3",
-        "shadow-[var(--lift-3)]",
+        "rounded-md border border-line border-l-2 bg-surface-active px-4 py-3",
+        "shadow-[var(--shadow-3)]",
         teinte,
       )}
     >
@@ -130,7 +130,7 @@ function Banniere({ toast, onFermer }: { toast: Toast; onFermer: () => void }) {
             await toast.onAction?.();
             onFermer();
           }}
-          className="shrink-0 rounded-sm px-1 text-[13px] font-medium text-brand transition-colors hover:text-brand-hot focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand"
+          className="shrink-0 rounded-sm px-1 text-[13px] font-medium text-accent transition-colors hover:text-accent-hot focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
         >
           {toast.actionLabel}
         </button>

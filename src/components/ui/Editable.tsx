@@ -149,7 +149,7 @@ export function Editable({
     <div
       className={cx(
         "group min-w-0",
-        enLigne && "flex items-baseline justify-between gap-4 border-b border-hairline py-1.5 last:border-0",
+        enLigne && "flex items-baseline justify-between gap-4 border-b border-line-soft py-1.5 last:border-0",
         className,
       )}
     >
@@ -177,7 +177,7 @@ export function Editable({
                 if (e.key === "Escape") { e.preventDefault(); annuler(); }
               }}
               className={cx(
-                "w-full rounded-sm border border-brand bg-surface px-2 py-1 text-text outline-none",
+                "w-full rounded-sm border border-accent bg-surface px-2 py-1 text-text outline-none",
                 valueClass,
               )}
             >
@@ -200,7 +200,7 @@ export function Editable({
                   if (e.key === "Escape") { e.preventDefault(); annuler(); }
                 }}
                 className={cx(
-                  "num min-w-0 flex-1 rounded-sm border border-brand bg-surface px-2 py-1 text-text outline-none",
+                  "num min-w-0 flex-1 rounded-sm border border-accent bg-surface px-2 py-1 text-text outline-none",
                   valueClass,
                 )}
               />
@@ -215,7 +215,7 @@ export function Editable({
             className={cx(
               "-mx-2 flex w-[calc(100%+1rem)] items-center gap-2 rounded-sm px-2 py-1",
               "transition-colors duration-[140ms]",
-              "hover:bg-raised focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-brand",
+              "hover:bg-surface-hover focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-accent",
               enLigne ? "justify-end text-right" : "text-left",
               enCours && "opacity-50",
             )}

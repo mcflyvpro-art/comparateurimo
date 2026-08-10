@@ -15,10 +15,10 @@ import { InfoTip } from "@/components/ui/Feedback";
  */
 
 const CONTROL =
-  "w-full rounded-sm border border-hairline-2 bg-sunken px-3 text-sm text-text " +
+  "w-full rounded-sm border border-line bg-sunken px-3 text-sm text-text " +
   "placeholder:text-text-4 outline-none " +
   "transition-[border-color,background-color] duration-[140ms] ease-[cubic-bezier(0.2,0,0,1)] " +
-  "hover:border-hairline-3 focus:border-brand focus:bg-bg " +
+  "hover:border-line-strong focus:border-accent focus:bg-canvas " +
   "disabled:cursor-not-allowed disabled:opacity-45";
 
 export function FieldLabel({
@@ -155,10 +155,10 @@ export function Checkbox({
         className={cx(
           "mt-px flex h-4 w-4 shrink-0 items-center justify-center rounded-[3px] border",
           "transition-[background-color,border-color] duration-[140ms]",
-          "peer-focus-visible:outline peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-brand",
+          "peer-focus-visible:outline peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-accent",
           checked
-            ? "border-brand bg-brand text-inverse"
-            : "border-hairline-3 bg-sunken group-hover:border-text-3",
+            ? "border-accent bg-accent text-ink-fg"
+            : "border-line-strong bg-sunken group-hover:border-text-3",
         )}
       >
         {checked && <IconCheck size={11} strokeWidth={2.4} />}
@@ -285,7 +285,7 @@ export function FieldSet({
     <fieldset className={cx("min-w-0", className)}>
       <legend className="t-label mb-4 flex w-full items-center gap-3">
         <span className="shrink-0">{legend}</span>
-        <span className="h-px flex-1 bg-hairline" aria-hidden />
+        <span className="h-px flex-1 bg-line-soft" aria-hidden />
       </legend>
       <div className="flex flex-col gap-4">{children}</div>
     </fieldset>

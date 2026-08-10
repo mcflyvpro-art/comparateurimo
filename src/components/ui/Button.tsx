@@ -23,15 +23,15 @@ const BASE =
 
 const VARIANTS: Record<Variant, string> = {
   solid:
-    "bg-brand text-inverse hover:bg-brand-hot " +
+    "bg-accent text-ink-fg hover:bg-accent-hot " +
     "shadow-[inset_0_1px_0_rgb(255_255_255/0.18)] " +
-    "hover:shadow-[inset_0_1px_0_rgb(255_255_255/0.24),0_6px_28px_-8px_var(--brand-glow)]",
+    "hover:shadow-[inset_0_1px_0_rgb(255_255_255/0.24),0_6px_28px_-8px_var(--accent-glow)]",
   outline:
-    "border border-hairline-2 text-text hover:border-hairline-3 hover:bg-raised",
-  quiet: "text-text-2 hover:text-text hover:bg-raised",
+    "border border-line text-text hover:border-line-strong hover:bg-surface-hover",
+  quiet: "text-text-2 hover:text-text hover:bg-surface-hover",
   danger:
     "border border-[color-mix(in_srgb,var(--danger)_45%,transparent)] text-danger " +
-    "hover:bg-[var(--danger-wash)]",
+    "hover:bg-[var(--danger-soft)]",
 };
 
 const SIZES: Record<Size, string> = {

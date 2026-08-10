@@ -28,7 +28,7 @@ export function Panel({
     <section
       id={id}
       className={cx(
-        "rounded-lg border border-hairline bg-surface",
+        "rounded-lg border border-line-soft bg-surface",
         !flush && "p-6 sm:p-7",
         className,
       )}
@@ -57,5 +57,5 @@ export function PanelHeader({
 
 /** Séparateur horizontal filaire. Un seul filet, jamais deux collés. */
 export function Rule({ className }: { className?: string }) {
-  return <div className={cx("h-px w-full bg-hairline", className)} aria-hidden />;
+  return <div className={cx("h-px w-full bg-line-soft", className)} aria-hidden />;
 }

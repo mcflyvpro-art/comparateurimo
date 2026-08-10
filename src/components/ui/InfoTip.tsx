@@ -134,8 +134,8 @@ export function InfoTip({
             "text-[10px] font-medium leading-none",
             "transition-[background-color,border-color,color] duration-[140ms]",
             open
-              ? "border-brand bg-brand text-inverse"
-              : "border-hairline-3 text-text-3 hover:border-brand hover:bg-brand hover:text-inverse",
+              ? "border-accent bg-accent text-ink-fg"
+              : "border-line-strong text-text-3 hover:border-accent hover:bg-accent hover:text-ink-fg",
           )}
         >
           ?
@@ -156,7 +156,7 @@ export function InfoTip({
               width: WIDTH,
               zIndex: 9998,
             }}
-            className="pointer-events-none block rounded-md border border-hairline-2 bg-high p-4 text-left font-normal normal-case tracking-normal shadow-[var(--lift-3)]"
+            className="pointer-events-none block rounded-md border border-line bg-surface p-4 text-left font-normal normal-case tracking-normal shadow-[var(--shadow-3)]"
           >
             {title && (
               <span className="mb-2 block text-[12.5px] font-medium text-text">
@@ -174,10 +174,10 @@ export function InfoTip({
                 ...(pos.placement === "top" ? { bottom: -5 } : { top: -5 }),
               }}
               className={cx(
-                "h-2.5 w-2.5 rotate-45 bg-high",
+                "h-2.5 w-2.5 rotate-45 bg-surface",
                 pos.placement === "top"
-                  ? "border-b border-r border-hairline-2"
-                  : "border-l border-t border-hairline-2",
+                  ? "border-b border-r border-line"
+                  : "border-l border-t border-line",
               )}
             />
           </span>,
