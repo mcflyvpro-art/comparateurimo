@@ -446,8 +446,10 @@ traités en Tâche 1 et Tâche 6.
 
 Mêmes règles qu'aux tâches précédentes.
 
-Dans cette zone se trouvent les deux dernières mesures à renommer :
-`var(--topbar)` → `var(--bar-h)` et `var(--rail)` → `var(--rail-w)`.
+⚠ **Correction constatée à l'exécution :** `var(--topbar)` et `var(--rail)`,
+annoncés ici, se trouvaient en réalité dans `AppSidebar.tsx` et `AppTopbar.tsx`,
+donc dans la zone de la Tâche 3, qui les a déjà traités. Il ne devrait rien en
+rester ici — le `grep` de l'étape 3 le confirmera.
 ⚠ **Ne pas confondre `var(--rail)` avec la classe `rail-x`**, qui reste inchangée.
 
 - [ ] **Étape 2 : appliquer les six occurrences non mécaniques de cette zone**
