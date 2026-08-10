@@ -128,6 +128,11 @@
   --accent-soft: rgb(232 89 12 / 0.09);
   --accent-line: rgb(232 89 12 / 0.34);
 
+  /* Survol d'une action : en thème clair on FONCE, on n'éclaircit pas — un
+     orange plus vif sur fond blanc perd du contraste au lieu d'en gagner. */
+  --accent-hot: #cf4c08;
+  --accent-glow: rgb(232 89 12 / 0.28);
+
   /* --- VERDICT. Vert, ambre, rouge — et rien d'autre ne les emprunte.
          Assombries (R1, revue finale) : VerdictPill rend le LIBELLÉ (texte,
          11,5 px) dans cette couleur — le seuil WCAG applicable est donc 4,5:1
@@ -217,6 +222,10 @@
   --accent-fg: #121110;
   --accent-soft: rgb(255 106 26 / 0.14);
   --accent-line: rgb(255 106 26 / 0.4);
+
+  /* Dans le noir, le survol s'éclaircit — c'est l'inverse du thème clair. */
+  --accent-hot: #ff8c3d;
+  --accent-glow: rgb(255 106 26 / 0.32);
 
   --good: #84b394;
   --good-soft: rgb(132 179 148 / 0.16);

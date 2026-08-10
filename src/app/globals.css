@@ -95,6 +95,9 @@
   --color-ink-fg: var(--ink-fg);
   --color-accent: var(--accent);
   --color-accent-fg: var(--accent-fg);
+  --color-accent-soft: var(--accent-soft);
+  --color-accent-line: var(--accent-line);
+  --color-accent-hot: var(--accent-hot);
 
   /* --- Verdict ----------------------------------------------------------- */
   --color-good: var(--good);
@@ -103,6 +106,10 @@
   --color-none: var(--none);
   --color-info: var(--info);
   --color-danger: var(--danger);
+  --color-good-soft: var(--good-soft);
+  --color-mid-soft: var(--mid-soft);
+  --color-risk-soft: var(--risk-soft);
+  --color-danger-soft: var(--danger-soft);
 
   /* --- Étapes du pipeline ------------------------------------------------ */
   --color-stage-analyser: var(--stage-analyser);
