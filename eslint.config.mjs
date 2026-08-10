@@ -12,11 +12,20 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
-    // Prototypes/références hors application (non lintés)
+    // Sorties de build de vérification, jetables.
+    ".next-verif/**",
+    // Prototypes/références hors application (non lintés).
+    // Sans ces exclusions, `npm run lint` sort 1111 avertissements dont aucun
+    // ne vient de `src/` : le signal utile devient introuvable dans le bruit.
     "simulateur-esio.jsx",
     "speedy-io-html/**",
     "firecrawl-crawl/**",
     "graphify-out/**",
+    "proto/**",
+    "public/proto/**",
+    "animation-estio/**",
+    // Bundles MapLibre minifiés, servis tels quels depuis `public/`.
+    "public/maplibre-gl-*.mjs",
   ]),
 ]);
 
