@@ -63,7 +63,7 @@ CSS custom properties. Aucune dépendance ajoutée.
 
 ---
 
-## Tâche 1 : réécrire `tokens.css`
+## Task 1 — réécrire `tokens.css`
 
 **Fichiers :**
 - Remplacer intégralement : `src/design/tokens.css`
@@ -336,7 +336,7 @@ git commit -m "refactor(design): tokens bi-thème — trois systèmes chromatiqu
 
 ---
 
-## Tâche 2 : recâbler la couche `@theme` de `globals.css`
+## Task 2 — recâbler la couche `@theme` de `globals.css`
 
 **Fichiers :**
 - Modifier : `src/app/globals.css:8-68` (le bloc `@theme inline`) et `:74-133`
@@ -621,7 +621,7 @@ de la migration des 212 occurrences prévue en R2."
 
 ---
 
-## Tâche 3 : purger le grain, le calage focal et le filtre de carte
+## Task 3 — purger le grain, le calage focal et le filtre de carte
 
 **Fichiers :**
 - Modifier : `src/app/globals.css` (blocs GRAIN, CALAGE FOCAL, CARTE, ÉCHELLE
@@ -819,7 +819,7 @@ Le filtre de désaturation de la carte est conditionné au thème sombre."
 
 ---
 
-## Tâche 4 : préférence de thème et script anti-flash
+## Task 4 — préférence de thème et script anti-flash
 
 **Fichiers :**
 - Créer : `src/lib/theme.ts`
@@ -1032,7 +1032,7 @@ l'hydratation et la page clignoterait en clair avant de basculer."
 
 ---
 
-## Tâche 5 : maintenir la vitrine en sombre
+## Task 5 — maintenir la vitrine en sombre
 
 **Fichiers :**
 - Modifier : `src/app/(marketing)/layout.tsx`
