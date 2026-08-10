@@ -2,72 +2,6 @@
 @import "../design/tokens.css";
 
 /* =============================================================================
-   ALIAS DE VARIABLES BRUTES — À SUPPRIMER EN R2.
-   Les composants qui écrivent `var(--brand-wash)` ou `var(--lift-3)` en dur
-   continuent de fonctionner pendant la migration.
-
-   ⚠ LES TROIS SÉLECTEURS SONT INDISPENSABLES. Une propriété personnalisée qui
-   en référence une autre est substituée là où elle est DÉCLARÉE, puis héritée
-   comme valeur calculée. Déclarés sur `:root` seul, ces alias figeraient donc
-   les valeurs CLAIRES et les transmettraient tels quels à l'intérieur de la
-   vitrine sombre — qui deviendrait un fond noir avec des filets clairs. En
-   listant aussi les deux sélecteurs de thème, chaque conteneur qui porte un
-   thème redéclare ses alias à partir de son propre `--accent`.
-   ========================================================================== */
-:root,
-[data-theme="light"],
-[data-theme="dark"] {
-  --bg: var(--canvas);
-  --bg-sunken: var(--sunken);
-  --surface-raised: var(--surface-hover);
-  --surface-high: var(--surface-active);
-  --surface-scrim: var(--scrim);
-
-  --hairline: var(--line-soft);
-  --hairline-2: var(--line);
-  --hairline-3: var(--line-strong);
-  --hairline-ember: var(--accent-line);
-
-  --brand: var(--accent);
-  --brand-hot: var(--accent);
-  --brand-wash: var(--accent-soft);
-  --brand-wash-2: var(--accent-line);
-  --brand-glow: var(--accent-line);
-  --ember-700: var(--accent);
-
-  --good-wash: var(--good-soft);
-  --mid-wash: var(--mid-soft);
-  --risk-wash: var(--risk-soft);
-  --info-wash: var(--info-soft);
-  --danger-wash: var(--danger-soft);
-  --risk-300: var(--risk);
-  /* --ember-800 ne rejoint PAS --ember-700 ci-dessus : 700 reste la marque
-     (branding), mais 800/900 servaient de ton D'AVERTISSEMENT en v1/v2 (voir
-     Feedback.tsx, tone "warn"). Il rejoint donc --mid, l'ambre du verdict —
-     jamais --accent, qui dirait à tort qu'un avertissement est une action de
-     marque. */
-  --ember-800: var(--mid);
-
-  --lift-1: var(--shadow-1);
-  --lift-2: var(--shadow-2);
-  --lift-3: var(--shadow-3);
-
-  --ink-950: var(--ink-fg);
-  --ink-600: var(--surface-active);
-  --ink-500: var(--line-strong);
-  --ink-400: var(--text-4);
-  --bone-100: var(--text);
-  --bone-400: var(--text-3);
-  --bone-500: var(--text-4);
-
-  --r-xs: var(--r-sm);
-  --r-2xl: var(--r-xl);
-
-  --topbar: var(--bar-h);
-  --rail: var(--rail-w);
-}
-
-/* =============================================================================
    ESTIO — SYSTÈME « FOCALE » v2 · couche applicative
    ========================================================================== */
 
@@ -128,52 +62,6 @@
   /* --- Typographie ------------------------------------------------------- */
   --font-sans: var(--font-grotesk), "Helvetica Neue", Arial, sans-serif;
   --font-mono: var(--font-mono-jb), ui-monospace, "SF Mono", monospace;
-
-  /* =========================================================================
-     ALIAS DE COMPATIBILITÉ — À SUPPRIMER EN R2.
-     `hairline` apparaît 212 fois dans le code, `brand` 111 fois. Tailwind v4
-     n'échoue PAS sur un utilitaire inconnu : il ne génère simplement pas la
-     règle, et l'élément devient transparent sans que rien ne le signale. On
-     garde donc les anciens noms vivants le temps de la migration, puis on
-     supprime ce bloc et on vérifie par `grep`, pas par un build vert.
-     ====================================================================== */
-  --color-bg: var(--canvas);
-  --color-raised: var(--surface-hover);
-  /* Alignée sur --surface-high (bloc d'alias plus haut) : les deux noms
-     désignaient le même concept de surface « haute » de la v2, avec deux
-     valeurs différentes avant ce correctif. */
-  --color-high: var(--surface-active);
-  --color-inverse: var(--ink-fg);
-
-  --color-hairline: var(--line-soft);
-  --color-hairline-2: var(--line);
-  --color-hairline-3: var(--line-strong);
-
-  --color-brand: var(--accent);
-  --color-brand-hot: var(--accent);
-  --color-ember-100: var(--accent-soft);
-  --color-ember-200: var(--accent-line);
-  --color-ember-700: var(--accent);
-  /* --mid et non --accent : l'action, l'étape et le verdict ne partagent
-     jamais une teinte (règle fondatrice). 900 était un ton d'avertissement
-     en v1/v2, pas la marque. */
-  --color-ember-900: var(--mid);
-
-  --color-good-300: var(--good);
-  --color-good-100: var(--good-soft);
-  --color-mid-300: var(--mid);
-  --color-mid-100: var(--mid-soft);
-  --color-risk-300: var(--risk);
-  --color-risk-100: var(--risk-soft);
-
-  --color-ink-700: var(--surface);
-  --color-ink-600: var(--surface-active);
-  --color-ink-500: var(--line-strong);
-  --color-bone-300: var(--text-2);
-  --color-bone-400: var(--text-3);
-
-  --radius-xs: var(--r-sm);
-  --radius-2xl: var(--r-xl);
 }
 
 /* =============================================================================
@@ -342,7 +230,7 @@ body {
 .t-outline {
   color: transparent;
   -webkit-text-fill-color: transparent;
-  -webkit-text-stroke: 1px var(--hairline-3);
+  -webkit-text-stroke: 1px var(--line-strong);
 }
 
 /* Le calage focal (flou de 9 px à l'entrée) vivait ici. Retiré de l'outil : un
@@ -409,10 +297,10 @@ body {
   border-radius: 2px;
   background: linear-gradient(
     90deg,
-    var(--ember-700) 0%,
-    var(--ember-700) var(--fill),
-    var(--ink-600) var(--fill),
-    var(--ink-600) 100%
+    var(--accent) 0%,
+    var(--accent) var(--fill),
+    var(--surface-active) var(--fill),
+    var(--surface-active) 100%
   );
 }
 .estio-range::-webkit-slider-thumb {
@@ -423,7 +311,7 @@ body {
   margin-top: -5px;
   border-radius: 50%;
   border: 0;
-  background: var(--bone-100);
+  background: var(--text);
   box-shadow: 0 1px 3px rgb(0 0 0 / 0.5);
   transition:
     background-color var(--t-fast) var(--e-out),
@@ -438,19 +326,19 @@ body {
 .estio-range::-moz-range-track {
   height: 4px;
   border-radius: 2px;
-  background: var(--ink-600);
+  background: var(--surface-active);
 }
 .estio-range::-moz-range-progress {
   height: 4px;
   border-radius: 2px;
-  background: var(--ember-700);
+  background: var(--accent);
 }
 .estio-range::-moz-range-thumb {
   width: 14px;
   height: 14px;
   border-radius: 50%;
   border: 0;
-  background: var(--bone-100);
+  background: var(--text);
   box-shadow: 0 1px 3px rgb(0 0 0 / 0.5);
 }
 .estio-range:focus-visible {
