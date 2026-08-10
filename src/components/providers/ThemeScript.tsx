@@ -8,7 +8,8 @@
  * en une chaîne de caractères, sans import ni compilation.
  */
 const SCRIPT = `(function(){try{
-var t=localStorage.getItem("estio.theme")||"light";
+var t=localStorage.getItem("estio.theme");
+if(["light","dark","system"].indexOf(t)===-1)t="light";
 var r=t==="system"?(matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light"):t;
 var d=localStorage.getItem("estio.density")||"confortable";
 var e=document.documentElement;

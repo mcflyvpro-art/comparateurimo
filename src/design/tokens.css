@@ -128,12 +128,22 @@
   --accent-soft: rgb(232 89 12 / 0.09);
   --accent-line: rgb(232 89 12 / 0.34);
 
-  /* --- VERDICT. Vert, ambre, rouge — et rien d'autre ne les emprunte. ----- */
-  --good: #2f8f5b;
+  /* --- VERDICT. Vert, ambre, rouge — et rien d'autre ne les emprunte.
+         Assombries (R1, revue finale) : VerdictPill rend le LIBELLÉ (texte,
+         11,5 px) dans cette couleur — le seuil WCAG applicable est donc 4,5:1
+         (texte), pas 3:1 (graphique). Teinte (H) et saturation (S) HSL
+         inchangées, seule la clarté (L) descend. Ratios mesurés (luminance
+         relative WCAG 2.1) sur --surface #ffffff puis --sunken #efedea :
+           --good #2f8f5b → #28794d : 4.04→5.34 · 3.46→4.57
+           --mid  #c08328 → #8f621e : 3.22→5.34 · 2.76→4.57
+           --risk #c4453c → #bb4139 : 4.93→5.35 · 4.22→4.58
+         Les variantes -soft ne changent pas : fonds à faible opacité, pas du
+         texte, donc hors du seuil 4,5:1. ----------------------------------- */
+  --good: #28794d;
   --good-soft: rgb(47 143 91 / 0.12);
-  --mid: #c08328;
+  --mid: #8f621e;
   --mid-soft: rgb(192 131 40 / 0.12);
-  --risk: #c4453c;
+  --risk: #bb4139;
   --risk-soft: rgb(196 69 60 / 0.12);
   --none: #a8a29b;
   --none-soft: rgb(168 162 155 / 0.12);
@@ -170,7 +180,19 @@
    3. THÈME SOMBRE
    ========================================================================== */
 
-[data-theme="dark"] {
+/* La vitrine pose l'attribut sur un <div> qui est un enfant DIRECT de <body>
+   (voir `(marketing)/layout.tsx`), jamais sur <html> lui-même — sinon l'outil
+   ne pourrait plus repasser en clair. Mais <html> et <body> restent alors
+   clairs eux-mêmes : leur `color-scheme` reste "light", donc la barre de
+   défilement native du document et le rebond d'overscroll restent clairs sur
+   toute la hauteur d'une page de vitrine pourtant sombre.
+   `:root:has(> body > [data-theme="dark"])` détecte précisément ce cas —
+   un enfant direct de <body> qui porte le thème sombre — et étend tout le
+   bloc jusqu'à la racine. Aucune page de l'outil ne pose cet attribut sur un
+   enfant direct de <body> (seul `(app)/layout.tsx` y mène, et il ne pose
+   jamais `data-theme`), donc le sélecteur n'y matche jamais. */
+[data-theme="dark"],
+:root:has(> body > [data-theme="dark"]) {
   color-scheme: dark;
 
   --sunken: #0b0a09;

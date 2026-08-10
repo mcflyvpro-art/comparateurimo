@@ -40,6 +40,13 @@
   --risk-wash: var(--risk-soft);
   --info-wash: var(--info-soft);
   --danger-wash: var(--danger-soft);
+  --risk-300: var(--risk);
+  /* --ember-800 ne rejoint PAS --ember-700 ci-dessus : 700 reste la marque
+     (branding), mais 800/900 servaient de ton D'AVERTISSEMENT en v1/v2 (voir
+     Feedback.tsx, tone "warn"). Il rejoint donc --mid, l'ambre du verdict —
+     jamais --accent, qui dirait à tort qu'un avertissement est une action de
+     marque. */
+  --ember-800: var(--mid);
 
   --lift-1: var(--shadow-1);
   --lift-2: var(--shadow-2);
@@ -51,6 +58,7 @@
   --ink-400: var(--text-4);
   --bone-100: var(--text);
   --bone-400: var(--text-3);
+  --bone-500: var(--text-4);
 
   --r-xs: var(--r-sm);
   --r-2xl: var(--r-xl);
@@ -124,7 +132,10 @@
      ====================================================================== */
   --color-bg: var(--canvas);
   --color-raised: var(--surface-hover);
-  --color-high: var(--surface);
+  /* Alignée sur --surface-high (bloc d'alias plus haut) : les deux noms
+     désignaient le même concept de surface « haute » de la v2, avec deux
+     valeurs différentes avant ce correctif. */
+  --color-high: var(--surface-active);
   --color-inverse: var(--ink-fg);
 
   --color-hairline: var(--line-soft);
@@ -136,7 +147,10 @@
   --color-ember-100: var(--accent-soft);
   --color-ember-200: var(--accent-line);
   --color-ember-700: var(--accent);
-  --color-ember-900: var(--accent);
+  /* --mid et non --accent : l'action, l'étape et le verdict ne partagent
+     jamais une teinte (règle fondatrice). 900 était un ton d'avertissement
+     en v1/v2, pas la marque. */
+  --color-ember-900: var(--mid);
 
   --color-good-300: var(--good);
   --color-good-100: var(--good-soft);
@@ -411,7 +425,7 @@ body {
 .estio-range:hover::-webkit-slider-thumb,
 .estio-range:focus-visible::-webkit-slider-thumb {
   transform: scale(1.18);
-  background: #fff;
+  background: var(--text);
 }
 
 .estio-range::-moz-range-track {
