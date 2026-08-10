@@ -133,7 +133,7 @@ export function FicheShell({
 
       <div className="mx-auto max-w-[92rem] px-6 py-8">
         <div className="grid gap-5 xl:grid-cols-[minmax(0,1fr)_21rem]">
-          <div className="focal-stagger flex min-w-0 flex-col gap-5">
+          <div className="flex min-w-0 flex-col gap-5">
             <SectionVerdict property={property} scenario={scenario} />
             <SectionBien property={property} projectId={projectId} mode={mode} />
             <SectionMarche property={property} />

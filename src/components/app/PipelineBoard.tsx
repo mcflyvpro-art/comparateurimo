@@ -128,7 +128,7 @@ export function PipelineBoard({
           onDragEnd={handleDragEnd}
           onDragCancel={() => setDraggingId(null)}
         >
-          <div className="rail-x focal-stagger flex min-h-0 flex-1 gap-3 px-5 py-4">
+          <div className="rail-x flex min-h-0 flex-1 gap-3 px-5 py-4">
             {STATUS_COLUMNS.map((col) => (
               <PipelineColumn
                 key={col.key}

@@ -173,8 +173,16 @@ body {
   text-rendering: optimizeLegibility;
 }
 
-/* Le noir n'est jamais plat : grain de film au-dessus de tout, inerte. */
-body::after {
+/* =============================================================================
+   GRAIN DE FILM — VITRINE UNIQUEMENT.
+   Il empêchait le noir d'être plat, ce qui était juste. Mais il salit les
+   aplats clairs, et à la densité d'un CRM il ajoute du bruit là où on cherche
+   de la précision. Il devient donc une classe, que seule la vitrine applique.
+   ========================================================================== */
+.grain {
+  position: relative;
+}
+.grain::after {
   content: "";
   position: fixed;
   inset: 0;
@@ -270,6 +278,19 @@ body::after {
   color: var(--text-3);
 }
 
+/* -----------------------------------------------------------------------------
+   ÉCHELLE DE L'OUTIL — six tailles, et pas une de plus.
+   Elle remplace les `text-[13.5px]`, `text-[12.5px]`, `!text-[9px]` dispersés
+   dans les composants : c'est cette dispersion qui produisait le sentiment que
+   « rien n'est aligné ». Les composants migreront dessus en R3.
+   -------------------------------------------------------------------------- */
+.t-xs   { font-size: 11px; line-height: 1.4; }
+.t-sm   { font-size: 12px; line-height: 1.4; }
+.t-base { font-size: 13px; line-height: 1.5; }
+.t-md   { font-size: 15px; line-height: 1.4; letter-spacing: -0.011em; }
+.t-lg   { font-size: 20px; line-height: 1.3; letter-spacing: -0.018em; font-weight: 500; }
+.t-xl   { font-size: 28px; line-height: 1.2; letter-spacing: -0.026em; font-weight: 500; }
+
 .t-caps {
   font-size: 0.6875rem;
   line-height: 1;
@@ -303,40 +324,10 @@ body::after {
   -webkit-text-stroke: 1px var(--hairline-3);
 }
 
-/* =============================================================================
-   LE GESTE SIGNATURE — LE CALAGE FOCAL
-   ========================================================================== */
-
-@keyframes focal-settle {
-  from {
-    opacity: 0;
-    filter: blur(9px);
-    transform: translate3d(0, 10px, 0) scale(0.994);
-  }
-  to {
-    opacity: 1;
-    filter: blur(0);
-    transform: none;
-  }
-}
-
-.focal-in {
-  animation: focal-settle var(--t-base) var(--e-focal) both;
-}
-.focal-in-slow {
-  animation: focal-settle var(--t-cine) var(--e-focal) both;
-}
-
-.focal-stagger > * {
-  animation: focal-settle var(--t-base) var(--e-focal) both;
-}
-.focal-stagger > *:nth-child(1) { animation-delay: 0ms; }
-.focal-stagger > *:nth-child(2) { animation-delay: 40ms; }
-.focal-stagger > *:nth-child(3) { animation-delay: 80ms; }
-.focal-stagger > *:nth-child(4) { animation-delay: 120ms; }
-.focal-stagger > *:nth-child(5) { animation-delay: 160ms; }
-.focal-stagger > *:nth-child(6) { animation-delay: 200ms; }
-.focal-stagger > *:nth-child(n + 7) { animation-delay: 240ms; }
+/* Le calage focal (flou de 9 px à l'entrée) vivait ici. Retiré de l'outil : un
+   flou à chaque rendu de liste donne une impression de lenteur dans un logiciel
+   qu'on utilise huit heures par jour. Il reste en vigueur sur la vitrine, où
+   il est joué par GSAP au défilement. */
 
 /* =============================================================================
    HORS FOCALE — le verrou freemium.
@@ -414,8 +405,8 @@ body::after {
   background: var(--bone-100);
   box-shadow: 0 1px 3px rgb(0 0 0 / 0.5);
   transition:
-    background-color var(--t-fast) var(--e-snap),
-    transform var(--t-fast) var(--e-snap);
+    background-color var(--t-fast) var(--e-out),
+    transform var(--t-fast) var(--e-out);
 }
 .estio-range:hover::-webkit-slider-thumb,
 .estio-range:focus-visible::-webkit-slider-thumb {
@@ -461,10 +452,9 @@ body::after {
   inset: 0;
 }
 
-/* Le filtre désaturé n'a de sens que sur le style Sombre — le style Clair
-   s'affiche avec ses couleurs d'origine. `.estio-map--dark` est posé
-   conditionnellement par MapView. */
-.estio-map.estio-map--dark .maplibregl-canvas {
+/* Le filtre n'a de sens que dans le thème sombre. En clair, la tuile
+   d'OpenFreeMap s'affiche telle quelle — elle est déjà faite pour ça. */
+[data-theme="dark"] .estio-map.estio-map--dark .maplibregl-canvas {
   filter: saturate(0.28) sepia(0.22) brightness(0.8) contrast(1.1);
 }
 
@@ -474,22 +464,23 @@ body::after {
    pas fidèles à leur original) mais suffisant pour rester dans l'univers
    sombre d'Estio. `.estio-map--detailed` est posé conditionnellement par
    MapView, comme `.estio-map--dark`. */
-.estio-map.estio-map--detailed .maplibregl-canvas {
+[data-theme="dark"] .estio-map.estio-map--detailed .maplibregl-canvas {
   filter: invert(1) hue-rotate(180deg) saturate(0.35) brightness(0.9) contrast(1.05);
 }
 
 .estio-map .maplibregl-ctrl-attrib {
-  background: rgb(11 10 9 / 0.72) !important;
+  background: color-mix(in srgb, var(--canvas) 82%, transparent) !important;
   backdrop-filter: blur(4px);
-  border-radius: var(--r-xs) 0 0 0;
+  border-radius: var(--r-sm) 0 0 0;
   font-size: 10px;
   padding: 2px 6px;
 }
 .estio-map .maplibregl-ctrl-attrib a {
-  color: var(--bone-400);
+  color: var(--text-3);
 }
 .estio-map .maplibregl-ctrl-attrib-button {
-  filter: invert(1) opacity(0.4);
+  filter: none;
+  opacity: 0.5;
 }
 
 /* `.estio-pin` EST le point — largeur/hauteur fixes, jamais dépendantes de
@@ -506,8 +497,8 @@ body::after {
   height: 14px;
   border-radius: 50%;
   cursor: pointer;
-  box-shadow: 0 0 0 2px rgb(11 10 9 / 0.9);
-  transition: transform var(--t-base) var(--e-focal);
+  box-shadow: 0 0 0 2px var(--canvas);
+  transition: transform var(--t-base) var(--e-out);
 }
 .estio-pin:hover {
   transform: scale(1.2);
@@ -521,10 +512,10 @@ body::after {
 
 .estio-map .maplibregl-popup-content {
   background: var(--surface);
-  border: 1px solid var(--hairline);
+  border: 1px solid var(--line);
   border-radius: var(--r-md);
   padding: 12px 14px;
-  box-shadow: 0 20px 60px -15px rgb(0 0 0 / 0.6);
+  box-shadow: var(--shadow-2);
 }
 .estio-map .maplibregl-popup-tip {
   border-top-color: var(--surface) !important;
@@ -645,14 +636,6 @@ html.lenis body {
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
-  }
-  .focal-in,
-  .focal-in-slow,
-  .focal-stagger > * {
-    animation: none;
-    opacity: 1;
-    filter: none;
-    transform: none;
   }
   .defocused {
     filter: blur(4px);

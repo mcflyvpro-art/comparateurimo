@@ -198,7 +198,7 @@ export function PropertyTable({
           {columnsMenuOpen && (
             <>
               <div className="fixed inset-0 z-20" onClick={() => setColumnsMenuOpen(false)} />
-              <div className="focal-in absolute right-0 top-full z-30 mt-2 w-64 rounded-md border border-hairline-2 bg-high p-4 shadow-[var(--lift-3)]">
+              <div className="absolute right-0 top-full z-30 mt-2 w-64 rounded-md border border-hairline-2 bg-high p-4 shadow-[var(--lift-3)]">
                 <p className="mb-3.5 text-[12px] font-medium text-text-2">
                   Colonnes affichées
                 </p>

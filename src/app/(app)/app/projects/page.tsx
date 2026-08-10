@@ -62,7 +62,7 @@ export default async function ProjectsPage() {
   return (
     <div className="min-h-0 flex-1 overflow-y-auto">
       <div className="mx-auto max-w-6xl px-8 py-12">
-        <header className="focal-in">
+        <header>
           <span className="t-label">Espace de travail</span>
           <h1 className="t-title mt-3 text-text">Projets</h1>
           <p className="mt-3 max-w-lg text-[14px] leading-relaxed text-text-2">
@@ -88,7 +88,7 @@ export default async function ProjectsPage() {
                   className="rounded-lg border border-dashed border-hairline-2"
                 />
               ) : (
-                <ul className="focal-stagger grid gap-3">
+                <ul className="grid gap-3">
                   {active.map((p) => (
                     <ProjectRow key={p.id} project={p} />
                   ))}

@@ -91,7 +91,7 @@ export function BlocCalculs({
         </Button>
 
         {showExpert && (
-          <div className="focal-in mt-5">
+          <div className="mt-5">
             <StatGrid cols={3}>
               <Stat
                 term="tri"

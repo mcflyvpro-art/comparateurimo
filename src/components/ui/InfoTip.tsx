@@ -156,7 +156,7 @@ export function InfoTip({
               width: WIDTH,
               zIndex: 9998,
             }}
-            className="focal-in pointer-events-none block rounded-md border border-hairline-2 bg-high p-4 text-left font-normal normal-case tracking-normal shadow-[var(--lift-3)]"
+            className="pointer-events-none block rounded-md border border-hairline-2 bg-high p-4 text-left font-normal normal-case tracking-normal shadow-[var(--lift-3)]"
           >
             {title && (
               <span className="mb-2 block text-[12.5px] font-medium text-text">

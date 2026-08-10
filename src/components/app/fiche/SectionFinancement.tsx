@@ -128,7 +128,7 @@ export function BlocFinancement({
         </Button>
 
         {showTable && (
-          <div className="focal-in mt-3">
+          <div className="mt-3">
             <div className="mb-2 flex justify-end gap-1">
               {(["annuel", "mensuel"] as const).map((g) => (
                 <button
