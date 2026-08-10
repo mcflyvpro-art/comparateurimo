@@ -39,7 +39,7 @@ export default async function AppLayout({
     // Coque plein écran : le rail est fixe, seul le contenu défile. C'est ce qui
     // distingue un outil d'une page web — on ne perd jamais sa navigation.
     <ToastProvider>
-      <div className="flex h-screen overflow-hidden bg-bg">
+      <div className="flex h-screen overflow-hidden bg-canvas">
         <AppSidebar projects={projects} />
         <div className="flex min-w-0 min-h-0 flex-1 flex-col">{children}</div>
       </div>

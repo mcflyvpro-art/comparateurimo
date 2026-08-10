@@ -24,7 +24,7 @@ export default function Connexion() {
           Pas encore de compte ?{" "}
           <Link
             href="/inscription"
-            className="text-brand underline-offset-4 transition-opacity hover:underline hover:opacity-80"
+            className="text-accent underline-offset-4 transition-opacity hover:underline hover:opacity-80"
           >
             Créer un compte
           </Link>

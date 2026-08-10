@@ -44,7 +44,7 @@ export function PageLoader() {
     <AnimatePresence>
       {visible && (
         <motion.div
-          className="fixed inset-0 z-[100] flex items-center justify-center bg-[var(--ink-950)]"
+          className="fixed inset-0 z-[100] flex items-center justify-center bg-[var(--ink-fg)]"
           initial={{ opacity: 1 }}
           exit={{ opacity: 0, filter: "blur(12px)" }}
           transition={{ duration: 0.5, ease: EASE_FOCAL }}
@@ -59,7 +59,7 @@ export function PageLoader() {
               transition={{ duration: 0.9, ease: EASE_FOCAL }}
             />
             <motion.span
-              className="absolute -bottom-3 left-0 block h-px bg-brand"
+              className="absolute -bottom-3 left-0 block h-px bg-accent"
               initial={{ width: 0 }}
               animate={{ width: "100%" }}
               transition={{ duration: 1.05, ease: EASE_FOCAL, delay: 0.1 }}

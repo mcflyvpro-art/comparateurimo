@@ -25,7 +25,7 @@ export default function AppError({
 
   return (
     <div className="flex min-h-0 flex-1 flex-col items-center justify-center px-6 text-center">
-      <span className="mb-7 inline-flex h-10 w-10 items-center justify-center rounded-full border border-hairline-2 text-ember-600">
+      <span className="mb-7 inline-flex h-10 w-10 items-center justify-center rounded-full border border-line text-danger">
         <IconEmber size={18} />
       </span>
 
@@ -39,7 +39,7 @@ export default function AppError({
       </p>
 
       {error.digest && (
-        <p className="num mt-5 rounded-sm border border-hairline px-2.5 py-1 text-[10px] text-text-4">
+        <p className="num mt-5 rounded-sm border border-line-soft px-2.5 py-1 text-[10px] text-text-4">
           {error.digest}
         </p>
       )}
@@ -50,7 +50,7 @@ export default function AppError({
         </Button>
         <Link
           href="/app/projects"
-          className="inline-flex items-center rounded-sm border border-hairline-2 px-4 py-2 text-[13px] font-medium text-text transition-colors hover:border-hairline-3 hover:bg-raised"
+          className="inline-flex items-center rounded-sm border border-line px-4 py-2 text-[13px] font-medium text-text transition-colors hover:border-line-strong hover:bg-surface-hover"
         >
           Tous les projets
         </Link>

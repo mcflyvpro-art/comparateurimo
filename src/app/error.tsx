@@ -26,7 +26,7 @@ export default function GlobalError({
 
   return (
     <main className="flex min-h-[100svh] flex-col items-center justify-center px-[var(--gutter)] text-center">
-      <span className="mb-8 inline-flex h-11 w-11 items-center justify-center rounded-full border border-hairline-2 text-ember-600">
+      <span className="mb-8 inline-flex h-11 w-11 items-center justify-center rounded-full border border-line text-danger">
         <IconEmber size={20} />
       </span>
 
@@ -38,7 +38,7 @@ export default function GlobalError({
       </p>
 
       {error.digest && (
-        <p className="num mt-6 rounded-sm border border-hairline px-3 py-1.5 text-[11px] text-text-4">
+        <p className="num mt-6 rounded-sm border border-line-soft px-3 py-1.5 text-[11px] text-text-4">
           {error.digest}
         </p>
       )}
@@ -54,7 +54,7 @@ export default function GlobalError({
         </Button>
         <Link
           href="/"
-          className="inline-flex items-center gap-2 rounded-sm border border-hairline-2 px-4 py-2.5 text-[13px] font-medium text-text transition-colors hover:border-hairline-3 hover:bg-raised"
+          className="inline-flex items-center gap-2 rounded-sm border border-line px-4 py-2.5 text-[13px] font-medium text-text transition-colors hover:border-line-strong hover:bg-surface-hover"
         >
           Retour à l&apos;accueil
         </Link>

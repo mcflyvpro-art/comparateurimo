@@ -54,21 +54,21 @@ const NIVEAUX = [
   {
     tag: "N1",
     titre: "Le bien",
-    color: "var(--n1)",
+    color: "var(--text-2)",
     texte:
       "Huit à dix champs irréductibles, saisis ou extraits. C'est la seule chose stockée, parce que c'est la seule qui ne vieillit pas.",
   },
   {
     tag: "N2",
     titre: "Le marché",
-    color: "var(--n2)",
+    color: "var(--text-2)",
     texte:
       "Dérivé de l'adresse seule : prix/m² notarié, loyer de marché, tension, risques, démographie. Recalculé à chaque ouverture, jamais figé.",
   },
   {
     tag: "N3",
     titre: "Votre scénario",
-    color: "var(--n3)",
+    color: "var(--text-2)",
     texte:
       "Apport, taux, durée, fiscalité, horizon. Ce qui transforme un bien en investissement — et ce qui fait que votre verdict n'est pas celui du voisin.",
   },
@@ -88,8 +88,8 @@ export default function CommentCaMarche() {
         <ol className="flex flex-col">
           {ETAPES.map((e, i) => (
             <Reveal key={e.n} cine delay={i * 0.04}>
-              <li className="grid gap-6 border-t border-hairline py-12 lg:grid-cols-[6rem_minmax(0,1fr)_minmax(0,1.1fr)] lg:gap-12 lg:py-16">
-                <span className="num text-[13px] text-brand">{e.n}</span>
+              <li className="grid gap-6 border-t border-line-soft py-12 lg:grid-cols-[6rem_minmax(0,1fr)_minmax(0,1.1fr)] lg:gap-12 lg:py-16">
+                <span className="num text-[13px] text-accent">{e.n}</span>
                 <div>
                   <h2 className="t-head text-text">{e.titre}</h2>
                   <p className="mt-2 text-[14px] text-text-2">{e.lede}</p>
@@ -104,7 +104,7 @@ export default function CommentCaMarche() {
       </section>
 
       {/* Le board, en résumé visuel */}
-      <section className="border-t border-hairline py-24">
+      <section className="border-t border-line-soft py-24">
         <div className="mx-auto max-w-[104rem] px-[var(--gutter)]">
           <Reveal cine>
             <h2 className="t-title max-w-2xl text-text">Six étapes, pas plus.</h2>
@@ -119,7 +119,7 @@ export default function CommentCaMarche() {
               {STATUS_COLUMNS.map((col, i) => (
                 <li
                   key={col.key}
-                  className="rounded-md border border-hairline bg-surface p-5"
+                  className="rounded-md border border-line-soft bg-surface p-5"
                 >
                   <span className="num block text-[12px] text-text-4">
                     {String(i + 1).padStart(2, "0")}
@@ -135,7 +135,7 @@ export default function CommentCaMarche() {
       </section>
 
       {/* Les trois niveaux */}
-      <section className="border-t border-hairline py-24">
+      <section className="border-t border-line-soft py-24">
         <div className="mx-auto max-w-[104rem] px-[var(--gutter)]">
           <Reveal cine>
             <h2 className="t-title max-w-2xl text-text">Trois niveaux de données.</h2>
@@ -148,7 +148,7 @@ export default function CommentCaMarche() {
           <div className="mt-12 grid gap-4 lg:grid-cols-3">
             {NIVEAUX.map((n, i) => (
               <Reveal key={n.tag} cine delay={0.06 * i}>
-                <article className="h-full rounded-lg border border-hairline bg-surface p-6">
+                <article className="h-full rounded-lg border border-line-soft bg-surface p-6">
                   <div className="flex items-baseline gap-3">
                     <span
                       className="h-4 w-[2px] rounded-full"
@@ -168,7 +168,7 @@ export default function CommentCaMarche() {
       </section>
 
       {/* Sources & garde-fous */}
-      <section className="border-t border-hairline py-24">
+      <section className="border-t border-line-soft py-24">
         <div className="mx-auto max-w-[104rem] px-[var(--gutter)]">
           <Reveal cine>
             <h2 className="t-title max-w-3xl text-text">
@@ -220,7 +220,7 @@ export default function CommentCaMarche() {
 
 function Guard({ titre, texte }: { titre: string; texte: string }) {
   return (
-    <div className="rounded-lg border border-hairline bg-surface p-6">
+    <div className="rounded-lg border border-line-soft bg-surface p-6">
       <h3 className="text-[14px] font-medium text-text">{titre}</h3>
       <p className="mt-3 text-[13px] leading-relaxed text-text-3">{texte}</p>
     </div>

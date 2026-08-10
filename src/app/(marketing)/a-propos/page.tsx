@@ -64,8 +64,8 @@ export default function APropos() {
         <ol className="flex flex-col">
           {CONVICTIONS.map((c, i) => (
             <Reveal key={c.n} cine delay={i * 0.04}>
-              <li className="grid gap-6 border-t border-hairline py-12 lg:grid-cols-[5rem_minmax(0,1fr)] lg:gap-12 lg:py-14">
-                <span className="num text-[13px] text-brand">{c.n}</span>
+              <li className="grid gap-6 border-t border-line-soft py-12 lg:grid-cols-[5rem_minmax(0,1fr)] lg:gap-12 lg:py-14">
+                <span className="num text-[13px] text-accent">{c.n}</span>
                 <div className="max-w-3xl">
                   <h2 className="t-head text-text">{c.titre}</h2>
                   <p className="mt-5 text-[14px] leading-relaxed text-text-3">{c.texte}</p>
@@ -76,7 +76,7 @@ export default function APropos() {
         </ol>
       </section>
 
-      <section className="border-t border-hairline py-24">
+      <section className="border-t border-line-soft py-24">
         <div className="mx-auto max-w-[104rem] px-[var(--gutter)]">
           <Reveal cine>
             <h2 className="t-title max-w-2xl text-text">Ce qu&apos;on ne fera pas.</h2>
@@ -89,8 +89,8 @@ export default function APropos() {
           <ul className="mt-10 flex flex-col">
             {REFUS.map((r, i) => (
               <Reveal key={r} cine delay={i * 0.04}>
-                <li className="flex items-center gap-5 border-b border-hairline py-5">
-                  <span className="h-px w-8 shrink-0 bg-ember-300" aria-hidden />
+                <li className="flex items-center gap-5 border-b border-line-soft py-5">
+                  <span className="h-px w-8 shrink-0 bg-accent" aria-hidden />
                   <span className="text-[15px] text-text-2">{r}</span>
                 </li>
               </Reveal>

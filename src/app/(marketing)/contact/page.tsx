@@ -43,9 +43,9 @@ export default function Contact() {
             <Reveal cine>
               <a
                 href="mailto:contact@estio.immo"
-                className="group inline-flex items-center gap-3 text-[15px] text-text transition-colors hover:text-brand"
+                className="group inline-flex items-center gap-3 text-[15px] text-text transition-colors hover:text-accent"
               >
-                <span className="flex h-9 w-9 items-center justify-center rounded-sm border border-hairline-2 text-text-3 transition-colors group-hover:border-hairline-ember group-hover:text-brand">
+                <span className="flex h-9 w-9 items-center justify-center rounded-sm border border-line text-text-3 transition-colors group-hover:border-accent-line group-hover:text-accent">
                   <IconMail size={15} />
                 </span>
                 contact@estio.immo
@@ -58,7 +58,7 @@ export default function Contact() {
             <div className="mt-12 flex flex-col">
               {CANAUX.map((c, i) => (
                 <Reveal key={c.titre} cine delay={i * 0.05}>
-                  <div className="border-t border-hairline py-6">
+                  <div className="border-t border-line-soft py-6">
                     <h2 className="text-[14px] font-medium text-text">{c.titre}</h2>
                     <p className="mt-2.5 max-w-md text-[13px] leading-relaxed text-text-3">
                       {c.texte}

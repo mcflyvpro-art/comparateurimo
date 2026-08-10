@@ -25,7 +25,7 @@ export default function Inscription() {
           Vous avez déjà un compte ?{" "}
           <Link
             href="/connexion"
-            className="text-brand underline-offset-4 transition-opacity hover:underline hover:opacity-80"
+            className="text-accent underline-offset-4 transition-opacity hover:underline hover:opacity-80"
           >
             Se connecter
           </Link>

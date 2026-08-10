@@ -23,7 +23,7 @@ export default function Faq() {
         <FaqAccordion />
 
         <Reveal cine>
-          <div className="mt-16 rounded-lg border border-hairline bg-surface px-7 py-6">
+          <div className="mt-16 rounded-lg border border-line-soft bg-surface px-7 py-6">
             <h2 className="text-[15px] font-medium text-text">
               Une question qui n&apos;est pas là ?
             </h2>
@@ -33,7 +33,7 @@ export default function Faq() {
             </p>
             <Link
               href="/contact"
-              className="mt-5 inline-flex items-center gap-2 text-[13px] text-brand underline-offset-4 transition-opacity hover:opacity-80 hover:underline"
+              className="mt-5 inline-flex items-center gap-2 text-[13px] text-accent underline-offset-4 transition-opacity hover:opacity-80 hover:underline"
             >
               Nous écrire
             </Link>

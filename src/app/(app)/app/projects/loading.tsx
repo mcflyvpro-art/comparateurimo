@@ -17,7 +17,7 @@ export default function LoadingProjects() {
               {[0, 1, 2].map((i) => (
                 <div
                   key={i}
-                  className="flex items-center gap-6 rounded-lg border border-hairline bg-surface px-5 py-4"
+                  className="flex items-center gap-6 rounded-lg border border-line-soft bg-surface px-5 py-4"
                 >
                   <div className="flex-1">
                     <Skeleton className="h-4 w-44" />

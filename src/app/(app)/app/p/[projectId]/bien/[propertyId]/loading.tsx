@@ -5,7 +5,7 @@ import { Panel } from "@/components/ui/Panel";
 export default function LoadingFiche() {
   return (
     <div className="min-h-0 flex-1 overflow-hidden">
-      <div className="border-b border-hairline px-6 py-2.5">
+      <div className="border-b border-line-soft px-6 py-2.5">
         <Skeleton className="h-3.5 w-64" />
       </div>
 

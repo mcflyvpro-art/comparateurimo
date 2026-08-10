@@ -76,7 +76,7 @@ export default async function ProjectsPage() {
             <section>
               <div className="mb-4 flex items-center gap-3">
                 <h2 className="t-label">Actifs</h2>
-                <span className="h-px flex-1 bg-hairline" aria-hidden />
+                <span className="h-px flex-1 bg-line-soft" aria-hidden />
                 <span className="num text-[10px] text-text-4">{active.length}</span>
               </div>
 
@@ -85,7 +85,7 @@ export default async function ProjectsPage() {
                   icon={<IconLayers size={20} />}
                   title="Aucun projet actif"
                   body="Créez-en un pour ouvrir votre premier pipeline."
-                  className="rounded-lg border border-dashed border-hairline-2"
+                  className="rounded-lg border border-dashed border-line"
                 />
               ) : (
                 <ul className="grid gap-3">
@@ -101,7 +101,7 @@ export default async function ProjectsPage() {
                 <div className="mb-4 flex items-center gap-3">
                   <IconArchive size={13} className="text-text-4" />
                   <h2 className="t-label">Archivés</h2>
-                  <span className="h-px flex-1 bg-hairline" aria-hidden />
+                  <span className="h-px flex-1 bg-line-soft" aria-hidden />
                   <span className="num text-[10px] text-text-4">{archived.length}</span>
                 </div>
                 <ul className="grid gap-3">

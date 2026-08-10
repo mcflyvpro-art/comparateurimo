@@ -25,7 +25,7 @@ export default function NotFound() {
       </span>
 
       <div className="relative">
-        <span className="mb-8 inline-flex h-11 w-11 items-center justify-center rounded-full border border-hairline-2 text-text-3">
+        <span className="mb-8 inline-flex h-11 w-11 items-center justify-center rounded-full border border-line text-text-3">
           <IconFocus size={20} />
         </span>
 
@@ -39,14 +39,14 @@ export default function NotFound() {
         <div className="mt-10 flex flex-wrap items-center justify-center gap-3">
           <Link
             href="/"
-            className="inline-flex items-center gap-2 rounded-sm bg-brand px-5 py-2.5 text-[13px] font-medium text-inverse shadow-[inset_0_1px_0_rgb(255_255_255/0.2)] transition-colors hover:bg-brand-hot"
+            className="inline-flex items-center gap-2 rounded-sm bg-accent px-5 py-2.5 text-[13px] font-medium text-ink-fg shadow-[inset_0_1px_0_rgb(255_255_255/0.2)] transition-colors hover:bg-accent-hot"
           >
             <IconArrowLeft size={14} />
             Retour à l&apos;accueil
           </Link>
           <Link
             href="/app"
-            className="inline-flex items-center gap-2 rounded-sm border border-hairline-2 px-5 py-2.5 text-[13px] font-medium text-text transition-colors hover:border-hairline-3 hover:bg-raised"
+            className="inline-flex items-center gap-2 rounded-sm border border-line px-5 py-2.5 text-[13px] font-medium text-text transition-colors hover:border-line-strong hover:bg-surface-hover"
           >
             Ouvrir mon pipeline
           </Link>

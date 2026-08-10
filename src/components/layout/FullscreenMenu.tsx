@@ -78,7 +78,7 @@ export function FullscreenMenu({
                           aria-current={active ? "page" : undefined}
                           className="group flex items-baseline gap-4"
                         >
-                          <span className="num shrink-0 text-[11px] text-text-4 transition-colors group-hover:text-brand">
+                          <span className="num shrink-0 text-[11px] text-text-4 transition-colors group-hover:text-accent">
                             {String(i + 1).padStart(2, "0")}
                           </span>
 
@@ -90,7 +90,7 @@ export function FullscreenMenu({
                             >
                               {l.label}
                             </span>
-                            <span className="absolute inset-x-0 bottom-0 h-[3px] origin-left scale-x-0 bg-brand transition-transform duration-[520ms] ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-x-100" />
+                            <span className="absolute inset-x-0 bottom-0 h-[3px] origin-left scale-x-0 bg-accent transition-transform duration-[520ms] ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-x-100" />
                           </span>
 
                           <span className="hidden self-start pt-3 text-[12px] text-text-4 lg:block">
@@ -159,7 +159,7 @@ function MenuColumn({
                 href={l.href}
                 onClick={onClose}
                 aria-current={active ? "page" : undefined}
-                className={`relative inline-block whitespace-nowrap text-[15px] transition-colors after:absolute after:-bottom-0.5 after:left-0 after:h-px after:w-full after:origin-right after:scale-x-0 after:bg-brand after:transition-transform after:duration-[420ms] hover:after:origin-left hover:after:scale-x-100 ${
+                className={`relative inline-block whitespace-nowrap text-[15px] transition-colors after:absolute after:-bottom-0.5 after:left-0 after:h-px after:w-full after:origin-right after:scale-x-0 after:bg-accent after:transition-transform after:duration-[420ms] hover:after:origin-left hover:after:scale-x-100 ${
                   active ? "text-text-4" : "text-text-2 hover:text-text"
                 }`}
               >

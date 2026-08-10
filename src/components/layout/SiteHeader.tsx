@@ -57,7 +57,7 @@ export function SiteHeader() {
         className={cx(
           "fixed inset-x-0 top-0 z-50 transition-[background-color,border-color,backdrop-filter] duration-[420ms]",
           settled && !open
-            ? "border-b border-hairline bg-[rgb(11_10_9/0.72)] backdrop-blur-xl"
+            ? "border-b border-line-soft bg-[rgb(11_10_9/0.72)] backdrop-blur-xl"
             : "border-b border-transparent",
         )}
       >
@@ -113,7 +113,7 @@ export function SiteHeader() {
             </Link>
             <Link
               href="/connexion"
-              className="rounded-sm bg-brand px-4 py-2 text-[13px] font-medium text-inverse shadow-[inset_0_1px_0_rgb(255_255_255/0.2)] transition-colors duration-[180ms] hover:bg-brand-hot"
+              className="rounded-sm bg-accent px-4 py-2 text-[13px] font-medium text-ink-fg shadow-[inset_0_1px_0_rgb(255_255_255/0.2)] transition-colors duration-[180ms] hover:bg-accent-hot"
             >
               Ouvrir un pipeline
             </Link>

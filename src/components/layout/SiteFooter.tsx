@@ -7,7 +7,7 @@ import { footerGroups } from "./nav-links";
  */
 export function SiteFooter() {
   return (
-    <footer data-header-theme="dark" className="border-t border-hairline bg-sunken">
+    <footer data-header-theme="dark" className="border-t border-line-soft bg-sunken">
       <div className="mx-auto max-w-[104rem] px-[var(--gutter)]">
         <div className="grid gap-12 py-16 sm:grid-cols-2 lg:grid-cols-[1.4fr_repeat(4,minmax(0,1fr))]">
           <div>
@@ -41,7 +41,7 @@ export function SiteFooter() {
           ))}
         </div>
 
-        <div className="flex flex-wrap items-center justify-between gap-4 border-t border-hairline py-6">
+        <div className="flex flex-wrap items-center justify-between gap-4 border-t border-line-soft py-6">
           <p className="num text-[11px] text-text-4">© 2026 Estio</p>
           <p className="max-w-xl text-[11px] leading-relaxed text-text-4">
             Outil d&apos;aide à la décision — pas un conseil en investissement réglementé.

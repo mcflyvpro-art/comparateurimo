@@ -54,7 +54,7 @@ export default function Tarifs() {
       </section>
 
       {/* Ce que « flouter l'insight » veut dire, montré plutôt qu'expliqué */}
-      <section className="border-t border-hairline py-24">
+      <section className="border-t border-line-soft py-24">
         <div className="mx-auto max-w-[104rem] px-[var(--gutter)]">
           <Reveal cine>
             <h2 className="t-title max-w-2xl text-text">
@@ -112,7 +112,7 @@ export default function Tarifs() {
         </div>
       </section>
 
-      <section className="border-t border-hairline py-24">
+      <section className="border-t border-line-soft py-24">
         <div className="mx-auto max-w-[104rem] px-[var(--gutter)]">
           <Reveal cine>
             <h2 className="t-title max-w-2xl text-text">
@@ -123,9 +123,9 @@ export default function Tarifs() {
           <div className="mt-12 grid gap-4 md:grid-cols-2">
             {PRINCIPES.map((p, i) => (
               <Reveal key={p.titre} cine delay={i * 0.05}>
-                <article className="h-full rounded-lg border border-hairline bg-surface p-6">
+                <article className="h-full rounded-lg border border-line-soft bg-surface p-6">
                   <div className="flex items-baseline gap-3">
-                    <span className="num text-[11px] text-brand">
+                    <span className="num text-[11px] text-accent">
                       {String(i + 1).padStart(2, "0")}
                     </span>
                     <h3 className="text-[15px] font-medium text-text">{p.titre}</h3>

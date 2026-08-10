@@ -13,7 +13,7 @@ export default function LoadingBoard() {
 
   return (
     <div className="flex min-h-0 flex-1 flex-col">
-      <div className="flex items-center gap-6 border-b border-hairline px-5 py-3">
+      <div className="flex items-center gap-6 border-b border-line-soft px-5 py-3">
         <Skeleton className="h-3 w-16" />
         <Skeleton className="h-3 w-16" />
         <Skeleton className="h-3 w-16" />
@@ -24,14 +24,14 @@ export default function LoadingBoard() {
           <div key={col.key} className="flex w-[17.5rem] shrink-0 flex-col">
             <div className="flex items-center gap-2 px-0.5 pb-3">
               <span className="text-[13px] font-medium text-text-4">{col.label}</span>
-              <span className="ml-auto h-px w-full max-w-8 bg-hairline" aria-hidden />
+              <span className="ml-auto h-px w-full max-w-8 bg-line-soft" aria-hidden />
             </div>
 
             <div className="flex flex-col gap-2 p-1.5">
               {Array.from({ length: rows[ci] }, (_, i) => (
                 <div
                   key={i}
-                  className="rounded-md border border-hairline bg-surface p-3"
+                  className="rounded-md border border-line-soft bg-surface p-3"
                   style={{ animationDelay: `${(ci * 3 + i) * 60}ms` }}
                 >
                   <Skeleton className="h-3 w-3/4" />
