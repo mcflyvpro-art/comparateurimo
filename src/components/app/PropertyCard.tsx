@@ -169,7 +169,7 @@ export function PropertyCard({
           {menuOuvert && (
             <div
               role="menu"
-              className="absolute right-0 top-full z-30 mt-1 w-44 overflow-hidden rounded-md border border-line bg-surface-active shadow-[var(--shadow-3)]"
+              className="absolute right-0 top-full z-30 mt-1 w-44 overflow-hidden rounded-md border border-line bg-surface shadow-[var(--shadow-3)]"
             >
               <p className="px-3 pb-1 pt-2 text-[11px] text-text-4">Déplacer vers</p>
               {STATUS_COLUMNS.filter((c) => c.key !== property.status).map((col) => (

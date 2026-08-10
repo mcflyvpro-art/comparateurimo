@@ -138,7 +138,7 @@ export function FicheActions({
             role="menu"
             className={cx(
               "absolute right-0 top-full z-40 mt-1.5 w-52 overflow-hidden rounded-md",
-              "border border-line bg-surface-active shadow-[var(--shadow-3)]",
+              "border border-line bg-surface shadow-[var(--shadow-3)]",
             )}
           >
             <button

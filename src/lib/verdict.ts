@@ -32,21 +32,21 @@ const VERDICTS: Record<VerdictLevel, Omit<Verdict, "level">> = {
     advice:
       "Avec vos hypothèses, ce bien tient la route. Programmez une visite avant qu'un autre ne le fasse.",
     color: "var(--good)",
-    wash: "var(--good-wash)",
+    wash: "var(--good-soft)",
   },
   mid: {
     label: "À creuser",
     advice:
       "Ni bon ni mauvais en l'état. Comparez-le à vos autres candidats avant d'y consacrer une visite.",
     color: "var(--mid)",
-    wash: "var(--mid-wash)",
+    wash: "var(--mid-soft)",
   },
   risk: {
     label: "Peu favorable",
     advice:
       "En dessous du seuil avec vos hypothèses. Sauf marge de négociation, écartez-le en notant pourquoi.",
     color: "var(--risk)",
-    wash: "var(--risk-wash)",
+    wash: "var(--risk-soft)",
   },
   none: {
     label: "Données incomplètes",

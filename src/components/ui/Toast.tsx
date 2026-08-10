@@ -115,7 +115,7 @@ function Banniere({ toast, onFermer }: { toast: Toast; onFermer: () => void }) {
       transition={{ duration: 0.22, ease: EASE_FOCAL }}
       className={cx(
         "pointer-events-auto flex max-w-[min(30rem,calc(100vw-2rem))] items-center gap-4",
-        "rounded-md border border-line border-l-2 bg-surface-active px-4 py-3",
+        "rounded-md border border-line border-l-2 bg-surface px-4 py-3",
         "shadow-[var(--shadow-3)]",
         teinte,
       )}

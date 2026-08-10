@@ -1,4 +1,8 @@
-@import "tailwindcss";
+/* `source("../")` borne le balayage de Tailwind à `src/`. Sans cette borne, un
+   nom de classe écrit dans un fichier de `docs/` se retrouve compilé dans le CSS
+   livré — et fausse l'audit des variables orphelines qui sert de filet de
+   sécurité à chaque fin de lot. */
+@import "tailwindcss" source("../");
 @import "../design/tokens.css";
 
 /* =============================================================================

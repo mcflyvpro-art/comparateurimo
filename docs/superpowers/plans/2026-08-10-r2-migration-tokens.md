@@ -156,8 +156,10 @@ la vitrine ce qu'elle était censée montrer** :
 | `border-hairline-ember` → `border-accent-line` (5 sites : carte gagnante et badge de `SectionArbitrage`, anneau d'appareil photo de `SectionCapture`, confirmation de `ContactForm`, carte « Le plus choisi » de `PricingTable`) | La classe **ne produisait aucune règle** : `--color-hairline-ember` n'a jamais figuré dans `@theme`. La bordure retombait sur `currentcolor`. | Ambre translucide à 40 % — exactement la valeur v2 de `--hairline-ember`. | **Bogue réparé.** La bordure ambrée était écrite dans le code depuis toujours et n'a jamais été peinte. |
 | `bg-brand-hot` → `bg-accent-hot` (CTA principal de `MagneticButton`) | L'alias de R1 pointait vers `--accent` : le survol était **identique au repos**, donc sans retour visuel. | `#ff8c3d` en thème sombre — exactement la valeur v2 de `--ember-800`, que `--brand-hot` référençait. | **Comportement d'origine restauré.** |
 | `var(--brand-glow)` → `var(--accent-glow)` (halo de la carte gagnante et de la carte populaire) | L'alias de R1 pointait vers `--accent-line`, à 0,4 d'opacité. | 0,32 — exactement la valeur v2 de `--brand-glow`. | **Valeur d'origine restaurée** ; l'alias avait dérivé. |
+| `bg-surface-high` → `bg-surface` (5 menus déroulants : `NoteList`, `ProjectRow`, `PropertyCard`, `FicheActions`, `Toast`) | La classe **ne produisait aucune règle** : `--color-surface-high` n'a jamais figuré dans `@theme`. Ces cinq menus avaient un fond transparent. | Fond de surface plein, comme les quatre autres popovers. | **Bogue réparé**, de même nature que la bordure ambrée. |
+| `text-brand-hot` → `text-accent-hot` (6 états sélectionnés : `CreateProjectForm`, `DiscardReasonModal`, `FileDropzone`, `NoteList` ×2, `Controls`) | L'alias pointait vers `--accent`. | `#cf4c08` en clair, `#ff8c3d` en sombre. | Changement de nuance assumé — meilleur contraste sur fond clair. |
 
-Ces trois écarts sont donc **acceptés et assumés**, au même titre que la pastille
+Ces cinq écarts sont donc **acceptés et assumés**, au même titre que la pastille
 de `SourcesMarquee`. Ils sont à signaler à la relecture sur Vercel, pas à
 neutraliser.
 

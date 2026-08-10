@@ -246,7 +246,7 @@ export function ProjectRow({ project }: { project: ProjectRowData }) {
           {menuOuvert && (
             <div
               role="menu"
-              className="absolute right-0 top-full z-40 mt-1.5 w-56 overflow-hidden rounded-md border border-line bg-surface-active shadow-[var(--shadow-3)]"
+              className="absolute right-0 top-full z-40 mt-1.5 w-56 overflow-hidden rounded-md border border-line bg-surface shadow-[var(--shadow-3)]"
             >
               <MenuItem icon={<IconPencil size={14} />} onClick={ouvrirRenommage}>
                 Renommer

@@ -296,7 +296,7 @@ function NoteItem({ note }: { note: PipelineNote }) {
         {menuOuvert && (
           <div
             role="menu"
-            className="absolute right-0 top-full z-30 mt-1 w-44 overflow-hidden rounded-md border border-line bg-surface-active shadow-[var(--shadow-3)]"
+            className="absolute right-0 top-full z-30 mt-1 w-44 overflow-hidden rounded-md border border-line bg-surface shadow-[var(--shadow-3)]"
           >
             <button
               role="menuitem"
